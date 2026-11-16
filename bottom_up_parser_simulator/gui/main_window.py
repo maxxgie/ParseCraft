@@ -1,0 +1,540 @@
+"""Main application window.
+
+Hosts every view (grammar editor, FIRST/FOLLOW, LR states, DFA, ACTION/GOTO,
+simulation, parse tree) inside a central tabbed workspace, provides menu and
+toolbar actions, a status bar, and a dockable application log.
+"""
+
+from __future__ import annotations
+
+import logging
+from typing import Optional
+
+from PyQt6.QtCore import QSize, Qt
+from PyQt6.QtGui import QAction, QIcon, QKeySequence
+from PyQt6.QtWidgets import (
+    QDockWidget,
+    QFileDialog,
+    QInputDialog,
+    QMainWindow,
+    QMessageBox,
+    QStatusBar,
+    QTabWidget,
+    QTextEdit,
+    QToolBar,
+    QWidget,
+)
+
+from core.codegen import generate_lr_parser
+from core.database import get_database
+from core.engine import analyze, grammar_features
+from core.exporter import (
+    analysis_to_html,
+    analysis_to_markdown,
+    automaton_to_dot,
+    table_to_csv,
+)
+from core.grammar_parser import GrammarParseError
+from core.logging_config import get_logger
+from gui.code_view import CodeView
+from gui.conflict_view import ConflictView
+from gui.dfa_view import DFAView
+from gui.first_follow_view import FirstFollowView
+from gui.grammar_editor import GenerateOptions, GrammarEditor
+from gui.lr_states_view import LRStatesView
+from gui.parse_tree_view import ParseTreeView
+from gui.settings import APP_NAME, APP_ORGANIZATION, APP_VERSION
+from gui.simulation_view import SimulationView
+from gui.table_view import TableView
+
+logger = get_logger(__name__)
+
+
+class _GUILogHandler(logging.Handler):
+    """A logging handler that appends records to a GUI text widget."""
+
+    def __init__(self, callback) -> None:
+        super().__init__()
+        self._callback = callback
+        self.setFormatter(logging.Formatter("%(asctime)s [%(levelname)s] %(name)s: %(message)s"))
+
+    def emit(self, record: logging.LogRecord) -> None:
+        try:
+            self._callback(self.format(record))
+        except Exception:  # pragma: no cover - logging must never crash the UI
+            pass
+
+
+class MainWindow(QMainWindow):
+    """Main window for the Bottom-Up Parser Simulator."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.setWindowTitle(f"{APP_NAME} v{APP_VERSION}")
+        self.resize(1280, 840)
+
+        self._analysis = None
+        self._status_bar: Optional[QStatusBar] = None
+        self._logs_view: Optional[QTextEdit] = None
+        self._logs_dock: Optional[QDockWidget] = None
+
+        self._build_central_tabs()
+        self._setup_menu_bar()
+        self._setup_toolbar()
+        self._setup_status_bar()
+        self._setup_logs_dock()
+
+        logger.info("Main window initialized")
+
+    # ------------------------------------------------------------------
+    # Central workspace
+    # ------------------------------------------------------------------
+    def _build_central_tabs(self) -> None:
+        self.grammar_editor = GrammarEditor()
+        self.first_follow_view = FirstFollowView()
+        self.lr_states_view = LRStatesView()
+        self.dfa_view = DFAView()
+        self.table_view = TableView()
+        self.conflict_view = ConflictView()
+        self.simulation_view = SimulationView()
+        self.parse_tree_view = ParseTreeView()
+        self.code_view = CodeView()
+
+        self._central_tabs = QTabWidget()
+        self._central_tabs.addTab(self.grammar_editor, "Grammar")
+        self._central_tabs.addTab(self.first_follow_view, "FIRST/FOLLOW")
+        self._central_tabs.addTab(self.lr_states_view, "LR States")
+        self._central_tabs.addTab(self.dfa_view, "DFA")
+        self._central_tabs.addTab(self.table_view, "ACTION/GOTO")
+        self._central_tabs.addTab(self.conflict_view, "Conflicts")
+        self._central_tabs.addTab(self.simulation_view, "Simulation")
+        self._central_tabs.addTab(self.parse_tree_view, "Parse Tree")
+        self._central_tabs.addTab(self.code_view, "Generated Parser")
+        self.setCentralWidget(self._central_tabs)
+
+        # Cross-widget wiring.
+        self.grammar_editor.generate_requested.connect(self._on_generate)
+        self.simulation_view.parse_tree_ready.connect(self.parse_tree_view.show_tree)
+        self.simulation_view.simulation_finished.connect(self._on_simulation_finished)
+
+    # ------------------------------------------------------------------
+    # Menu bar
+    # ------------------------------------------------------------------
+    def _setup_menu_bar(self) -> None:
+        menu_bar = self.menuBar()
+
+        file_menu = menu_bar.addMenu("&File")
+
+        new_action = QAction("&New Grammar", self)
+        new_action.setShortcut(QKeySequence.StandardKey.New)
+        new_action.triggered.connect(self._on_new_grammar)
+        file_menu.addAction(new_action)
+
+        open_action = QAction("&Open Grammar...", self)
+        open_action.setShortcut(QKeySequence.StandardKey.Open)
+        open_action.triggered.connect(self._on_open_grammar)
+        file_menu.addAction(open_action)
+
+        save_action = QAction("&Save Grammar...", self)
+        save_action.setShortcut(QKeySequence.StandardKey.Save)
+        save_action.triggered.connect(self._on_save_grammar)
+        file_menu.addAction(save_action)
+
+        file_menu.addSeparator()
+
+        export_menu = file_menu.addMenu("&Export")
+
+        csv_action = QAction("Tables as &CSV...", self)
+        csv_action.triggered.connect(self._on_export_csv)
+        export_menu.addAction(csv_action)
+
+        md_action = QAction("Report as &Markdown...", self)
+        md_action.triggered.connect(self._on_export_markdown)
+        export_menu.addAction(md_action)
+
+        html_action = QAction("Report as &HTML...", self)
+        html_action.triggered.connect(self._on_export_html)
+        export_menu.addAction(html_action)
+
+        dot_action = QAction("DFA as &DOT...", self)
+        dot_action.triggered.connect(self._on_export_dot)
+        export_menu.addAction(dot_action)
+
+        file_menu.addSeparator()
+
+        exit_action = QAction("E&xit", self)
+        exit_action.setShortcut(QKeySequence.StandardKey.Quit)
+        exit_action.triggered.connect(self.close)
+        file_menu.addAction(exit_action)
+
+        edit_menu = menu_bar.addMenu("&Edit")
+
+        clear_action = QAction("&Clear Grammar", self)
+        clear_action.triggered.connect(self._on_clear_grammar)
+        edit_menu.addAction(clear_action)
+
+        view_menu = menu_bar.addMenu("&View")
+        show_logs = QAction("Show &Logs", self)
+        show_logs.setCheckable(True)
+        show_logs.setChecked(True)
+        show_logs.triggered.connect(self._toggle_logs)
+        view_menu.addAction(show_logs)
+
+        tools_menu = menu_bar.addMenu("&Tools")
+
+        generate_action = QAction("&Generate Parsing Table", self)
+        generate_action.setShortcut("Ctrl+G")
+        generate_action.triggered.connect(self._on_generate_menu)
+        tools_menu.addAction(generate_action)
+
+        simulate_action = QAction("&Run Simulation", self)
+        simulate_action.setShortcut("Ctrl+R")
+        simulate_action.triggered.connect(self._on_run_simulation)
+        tools_menu.addAction(simulate_action)
+
+        help_menu = menu_bar.addMenu("&Help")
+
+        about_action = QAction("&About", self)
+        about_action.triggered.connect(self._show_about)
+        help_menu.addAction(about_action)
+
+    # ------------------------------------------------------------------
+    # Toolbar
+    # ------------------------------------------------------------------
+    def _setup_toolbar(self) -> None:
+        toolbar = QToolBar("Main Toolbar")
+        toolbar.setMovable(False)
+        toolbar.setIconSize(QSize(16, 16))
+        self.addToolBar(toolbar)
+
+        for label, tooltip, slot in [
+            ("New", "New grammar", self._on_new_grammar),
+            ("Open", "Open grammar from library", self._on_open_grammar),
+            ("Save", "Save grammar to library", self._on_save_grammar),
+        ]:
+            action = QAction(QIcon(), label, self)
+            action.setToolTip(tooltip)
+            action.triggered.connect(slot)
+            toolbar.addAction(action)
+
+        toolbar.addSeparator()
+
+        for label, tooltip, slot in [
+            ("Generate", "Generate ACTION/GOTO parsing table", self._on_generate_menu),
+            ("Simulate", "Run parsing simulation", self._on_run_simulation),
+        ]:
+            action = QAction(QIcon(), label, self)
+            action.setToolTip(tooltip)
+            action.triggered.connect(slot)
+            toolbar.addAction(action)
+
+    # ------------------------------------------------------------------
+    # Status bar & logs dock
+    # ------------------------------------------------------------------
+    def _setup_status_bar(self) -> None:
+        self._status_bar = QStatusBar()
+        self.setStatusBar(self._status_bar)
+        self._status_bar.showMessage("Ready")
+
+    def _setup_logs_dock(self) -> None:
+        self._logs_view = QTextEdit()
+        self._logs_view.setReadOnly(True)
+        self._logs_view.setLineWrapMode(QTextEdit.LineWrapMode.NoWrap)
+        self._logs_dock = QDockWidget("Logs", self)
+        self._logs_dock.setWidget(self._logs_view)
+        self._logs_dock.setFeatures(
+            QDockWidget.DockWidgetFeature.DockWidgetMovable
+            | QDockWidget.DockWidgetFeature.DockWidgetFloatable
+            | QDockWidget.DockWidgetFeature.DockWidgetClosable
+        )
+        self.addDockWidget(Qt.DockWidgetArea.BottomDockWidgetArea, self._logs_dock)
+
+        # Route application logs into the dock.
+        handler = _GUILogHandler(self._append_log)
+        handler.setLevel(logging.INFO)
+        logging.getLogger().addHandler(handler)
+
+    def _append_log(self, line: str) -> None:
+        if self._logs_view is not None:
+            self._logs_view.append(line)
+
+    def _toggle_logs(self) -> None:
+        if self._logs_dock is not None:
+            self._logs_dock.setVisible(not self._logs_dock.isVisible())
+
+    # ------------------------------------------------------------------
+    # Analysis / simulation handlers
+    # ------------------------------------------------------------------
+    def _on_generate(self, text: str, options: GenerateOptions) -> None:
+        # Describe the input grammar so the user knows what the toggles can do.
+        try:
+            features = grammar_features(text)
+            note = "Grammar: " + features["note"] + "."
+            self.grammar_editor.set_feature_note(note)
+        except Exception:  # pragma: no cover - feature note is best-effort
+            self.grammar_editor.set_feature_note("")
+
+        try:
+            analysis = analyze(
+                text,
+                options.parser_type,
+                remove_left_recursion=options.remove_left_recursion,
+                left_factoring=options.left_factoring,
+                remove_epsilon=options.remove_epsilon,
+                remove_unit=options.remove_unit,
+                remove_useless=options.remove_useless,
+                resolution=options.resolution,
+            )
+        except GrammarParseError as exc:
+            self.grammar_editor.set_status(str(exc), is_error=True)
+            self._status_bar.showMessage("Grammar error", 5000)
+            QMessageBox.critical(self, "Grammar Error", str(exc))
+            return
+        except Exception as exc:  # pragma: no cover - defensive
+            logger.exception("Analysis failed")
+            self.grammar_editor.set_status(f"Error: {exc}", is_error=True)
+            QMessageBox.critical(self, "Error", f"Analysis failed:\n{exc}")
+            return
+
+        self._analysis = analysis
+        self.first_follow_view.update_from(analysis)
+        self.lr_states_view.update_from(analysis)
+        self.dfa_view.update_from(analysis)
+        self.table_view.update_from(analysis)
+        self.conflict_view.update_from(analysis)
+        self.simulation_view.set_analysis(analysis)
+        self.parse_tree_view.clear()
+
+        # Show the grammar that was actually analysed (post-transform).
+        self.grammar_editor.set_transform_preview(analysis.grammar_text)
+
+        # Generate a runnable parser from the current analysis.
+        sample = self.simulation_view.input_edit.text().split() or None
+        try:
+            code = generate_lr_parser(analysis, sample_input=sample)
+            self.code_view.set_code(
+                code,
+                note=f"Generated {analysis.parser_type} parser "
+                f"({analysis.table.num_states} states). Save or copy it.",
+            )
+        except Exception:  # pragma: no cover - codegen is best-effort
+            logger.exception("Code generation failed")
+            self.code_view.clear()
+
+        transform_note = (
+            f" [transforms: {', '.join(analysis.transforms)}]"
+            if analysis.transforms
+            else ""
+        )
+        message = (
+            f"{options.parser_type} generated: {len(analysis.automaton.states)} states, "
+            f"{len(analysis.conflicts)} conflict(s)"
+            f"{self._conflict_summary(analysis)}{transform_note}"
+        )
+        self.grammar_editor.set_status(
+            message, is_error=bool(analysis.unresolved_conflicts)
+        )
+        self._status_bar.showMessage(message, 6000)
+
+    @staticmethod
+    def _conflict_summary(analysis) -> str:
+        """Return a short note about conflict resolution for the status line."""
+        if not analysis.conflicts:
+            return ""
+        if analysis.resolution_config.enabled:
+            return (
+                f" ({len(analysis.resolutions)} resolved, "
+                f"{len(analysis.unresolved_conflicts)} unresolved)"
+            )
+        return " (unresolved)"
+
+    def _on_generate_menu(self) -> None:
+        self._on_generate(
+            self.grammar_editor.grammar_text(),
+            self.grammar_editor.current_options(),
+        )
+
+    def _on_run_simulation(self) -> None:
+        if self._analysis is None:
+            self._on_generate(
+                self.grammar_editor.grammar_text(),
+                self.grammar_editor.current_options(),
+            )
+            if self._analysis is None:
+                return
+        self._central_tabs.setCurrentWidget(self.simulation_view)
+        self.simulation_view.run()
+
+    def _on_simulation_finished(self, accepted: bool, message: str) -> None:
+        self._status_bar.showMessage(message, 8000)
+        if not accepted:
+            self.parse_tree_view.show_message(message)
+        self._record_history(accepted)
+
+    def _record_history(self, accepted: bool) -> None:
+        if self._analysis is None:
+            return
+        try:
+            db = get_database()
+            result = self.simulation_view._result
+            steps = len(result.steps) if result is not None else 0
+            db.execute(
+                "INSERT INTO parsing_history "
+                "(grammar_name, parser_type, input_string, accepted, steps_count) "
+                "VALUES (?, ?, ?, ?, ?)",
+                (
+                    self._analysis.grammar.start_symbol,
+                    self._analysis.parser_type,
+                    self.simulation_view.input_edit.text(),
+                    1 if accepted else 0,
+                    steps,
+                ),
+            )
+        except Exception:  # pragma: no cover - history is best-effort
+            logger.exception("Failed to record parsing history")
+
+    # ------------------------------------------------------------------
+    # File handlers
+    # ------------------------------------------------------------------
+    def _on_new_grammar(self) -> None:
+        self.grammar_editor.set_grammar_text("")
+        self._analysis = None
+        self._reset_views()
+        self.grammar_editor.set_status("New grammar")
+        self._status_bar.showMessage("New grammar", 3000)
+
+    def _on_clear_grammar(self) -> None:
+        self.grammar_editor.set_grammar_text("")
+        self._analysis = None
+        self._reset_views()
+        self.grammar_editor.set_status("Grammar cleared")
+        self._status_bar.showMessage("Grammar cleared", 3000)
+
+    def _reset_views(self) -> None:
+        self.first_follow_view.clear()
+        self.lr_states_view.clear()
+        self.dfa_view.clear()
+        self.table_view.clear()
+        self.conflict_view.clear()
+        self.simulation_view.clear()
+        self.parse_tree_view.clear()
+        self.code_view.clear()
+
+    def _on_open_grammar(self) -> None:
+        try:
+            db = get_database()
+            rows = db.fetch_all(
+                "SELECT id, name, grammar_text, updated_at FROM saved_grammars "
+                "ORDER BY updated_at DESC"
+            )
+        except Exception:
+            logger.exception("Failed to load saved grammars")
+            rows = []
+
+        if not rows:
+            QMessageBox.information(
+                self, "Open Grammar", "No saved grammars yet. Use Save to store one."
+            )
+            return
+
+        names = [f"{row['name']}  ({row['updated_at']})" for row in rows]
+        choice, ok = QInputDialog.getItem(
+            self, "Open Grammar", "Select a grammar:", names, 0, False
+        )
+        if not ok:
+            return
+        index = names.index(choice)
+        row = rows[index]
+        self.grammar_editor.set_grammar_text(row["grammar_text"])
+        self.grammar_editor.set_status(f"Loaded '{row['name']}'")
+        self._central_tabs.setCurrentWidget(self.grammar_editor)
+        self._status_bar.showMessage(f"Loaded '{row['name']}'", 4000)
+
+    def _on_save_grammar(self) -> None:
+        text = self.grammar_editor.grammar_text()
+        if not text.strip():
+            QMessageBox.information(self, "Save Grammar", "The grammar is empty.")
+            return
+        name, ok = QInputDialog.getText(
+            self, "Save Grammar", "Grammar name:", text="My Grammar"
+        )
+        if not ok or not name.strip():
+            return
+        try:
+            db = get_database()
+            existing = db.fetch_one(
+                "SELECT id FROM saved_grammars WHERE name = ?", (name.strip(),)
+            )
+            if existing is not None:
+                db.execute(
+                    "UPDATE saved_grammars SET grammar_text = ?, updated_at = CURRENT_TIMESTAMP "
+                    "WHERE id = ?",
+                    (text, existing["id"]),
+                )
+            else:
+                db.execute(
+                    "INSERT INTO saved_grammars (name, grammar_text) VALUES (?, ?)",
+                    (name.strip(), text),
+                )
+            self.grammar_editor.set_status(f"Saved as '{name.strip()}'")
+            self._status_bar.showMessage(f"Saved as '{name.strip()}'", 4000)
+        except Exception:
+            logger.exception("Failed to save grammar")
+            QMessageBox.critical(self, "Save Grammar", "Failed to save the grammar.")
+
+    # ------------------------------------------------------------------
+    # Export handlers
+    # ------------------------------------------------------------------
+    def _export(self, generator, default_name: str, file_filter: str) -> None:
+        if self._analysis is None:
+            QMessageBox.information(
+                self, "Export", "Generate a grammar before exporting."
+            )
+            return
+        path, _ = QFileDialog.getSaveFileName(
+            self, "Export", default_name, file_filter
+        )
+        if not path:
+            return
+        try:
+            content = generator(self._analysis)
+            with open(path, "w", encoding="utf-8") as handle:
+                handle.write(content)
+            self._status_bar.showMessage(f"Exported to {path}", 6000)
+        except OSError as exc:  # pragma: no cover - filesystem dependent
+            logger.error("Export failed: %s", exc)
+            QMessageBox.critical(self, "Export", f"Failed to export: {exc}")
+
+    def _on_export_csv(self) -> None:
+        self._export(table_to_csv, "tables.csv", "CSV Files (*.csv)")
+
+    def _on_export_markdown(self) -> None:
+        self._export(analysis_to_markdown, "analysis.md", "Markdown Files (*.md)")
+
+    def _on_export_html(self) -> None:
+        self._export(analysis_to_html, "analysis.html", "HTML Files (*.html)")
+
+    def _on_export_dot(self) -> None:
+        self._export(automaton_to_dot, "automaton.dot", "DOT Files (*.dot)")
+
+    # ------------------------------------------------------------------
+    # Help
+    # ------------------------------------------------------------------
+    def _show_about(self) -> None:
+        QMessageBox.about(
+            self,
+            "About",
+            f"{APP_NAME} v{APP_VERSION}\n{APP_ORGANIZATION}\n\n"
+            "A desktop application for visualizing bottom-up parsing techniques:\n"
+            "LR(0), SLR(1), CLR(1) and LALR(1).",
+        )
+
+    # ------------------------------------------------------------------
+    # Qt overrides
+    # ------------------------------------------------------------------
+    def closeEvent(self, event) -> None:  # noqa: N802 (Qt naming)
+        try:
+            get_database().close()
+        except Exception:  # pragma: no cover
+            pass
+        super().closeEvent(event)
