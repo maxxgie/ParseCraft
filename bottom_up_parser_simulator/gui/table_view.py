@@ -9,6 +9,7 @@ from PyQt6.QtWidgets import (
     QHBoxLayout,
     QHeaderView,
     QLabel,
+    QLineEdit,
     QPlainTextEdit,
     QTableWidget,
     QTableWidgetItem,
@@ -92,12 +93,16 @@ class CombinedTableView(QWidget):
         self.header.setStyleSheet("color: #555;")
 
         self.grammar = GrammarReferencePane()
+        self.search = QLineEdit()
+        self.search.setPlaceholderText("Search (shift, R2, state...)")
+        self.search.setClearButtonEnabled(True)
         self.compact_cb = QCheckBox("Compact view")
         self.compact_cb.setToolTip(
             "Show only the ACTION/GOTO entries that exist, one state at a time."
         )
         top_row = QHBoxLayout()
         top_row.addWidget(self.header, 1)
+        top_row.addWidget(self.search, 0)
         top_row.addWidget(self.compact_cb, 0)
         top_row.addWidget(self.grammar, 0)
         layout.addLayout(top_row)
@@ -132,8 +137,10 @@ class CombinedTableView(QWidget):
         self._non_terminals: list[str] = []
         self._divider_col = -1
         self._goto_start = -1
+        self._row_text: list[str] = []
 
         self.compact_cb.toggled.connect(self._on_compact_toggled)
+        self.search.textChanged.connect(lambda _=None: self._apply_search())
 
     # ------------------------------------------------------------------
     def clear(self) -> None:
@@ -141,6 +148,7 @@ class CombinedTableView(QWidget):
         self._analysis = None
         self._terminals = []
         self._non_terminals = []
+        self._row_text = []
         self.table.clear()
         self.table.setRowCount(0)
         self.table.setColumnCount(0)
@@ -166,6 +174,7 @@ class CombinedTableView(QWidget):
         non_terminals = list(table.non_terminals)
         self._terminals = terminals
         self._non_terminals = non_terminals
+        self._row_text = []
         self._divider_col = 1 + len(terminals)
         self._goto_start = self._divider_col + 1
 
@@ -184,6 +193,7 @@ class CombinedTableView(QWidget):
             state_item = QTableWidgetItem(str(state))
             state_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             self.table.setItem(state, 0, state_item)
+            parts: list[str] = [str(state)]
 
             for col, terminal in enumerate(terminals, start=1):
                 action = table.get_action(state, terminal)
@@ -196,6 +206,8 @@ class CombinedTableView(QWidget):
                     bg, fg = action_colors(action.action_type)
                     bold = action.action_type == "accept"
                     cell = _cell(action.to_string(), bg, fg, bold=bold)
+                    parts.append(action.to_string())
+                    parts.append(_verbose_action(action))
                 self.table.setItem(state, col, cell)
 
             self.table.setItem(
@@ -206,13 +218,17 @@ class CombinedTableView(QWidget):
                 target = table.get_goto(state, nt)
                 if target is not None:
                     cell = _cell(str(target), GOTO_BG, GOTO_FG, bold=True)
+                    parts.append(str(target))
                 else:
                     cell = _cell("", BLANK_BG, BLANK_FG)
                 self.table.setItem(state, col, cell)
 
+            self._row_text.append(" ".join(parts).lower())
+
         self.table.setColumnWidth(self._divider_col, 6)
         self.compact_text.setPlainText(self._compact_text())
         self._on_compact_toggled(self.compact_cb.isChecked())
+        self._apply_search()
 
         conflicts = len(analysis.conflicts)
         resolved = len(analysis.resolutions)
@@ -258,6 +274,24 @@ class CombinedTableView(QWidget):
         """Switch between the full grid and the compact listing."""
         self.table.setVisible(not enabled)
         self.compact_text.setVisible(enabled)
+
+    def _apply_search(self) -> None:
+        """Hide table rows that do not match the search text."""
+        text = self.search.text().strip().lower()
+        for row in range(self.table.rowCount()):
+            if not text:
+                self.table.setRowHidden(row, False)
+                continue
+            if row < len(self._row_text):
+                match = text in self._row_text[row]
+            else:
+                match = False
+                for col in range(self.table.columnCount()):
+                    item = self.table.item(row, col)
+                    if item is not None and text in item.text().lower():
+                        match = True
+                        break
+            self.table.setRowHidden(row, not match)
 
     def _on_cell_clicked(self, row: int, col: int) -> None:
         """Show an explanation for the clicked ACTION/GOTO cell."""

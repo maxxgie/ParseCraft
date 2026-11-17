@@ -110,6 +110,171 @@ def build_ll1_table(
 
 
 @dataclass
+class LL1Issue:
+    """A validated LL(1) conflict with a classification and a suggested fix.
+
+    Attributes:
+        nonterminal: The non-terminal row.
+        terminal: The lookahead terminal column.
+        kind: ``FIRST/FIRST`` or ``FIRST/FOLLOW``.
+        productions: The competing production bodies.
+        reason: Why the conflict occurs.
+        suggestion: How to fix the grammar.
+    """
+
+    nonterminal: str
+    terminal: str
+    kind: str
+    productions: List[List[str]]
+    reason: str
+    suggestion: str
+
+    def message(self) -> str:
+        """Return a human-readable description of the issue."""
+        alts = " / ".join(
+            f"{self.nonterminal} -> {' '.join(p) if p else EPSILON}"
+            for p in self.productions
+        )
+        return (
+            f"M[{self.nonterminal}, {self.terminal}]: {self.kind} conflict "
+            f"({alts}). {self.reason} Fix: {self.suggestion}"
+        )
+
+
+def validate_ll1_table(
+    table: LL1Table,
+    grammar: Grammar,
+    first=None,
+    follow=None,
+) -> List[LL1Issue]:
+    """Classify every LL(1) table conflict and suggest a fix.
+
+    Args:
+        table: The LL(1) table to validate.
+        grammar: The grammar the table was built from.
+        first: Pre-computed FIRST sets.
+        follow: Pre-computed FOLLOW sets.
+
+    Returns:
+        A list of :class:`LL1Issue`; empty means the grammar is LL(1).
+    """
+    first = first if first is not None else compute_first(grammar)
+    follow = follow if follow is not None else compute_follow(grammar, first)
+
+    issues: List[LL1Issue] = []
+    for conflict in table.conflicts:
+        nt = conflict.nonterminal
+        terminal = conflict.terminal
+        bodies = conflict.productions
+
+        nullable = [
+            b for b in bodies if EPSILON in compute_first_of_string(b, first)
+        ]
+        if nullable:
+            kind = "FIRST/FOLLOW"
+            reason = (
+                f"'{nt}' has a nullable alternative and another production also "
+                f"predicts on '{terminal}' ∈ FOLLOW({nt})."
+            )
+            suggestion = (
+                "Left-factor or restructure the alternatives so the nullable "
+                "production's lookahead is disjoint from the others."
+            )
+        else:
+            kind = "FIRST/FIRST"
+            reason = (
+                f"More than one production of '{nt}' can start with "
+                f"'{terminal}' (their FIRST sets overlap)."
+            )
+            suggestion = (
+                "Left-factor the common prefix: A -> α β1 | α β2 becomes "
+                "A -> α A', A' -> β1 | β2."
+            )
+        issues.append(
+            LL1Issue(
+                nonterminal=nt,
+                terminal=terminal,
+                kind=kind,
+                productions=[list(b) for b in bodies],
+                reason=reason,
+                suggestion=suggestion,
+            )
+        )
+    return issues
+
+
+def explain_ll1_cell(
+    table: LL1Table,
+    grammar: Grammar,
+    nonterminal: str,
+    terminal: str,
+    first=None,
+    follow=None,
+) -> str:
+    """Explain why ``M[nonterminal, terminal]`` holds the productions it does.
+
+    Args:
+        table: The LL(1) table.
+        grammar: The grammar.
+        nonterminal: The row.
+        terminal: The column.
+        first: Pre-computed FIRST sets.
+        follow: Pre-computed FOLLOW sets.
+
+    Returns:
+        A multi-line explanation.
+    """
+    first = first if first is not None else compute_first(grammar)
+    follow = follow if follow is not None else compute_follow(grammar, first)
+
+    indices = list(dict.fromkeys(table.cell(nonterminal, terminal)))
+    lines: List[str] = [f"M[{nonterminal}, {terminal}]"]
+
+    if not indices:
+        lines.append("")
+        lines.append("Empty cell: no production of the grammar predicts this lookahead.")
+        lines.append(
+            f"'{terminal}' is not in the FIRST set of any production of "
+            f"'{nonterminal}' (nor in FOLLOW({nonterminal}) for a nullable one)."
+        )
+        return "\n".join(lines)
+
+    for index in indices:
+        nt, body = table.productions[index]
+        body_text = " ".join(body) if body else EPSILON
+        body_first = compute_first_of_string(body, first)
+        lines.append("")
+        lines.append(f"Production r{index}: {nt} -> {body_text}")
+        if EPSILON in body_first:
+            lines.append(
+                f"  ε ∈ FIRST({body_text}), so the production is also placed on "
+                f"every terminal in FOLLOW({nt})."
+            )
+        if terminal in body_first - {EPSILON}:
+            lines.append(f"  '{terminal}' ∈ FIRST({body_text}).")
+        elif EPSILON in body_first and terminal in follow.get(nt, set()):
+            lines.append(
+                f"  '{terminal}' ∈ FOLLOW({nt}) and the production is nullable."
+            )
+
+    if len(indices) > 1:
+        lines.append("")
+        lines.append(
+            f"Conflict: {len(indices)} productions share this cell "
+            f"({', '.join('r' + str(i) for i in indices)})."
+        )
+        issues = {i.terminal: i for i in validate_ll1_table(table, grammar, first, follow)}
+        issue = next(
+            (i for i in issues.values() if i.nonterminal == nonterminal), None
+        )
+        if issue is not None:
+            lines.append(f"Reason: {issue.reason}")
+            lines.append(f"Suggested fix: {issue.suggestion}")
+
+    return "\n".join(lines)
+
+
+@dataclass
 class PredictiveOutcome:
     """Result of a predictive (LL(1)) parse."""
 

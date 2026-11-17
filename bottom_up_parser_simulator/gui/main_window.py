@@ -48,6 +48,7 @@ from gui.closure_steps_view import ClosureStepsView
 from gui.goto_steps_view import GotoStepsView
 from gui.grammar_analyzer_view import GrammarAnalyzerView
 from gui.grammar_editor import GenerateOptions, GrammarEditor
+from gui.ll1_table_view import LL1TableView
 from gui.lr_items_view import LRItemsView
 from gui.lr_states_view import LRStatesView
 from gui.parse_tree_view import ParseTreeView
@@ -81,6 +82,7 @@ TAB_TABLE = "table"
 TAB_CONFLICTS = "conflicts"
 TAB_SIMULATION = "simulation"
 TAB_TOPDOWN = "topdown"
+TAB_LL_TABLE = "ll_table"
 TAB_PARSE_TREE = "parse_tree"
 TAB_AST = "ast"
 TAB_ANALYZER = "analyzer"
@@ -130,6 +132,17 @@ _TOPDOWN_TABS = [
     TAB_ANALYZER,
     TAB_CODE,
 ]
+# LL(1)/predictive parsers additionally expose the LL(1) table.
+_TOPDOWN_LL1_TABS = [
+    TAB_GRAMMAR,
+    TAB_FIRST_FOLLOW,
+    TAB_LL_TABLE,
+    TAB_TOPDOWN,
+    TAB_PARSE_TREE,
+    TAB_AST,
+    TAB_ANALYZER,
+    TAB_CODE,
+]
 
 # Ordered tabs shown for each selectable parser type.
 PARSER_TABS: dict[str, list[str]] = {
@@ -140,8 +153,8 @@ PARSER_TABS: dict[str, list[str]] = {
     "LALR(1)": _LR_TABS_WITH_FIRST,
     "Recursive Descent": _TOPDOWN_TABS,
     "Backtracking Recursive Descent": _TOPDOWN_TABS,
-    "Predictive (LL(1))": _TOPDOWN_TABS,
-    "LL(1)": _TOPDOWN_TABS,
+    "Predictive (LL(1))": _TOPDOWN_LL1_TABS,
+    "LL(1)": _TOPDOWN_LL1_TABS,
 }
 
 
@@ -200,6 +213,7 @@ class MainWindow(QMainWindow):
         self.parse_tree_view = ParseTreeView()
         self.code_view = CodeView()
         self.topdown_view = TopDownView()
+        self.ll1_table_view = LL1TableView()
         self.ast_view = AstView()
         self.analyzer_view = GrammarAnalyzerView()
         self.comparison_view = ParserComparisonView()
@@ -218,6 +232,7 @@ class MainWindow(QMainWindow):
             TAB_CONFLICTS: "Conflict Report",
             TAB_SIMULATION: "Simulation",
             TAB_TOPDOWN: "Top-Down",
+            TAB_LL_TABLE: "LL(1) Table",
             TAB_PARSE_TREE: "Parse Tree",
             TAB_AST: "AST",
             TAB_ANALYZER: "Grammar Analyzer",
@@ -238,6 +253,7 @@ class MainWindow(QMainWindow):
             TAB_CONFLICTS: self.conflict_view,
             TAB_SIMULATION: self.simulation_view,
             TAB_TOPDOWN: self.topdown_view,
+            TAB_LL_TABLE: self.ll1_table_view,
             TAB_PARSE_TREE: self.parse_tree_view,
             TAB_AST: self.ast_view,
             TAB_ANALYZER: self.analyzer_view,
@@ -504,6 +520,7 @@ class MainWindow(QMainWindow):
 
         self._analysis = None
         self.topdown_view.set_analysis(result)
+        self.ll1_table_view.set_analysis(result)
         self.first_follow_view.update_from(result)
         self.grammar_editor.set_grammar_variants(result.stages)
 
@@ -584,6 +601,7 @@ class MainWindow(QMainWindow):
         self.conflict_view.update_from(analysis)
         self.simulation_view.set_analysis(analysis)
         self.topdown_view.clear()
+        self.ll1_table_view.clear()
         self.ast_view.clear()
         self.parse_tree_view.clear()
 
@@ -737,6 +755,7 @@ class MainWindow(QMainWindow):
         self.conflict_view.clear()
         self.simulation_view.clear()
         self.topdown_view.clear()
+        self.ll1_table_view.clear()
         self.parse_tree_view.clear()
         self.ast_view.clear()
         self.analyzer_view.clear()
