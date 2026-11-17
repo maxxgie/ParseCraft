@@ -16,12 +16,15 @@ class Grammar:
             bodies. Each production body is a list of symbols.
         terminals: Set of terminal symbols.
         non_terminals: Set of non-terminal symbols.
+        duplicates: Human-readable duplicate productions detected while parsing
+            (kept for reporting; the duplicates themselves are removed).
     """
 
     start_symbol: str
     productions: Dict[str, List[List[str]]] = field(default_factory=dict)
     terminals: set[str] = field(default_factory=set)
     non_terminals: set[str] = field(default_factory=set)
+    duplicates: List[str] = field(default_factory=list)
 
     def __post_init__(self) -> None:
         """Compute terminal and non-terminal sets after initialization."""

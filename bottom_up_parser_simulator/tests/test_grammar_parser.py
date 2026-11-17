@@ -44,14 +44,55 @@ def test_missing_arrow_raises():
         parse_grammar("E T")
 
 
+def test_invalid_operator_raises():
+    with pytest.raises(GrammarParseError):
+        parse_grammar("E = E T")
+
+
+def test_invalid_operator_message():
+    with pytest.raises(GrammarParseError) as exc:
+        parse_grammar("E -> a\nE = E T")
+    assert "Invalid production operator" in str(exc.value)
+
+
+def test_missing_left_side_raises():
+    with pytest.raises(GrammarParseError):
+        parse_grammar("-> a b")
+
+
+def test_missing_left_side_message():
+    with pytest.raises(GrammarParseError) as exc:
+        parse_grammar("-> a b")
+    assert "no left-hand non-terminal" in str(exc.value)
+
+
+def test_missing_right_side_raises():
+    with pytest.raises(GrammarParseError):
+        parse_grammar("A ->")
+
+
+def test_missing_right_side_message():
+    with pytest.raises(GrammarParseError) as exc:
+        parse_grammar("A ->")
+    assert "no derivation" in str(exc.value)
+
+
+def test_empty_grammar_message():
+    with pytest.raises(GrammarParseError) as exc:
+        parse_grammar("   ")
+    assert "cannot be empty" in str(exc.value)
+
+
 def test_empty_grammar_raises():
     with pytest.raises(GrammarParseError):
         parse_grammar("   \n  ")
 
 
-def test_duplicate_production_raises():
-    with pytest.raises(GrammarParseError):
-        parse_grammar("E -> a\nE -> a")
+def test_duplicate_production_is_deduped():
+    grammar = parse_grammar("E -> a\nE -> a")
+    # The duplicate is removed from the productions but recorded for reporting.
+    assert grammar.productions["E"] == [["a"]]
+    assert grammar.duplicates == ["E -> a"]
 
 
 def test_epsilon_with_other_symbols_raises():

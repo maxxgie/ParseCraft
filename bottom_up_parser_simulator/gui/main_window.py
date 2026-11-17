@@ -26,6 +26,7 @@ from PyQt6.QtWidgets import (
 )
 
 from core.codegen import generate_lr_parser
+from core.comparison import compare_parsers
 from core.database import get_database
 from core.engine import analyze, grammar_features
 from core.exporter import (
@@ -34,18 +35,24 @@ from core.exporter import (
     automaton_to_dot,
     table_to_csv,
 )
-from core.grammar_parser import GrammarParseError
+from core.grammar_analyzer import analyze_grammar
+from core.grammar_parser import GrammarParseError, parse_grammar
 from core.logging_config import get_logger
+from core.topdown import TOPDOWN_METHODS, analyze_topdown
+from gui.ast_view import AstView
 from gui.code_view import CodeView
 from gui.conflict_view import ConflictView
 from gui.dfa_view import DFAView
 from gui.first_follow_view import FirstFollowView
+from gui.grammar_analyzer_view import GrammarAnalyzerView
 from gui.grammar_editor import GenerateOptions, GrammarEditor
 from gui.lr_states_view import LRStatesView
 from gui.parse_tree_view import ParseTreeView
+from gui.parser_comparison_view import ParserComparisonView
 from gui.settings import APP_NAME, APP_ORGANIZATION, APP_VERSION
 from gui.simulation_view import SimulationView
 from gui.table_view import TableView
+from gui.topdown_view import TopDownView
 
 logger = get_logger(__name__)
 
@@ -99,6 +106,10 @@ class MainWindow(QMainWindow):
         self.simulation_view = SimulationView()
         self.parse_tree_view = ParseTreeView()
         self.code_view = CodeView()
+        self.topdown_view = TopDownView()
+        self.ast_view = AstView()
+        self.analyzer_view = GrammarAnalyzerView()
+        self.comparison_view = ParserComparisonView()
 
         self._central_tabs = QTabWidget()
         self._central_tabs.addTab(self.grammar_editor, "Grammar")
@@ -108,14 +119,22 @@ class MainWindow(QMainWindow):
         self._central_tabs.addTab(self.table_view, "ACTION/GOTO")
         self._central_tabs.addTab(self.conflict_view, "Conflicts")
         self._central_tabs.addTab(self.simulation_view, "Simulation")
+        self._central_tabs.addTab(self.topdown_view, "Top-Down")
         self._central_tabs.addTab(self.parse_tree_view, "Parse Tree")
+        self._central_tabs.addTab(self.ast_view, "AST")
+        self._central_tabs.addTab(self.analyzer_view, "Grammar Analyzer")
+        self._central_tabs.addTab(self.comparison_view, "Parser Comparison")
         self._central_tabs.addTab(self.code_view, "Generated Parser")
         self.setCentralWidget(self._central_tabs)
 
         # Cross-widget wiring.
         self.grammar_editor.generate_requested.connect(self._on_generate)
         self.simulation_view.parse_tree_ready.connect(self.parse_tree_view.show_tree)
+        self.simulation_view.parse_tree_ready.connect(self._on_parse_tree_ready)
         self.simulation_view.simulation_finished.connect(self._on_simulation_finished)
+        self.topdown_view.parse_tree_ready.connect(self.parse_tree_view.show_tree)
+        self.topdown_view.ast_ready.connect(self.ast_view.set_ast)
+        self.topdown_view.parse_finished.connect(self._on_topdown_finished)
 
     # ------------------------------------------------------------------
     # Menu bar
@@ -274,6 +293,92 @@ class MainWindow(QMainWindow):
         except Exception:  # pragma: no cover - feature note is best-effort
             self.grammar_editor.set_feature_note("")
 
+        # Grammar analysis and parser comparison are always available.
+        self._update_analyzer(text)
+        self._update_comparison(text)
+
+        if options.parser_type in TOPDOWN_METHODS:
+            self._generate_topdown(text, options)
+        else:
+            self._generate_bottomup(text, options)
+
+    def _update_analyzer(self, text: str) -> None:
+        try:
+            report = analyze_grammar(parse_grammar(text))
+            self.analyzer_view.set_report(report)
+        except Exception:  # pragma: no cover - analysis is best-effort
+            self.analyzer_view.clear()
+
+    def _update_comparison(self, text: str) -> None:
+        try:
+            self.comparison_view.set_report(compare_parsers(text))
+        except Exception:  # pragma: no cover - comparison is best-effort
+            self.comparison_view.clear()
+
+    def _generate_topdown(self, text: str, options: GenerateOptions) -> None:
+        try:
+            result = analyze_topdown(
+                text,
+                options.parser_type,
+                remove_left_recursion=options.remove_left_recursion,
+                left_factoring=options.left_factoring,
+                remove_epsilon=options.remove_epsilon,
+                remove_unit=options.remove_unit,
+                remove_useless=options.remove_useless,
+            )
+        except GrammarParseError as exc:
+            self.grammar_editor.set_status(str(exc), is_error=True)
+            self._status_bar.showMessage("Grammar error", 5000)
+            QMessageBox.critical(self, "Grammar Error", str(exc))
+            return
+        except Exception as exc:  # pragma: no cover - defensive
+            logger.exception("Top-down analysis failed")
+            self.grammar_editor.set_status(f"Error: {exc}", is_error=True)
+            QMessageBox.critical(self, "Error", f"Analysis failed:\n{exc}")
+            return
+
+        self._analysis = None
+        self.topdown_view.set_analysis(result)
+        self.first_follow_view.update_from(result)
+        self.grammar_editor.set_transform_preview(result.grammar_text)
+
+        # Clear bottom-up-only views.
+        self.lr_states_view.clear()
+        self.dfa_view.clear()
+        self.table_view.clear()
+        self.conflict_view.clear()
+        self.simulation_view.clear()
+        self.parse_tree_view.clear()
+        self.ast_view.clear()
+        self.code_view.clear()
+
+        notes = []
+        if result.left_recursion:
+            notes.append(
+                "left recursion remains — enable 'Remove Left Recursion'"
+            )
+        if result.left_factoring:
+            notes.append(
+                "common prefixes — enable 'Left Factoring' for LL(1)"
+            )
+        if result.conflicts:
+            notes.append(f"{len(result.conflicts)} LL(1) conflict(s)")
+        suffix = (" — " + "; ".join(notes)) if notes else " — LL(1) clean"
+        transform_note = (
+            f" [transforms: {', '.join(result.transforms)}]"
+            if result.transforms
+            else ""
+        )
+        message = (
+            f"{options.parser_type} ready{suffix}{transform_note}. "
+            "Enter input in the Top-Down tab."
+        )
+        self.grammar_editor.set_status(
+            message, is_error=bool(result.left_recursion or result.conflicts)
+        )
+        self._status_bar.showMessage(message, 6000)
+
+    def _generate_bottomup(self, text: str, options: GenerateOptions) -> None:
         try:
             analysis = analyze(
                 text,
@@ -303,6 +408,8 @@ class MainWindow(QMainWindow):
         self.table_view.update_from(analysis)
         self.conflict_view.update_from(analysis)
         self.simulation_view.set_analysis(analysis)
+        self.topdown_view.clear()
+        self.ast_view.clear()
         self.parse_tree_view.clear()
 
         # Show the grammar that was actually analysed (post-transform).
@@ -335,6 +442,17 @@ class MainWindow(QMainWindow):
             message, is_error=bool(analysis.unresolved_conflicts)
         )
         self._status_bar.showMessage(message, 6000)
+
+    def _on_parse_tree_ready(self, tree) -> None:
+        """Compute and show an AST whenever a bottom-up parse succeeds."""
+        from core.ast import parse_tree_to_ast
+
+        self.ast_view.set_ast(parse_tree_to_ast(tree))
+
+    def _on_topdown_finished(self, accepted: bool, message: str) -> None:
+        self._status_bar.showMessage(message, 8000)
+        if not accepted:
+            self.parse_tree_view.show_message(message)
 
     @staticmethod
     def _conflict_summary(analysis) -> str:
@@ -417,7 +535,11 @@ class MainWindow(QMainWindow):
         self.table_view.clear()
         self.conflict_view.clear()
         self.simulation_view.clear()
+        self.topdown_view.clear()
         self.parse_tree_view.clear()
+        self.ast_view.clear()
+        self.analyzer_view.clear()
+        self.comparison_view.clear()
         self.code_view.clear()
 
     def _on_open_grammar(self) -> None:
@@ -525,8 +647,12 @@ class MainWindow(QMainWindow):
             self,
             "About",
             f"{APP_NAME} v{APP_VERSION}\n{APP_ORGANIZATION}\n\n"
-            "A desktop application for visualizing bottom-up parsing techniques:\n"
-            "LR(0), SLR(1), CLR(1) and LALR(1).",
+            "A desktop application for visualizing parsing techniques:\n"
+            "Top-down: Recursive Descent, Backtracking Recursive Descent, "
+            "Predictive/LL(1).\n"
+            "Bottom-up: LR(0), SLR(1), CLR(1), and LALR(1).\n\n"
+            "Includes grammar analysis, AST generation, parser comparison, "
+            "error recovery, and export.",
         )
 
     # ------------------------------------------------------------------

@@ -90,3 +90,48 @@ def count_nodes(root: Optional[ParseTreeNode]) -> int:
     if root is None:
         return 0
     return 1 + sum(count_nodes(child) for child in root.children)
+
+
+def collapse_unary_chains(root: Optional[ParseTreeNode]) -> Optional[ParseTreeNode]:
+    """Return a copy of the tree with single-child (grammar-only) nodes removed.
+
+    Unit productions and ``E -> T -> F`` style chains are collapsed, and
+    ε-production nodes are dropped, while operators and operands are preserved.
+
+    Args:
+        root: The parse-tree root.
+
+    Returns:
+        A new, simplified :class:`ParseTreeNode` (or ``None``).
+    """
+    if root is None:
+        return None
+
+    # Drop ε-production nodes (a non-terminal whose only child is ε).
+    if (
+        len(root.children) == 1
+        and root.children[0].symbol == "ε"
+        and not root.children[0].children
+    ):
+        return None
+
+    new_children = []
+    for child in root.children:
+        collapsed = collapse_unary_chains(child)
+        if collapsed is not None:
+            new_children.append(collapsed)
+
+    if not new_children:
+        # A genuine terminal leaf is kept; a node whose children all vanished
+        # (an all-ε production) is dropped.
+        if root.children:
+            return None
+        return ParseTreeNode(symbol=root.symbol, value=root.value)
+
+    if len(new_children) == 1:
+        return new_children[0]
+
+    new_node = ParseTreeNode(symbol=root.symbol, value=root.value)
+    for child in new_children:
+        new_node.add_child(child)
+    return new_node

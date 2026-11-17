@@ -12,7 +12,16 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple
 
 from PyQt6.QtCore import QPointF, QRectF, Qt
-from PyQt6.QtGui import QBrush, QColor, QFont, QPainter, QPen, QPolygonF, QTransform
+from PyQt6.QtGui import (
+    QBrush,
+    QColor,
+    QFont,
+    QImage,
+    QPainter,
+    QPen,
+    QPolygonF,
+    QTransform,
+)
 from PyQt6.QtWidgets import (
     QGraphicsItem,
     QGraphicsPathItem,
@@ -211,3 +220,28 @@ class GraphCanvas(QGraphicsView):
             self.fitInView(
                 self._scene.sceneRect(), Qt.AspectRatioMode.KeepAspectRatio
             )
+
+    def render_to_png(self, path: str, background: str = "#FAFAFA") -> bool:
+        """Render the current scene to a PNG file.
+
+        Args:
+            path: Destination file path.
+            background: Background fill colour.
+
+        Returns:
+            ``True`` if the image was written, ``False`` if the scene is empty.
+        """
+        rect = self._scene.itemsBoundingRect()
+        if rect.isEmpty():
+            return False
+        margin = 20.0
+        width = int(rect.width()) + 2 * int(margin)
+        height = int(rect.height()) + 2 * int(margin)
+        image = QImage(max(width, 1), max(height, 1), QImage.Format.Format_ARGB32)
+        image.fill(QColor(background))
+        painter = QPainter(image)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
+        target = QRectF(0, 0, image.width(), image.height())
+        self._scene.render(painter, target, rect)
+        painter.end()
+        return image.save(path)

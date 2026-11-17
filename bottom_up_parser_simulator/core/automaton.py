@@ -74,17 +74,9 @@ class LRAutomaton:
         Returns:
             Augmented grammar.
         """
-        from models.grammar import Grammar as GrammarModel
+        from core.grammar_engine import augment_grammar
 
-        augmented_start = "S'"
-        augmented_productions = {augmented_start: [[grammar.start_symbol]]}
-        augmented_productions.update(grammar.productions)
-
-        augmented = Grammar(
-            start_symbol=augmented_start,
-            productions=augmented_productions,
-        )
-        return augmented
+        return augment_grammar(grammar)
 
     def _build_automaton(self) -> None:
         """Build the LR automaton states and transitions."""

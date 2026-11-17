@@ -41,12 +41,11 @@ def parse_grammar(text: str) -> Grammar:
         GrammarParseError: If the grammar is invalid.
     """
     if not text or not text.strip():
-        raise GrammarParseError("Empty grammar")
+        raise GrammarParseError("Grammar cannot be empty.")
 
     productions: Dict[str, List[List[str]]] = {}
     start_symbol: str | None = None
-    defined_non_terminals: set[str] = set()
-    used_symbols: set[str] = set()
+    duplicates: List[str] = []
 
     lines = text.split("\n")
     for line_number, raw_line in enumerate(lines, start=1):
@@ -56,8 +55,12 @@ def parse_grammar(text: str) -> Grammar:
         if not line or line.startswith("#") or line.startswith("%"):
             continue
 
-        # Check for missing arrow
+        # Check for the production arrow, distinguishing an invalid operator.
         if "->" not in line:
+            if "=" in line:
+                raise GrammarParseError(
+                    "Invalid production operator; expected '->'.", line_number
+                )
             raise GrammarParseError(
                 f"Missing arrow in production: '{line}'", line_number
             )
@@ -75,48 +78,63 @@ def parse_grammar(text: str) -> Grammar:
         # Validate left-hand side
         if not lhs:
             raise GrammarParseError(
-                f"Missing left-hand side in production: '{line}'", line_number
+                "Production has no left-hand non-terminal.", line_number
             )
         if " " in lhs or "|" in lhs:
             raise GrammarParseError(
                 f"Invalid non-terminal name: '{lhs}'", line_number
             )
 
-        # Track defined non-terminals
-        defined_non_terminals.add(lhs)
+        # A production with nothing after the arrow is an error (epsilon must
+        # be written explicitly as ``ε`` or as an empty alternative ``A -> a |``).
+        if rhs_text == "":
+            raise GrammarParseError(
+                f"Production {lhs} has no derivation.", line_number
+            )
 
-        # Set start symbol from first production
+        # Track defined non-terminals and set the start symbol.
         if start_symbol is None:
             start_symbol = lhs
 
-        # Parse right-hand side alternatives
+        # Parse right-hand side alternatives.
         alternatives = rhs_text.split("|")
         for alt in alternatives:
             alt = alt.strip()
             if not alt:
-                # Empty alternative is epsilon
-                productions.setdefault(lhs, []).append([])
-                continue
-
-            symbols = alt.split()
-            # Validate symbols
-            for sym in symbols:
-                if sym == "ε":
-                    # Epsilon is only valid as the sole symbol
-                    if len(symbols) > 1:
+                # Empty alternative is epsilon.
+                key: tuple = ()
+                body: List[str] = []
+            else:
+                symbols = alt.split()
+                for sym in symbols:
+                    if sym == "ε":
+                        # Epsilon is only valid as the sole symbol.
+                        if len(symbols) > 1:
+                            raise GrammarParseError(
+                                "Epsilon 'ε' must be the only symbol in "
+                                f"alternative: '{alt}'",
+                                line_number,
+                            )
+                    elif sym == "->":
                         raise GrammarParseError(
-                            f"Epsilon 'ε' must be the only symbol in alternative: '{alt}'",
+                            f"Invalid symbol '->' in production: '{alt}'",
                             line_number,
                         )
+                # An explicit 'ε' is normalised to an empty body.
+                if symbols == ["ε"]:
+                    key = ()
+                    body = []
                 else:
-                    used_symbols.add(sym)
+                    body = symbols
+                    key = tuple(symbols)
 
-            # An explicit 'ε' is normalised to an empty production body so
-            # that every algorithm treats it uniformly (reduce pops 0 symbols).
-            if symbols == ["ε"]:
-                productions.setdefault(lhs, []).append([])
-            else:
-                productions.setdefault(lhs, []).append(symbols)
+            existing = productions.setdefault(lhs, [])
+            if key in (tuple(b) for b in existing):
+                duplicates.append(
+                    f"{lhs} -> {' '.join(body) if body else 'ε'}"
+                )
+                continue
+            existing.append(body)
 
     if start_symbol is None:
         raise GrammarParseError("No productions found in grammar")
@@ -125,18 +143,15 @@ def parse_grammar(text: str) -> Grammar:
     # left-hand side is a terminal (e.g. '+', 'id', '(', ')'). This is valid
     # and does not require any additional declaration.
 
-    # Check for duplicate productions
-    for lhs, rhs_list in productions.items():
-        seen = set()
-        for rhs in rhs_list:
-            key = tuple(rhs)
-            if key in seen:
-                raise GrammarParseError(
-                    f"Duplicate production: {lhs} -> {' '.join(rhs) if rhs else 'ε'}"
-                )
-            seen.add(key)
-
-    grammar = Grammar(start_symbol=start_symbol, productions=productions)
+    grammar = Grammar(
+        start_symbol=start_symbol,
+        productions=productions,
+        duplicates=duplicates,
+    )
+    if duplicates:
+        logger.warning(
+            "Grammar parsed with %d duplicate production(s)", len(duplicates)
+        )
     logger.info("Grammar parsed successfully: %d non-terminals", len(productions))
     return grammar
 

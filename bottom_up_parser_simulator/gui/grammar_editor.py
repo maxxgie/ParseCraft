@@ -28,6 +28,7 @@ from core.conflict_resolution import (
 )
 from core.engine import ALL_PARSER_TYPES
 from core.logging_config import get_logger
+from core.topdown import TOPDOWN_METHODS
 
 logger = get_logger(__name__)
 
@@ -93,6 +94,7 @@ class GrammarEditor(QWidget):
         row1.addWidget(QLabel("Parser:"))
         self.parser_combo = QComboBox()
         self.parser_combo.addItems(ALL_PARSER_TYPES)
+        self.parser_combo.addItems(TOPDOWN_METHODS)
         self.parser_combo.setCurrentText("SLR(1)")
         row1.addWidget(self.parser_combo, 1)
         self.generate_button = QPushButton("Generate")

@@ -7,6 +7,7 @@ from typing import Optional
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QColor
 from PyQt6.QtWidgets import (
+    QComboBox,
     QHBoxLayout,
     QHeaderView,
     QLabel,
@@ -18,6 +19,7 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
+from core.error_recovery import RECOVERY_MODES, recover_input
 from core.logging_config import get_logger
 from core.parser_simulator import SimulationResult, simulate
 from models.parse_tree import ParseTreeNode
@@ -72,6 +74,24 @@ class SimulationView(QWidget):
         self.reset_button.clicked.connect(self.reset)
         input_row.addWidget(self.reset_button)
         layout.addLayout(input_row)
+
+        recovery_row = QHBoxLayout()
+        recovery_row.addWidget(QLabel("Error recovery:"))
+        self.recovery_combo = QComboBox()
+        self.recovery_combo.addItem("None", None)
+        for mode in RECOVERY_MODES:
+            self.recovery_combo.addItem(mode, mode)
+        recovery_row.addWidget(self.recovery_combo)
+        recovery_row.addStretch(1)
+        layout.addLayout(recovery_row)
+
+        self.recovery_label = QLabel("")
+        self.recovery_label.setWordWrap(True)
+        self.recovery_label.setStyleSheet(
+            "background: #FFF8E1; border: 1px solid #E0C97F; padding: 4px; color: #5A4300;"
+        )
+        self.recovery_label.setVisible(False)
+        layout.addWidget(self.recovery_label)
 
         self.config_label = QLabel("No simulation yet.")
         self.config_label.setWordWrap(True)
@@ -130,11 +150,42 @@ class SimulationView(QWidget):
             return
 
         input_string = self.input_edit.text()
+        recovery_mode = self.recovery_combo.currentData()
+        if recovery_mode is not None:
+            self._run_recovery(input_string, recovery_mode)
+            return
+
+        self.recovery_label.setVisible(False)
         self._result = simulate(self._analysis.table, self._analysis.grammar, input_string)
         self._step_index = 0
+        self._fill_steps(self._result.steps)
+        self._highlight_step(0)
+        self._finish()
 
-        self.steps_table.setRowCount(len(self._result.steps))
-        for row, step in enumerate(self._result.steps):
+    def _run_recovery(self, input_string: str, mode: str) -> None:
+        report = recover_input(
+            self._analysis.table, self._analysis.grammar, input_string, mode
+        )
+        self._result = report
+        self._step_index = 0
+        self._fill_steps(report.steps)
+        self._highlight_step(0)
+        self.recovery_label.setVisible(True)
+        self.recovery_label.setText(report.report_text())
+        if report.accepted:
+            message = (
+                f"Accepted after recovery ({len(report.events)} action(s))."
+            )
+            self.simulation_finished.emit(True, message)
+            if report.parse_tree is not None:
+                self.parse_tree_ready.emit(report.parse_tree)
+        else:
+            message = report.error or "Parse failed after recovery."
+            self.simulation_finished.emit(False, message)
+
+    def _fill_steps(self, steps) -> None:
+        self.steps_table.setRowCount(len(steps))
+        for row, step in enumerate(steps):
             rule_text = step.rule_text or (
                 f"R{step.rule_number}" if step.rule_number is not None else ""
             )
@@ -147,9 +198,6 @@ class SimulationView(QWidget):
             ]
             for col, text in enumerate(cells):
                 self.steps_table.setItem(row, col, _cell(text))
-
-        self._highlight_step(0)
-        self._finish()
 
     def step_forward(self) -> None:
         """Advance the highlighted step by one."""

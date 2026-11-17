@@ -168,7 +168,16 @@ def simulate(table, grammar, input_string: str) -> SimulationResult:
         action = table.get_action(state, token)
 
         if action is None:
-            text = f"Syntax error: no action for state {state}, token '{token}'"
+            terminals = list(dict.fromkeys(list(table.terminals) + [END_MARKER]))
+            expected = [
+                t for t in terminals if table.get_action(state, t) is not None
+            ]
+            exp = ", ".join(expected) if expected else "end of input"
+            text = (
+                f"Syntax error: no action for state {state}, token '{token}'. "
+                f"Expected one of: {exp}. "
+                "Possible fix: insert, delete, or replace the unexpected token."
+            )
             record("error", text)
             logger.info("Parse rejected: %s", text)
             return SimulationResult(accepted=False, steps=steps, error=text)

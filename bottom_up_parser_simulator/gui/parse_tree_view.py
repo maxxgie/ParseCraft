@@ -5,7 +5,11 @@ from __future__ import annotations
 from typing import Dict, List, Optional, Tuple
 
 from PyQt6.QtWidgets import (
+    QCheckBox,
+    QFileDialog,
+    QHBoxLayout,
     QLabel,
+    QPushButton,
     QTabWidget,
     QTextEdit,
     QVBoxLayout,
@@ -13,7 +17,7 @@ from PyQt6.QtWidgets import (
 )
 
 from core.logging_config import get_logger
-from core.parse_tree import tree_to_string
+from core.parse_tree import collapse_unary_chains, tree_to_string
 from gui.graph_canvas import GraphCanvas, GraphEdge, GraphNode
 from models.parse_tree import ParseTreeNode
 
@@ -57,6 +61,8 @@ class ParseTreeView(QWidget):
 
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
+        self._root: Optional[ParseTreeNode] = None
+
         layout = QVBoxLayout(self)
         layout.setContentsMargins(4, 4, 4, 4)
         layout.setSpacing(4)
@@ -64,6 +70,19 @@ class ParseTreeView(QWidget):
         self.header = QLabel("Run a simulation to see the parse tree.")
         self.header.setStyleSheet("color: #555;")
         layout.addWidget(self.header)
+
+        controls = QHBoxLayout()
+        self.collapse_cb = QCheckBox("Collapse single-child nodes")
+        self.collapse_cb.setToolTip(
+            "Hide grammar-only nodes (unit productions and single-child chains)."
+        )
+        self.collapse_cb.toggled.connect(self._rerender)
+        controls.addWidget(self.collapse_cb)
+        controls.addStretch(1)
+        self.export_button = QPushButton("Export PNG...")
+        self.export_button.clicked.connect(self._export_png)
+        controls.addWidget(self.export_button)
+        layout.addLayout(controls)
 
         self.tabs = QTabWidget()
 
@@ -79,6 +98,7 @@ class ParseTreeView(QWidget):
 
     def clear(self) -> None:
         """Reset the view."""
+        self._root = None
         self.text_view.clear()
         self.canvas.render([], [])
         self.header.setText("Run a simulation to see the parse tree.")
@@ -86,6 +106,7 @@ class ParseTreeView(QWidget):
 
     def show_message(self, message: str) -> None:
         """Show a non-tree message (e.g. a parse error)."""
+        self._root = None
         self.text_view.setPlainText(message)
         self.canvas.render([], [])
         self.header.setText(message)
@@ -96,13 +117,28 @@ class ParseTreeView(QWidget):
         if root is None:
             self.show_message("(no parse tree)")
             return
+        self._root = root
+        self._render()
 
-        self.text_view.setPlainText(tree_to_string(root))
+    # ------------------------------------------------------------------
+    def _render(self) -> None:
+        if self._root is None:
+            return
+        display_root = self._root
+        if self.collapse_cb.isChecked():
+            display_root = collapse_unary_chains(self._root)
+        self.text_view.setPlainText(tree_to_string(display_root))
+        self._render_graph(display_root)
+        self.header.setText(
+            f"Parse tree: root '{self._root.symbol}'. "
+            "Switch tabs to view text or graph."
+        )
+        self.header.setStyleSheet("color: #1E6B34;")
 
+    def _render_graph(self, root: ParseTreeNode) -> None:
         positions, edges = _compute_layout(root)
         nodes: List[GraphNode] = []
         is_root = True
-        # Walk the tree to build nodes.
         stack = [root]
         while stack:
             node = stack.pop()
@@ -117,23 +153,26 @@ class ParseTreeView(QWidget):
                 kind = "nonterminal"
             label = node.value if is_leaf and node.value else node.symbol
             nodes.append(
-                GraphNode(
-                    id=node_id,
-                    label=label,
-                    x=x,
-                    y=-y,
-                    kind=kind,
-                )
+                GraphNode(id=node_id, label=label, x=x, y=-y, kind=kind)
             )
             for child in node.children:
                 stack.append(child)
-
-        graph_edges = [
-            GraphEdge(src=src, dst=dst) for src, dst in edges
-        ]
+        graph_edges = [GraphEdge(src=src, dst=dst) for src, dst in edges]
         self.canvas.render(nodes, graph_edges)
 
-        self.header.setText(
-            f"Parse tree: root '{root.symbol}'. Switch tabs to view text or graph."
+    def _rerender(self) -> None:
+        if self._root is not None:
+            self._render()
+
+    def _export_png(self) -> None:
+        if self._root is None:
+            return
+        path, _ = QFileDialog.getSaveFileName(
+            self, "Export Parse Tree", "parse_tree.png", "PNG Images (*.png)"
         )
-        self.header.setStyleSheet("color: #1E6B34;")
+        if not path:
+            return
+        ok = self.canvas.render_to_png(path)
+        if ok:
+            self.header.setText(f"Parse tree exported to {path}")
+            self.header.setStyleSheet("color: #1E6B34;")
