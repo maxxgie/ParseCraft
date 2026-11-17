@@ -9,10 +9,12 @@ from PyQt6.QtWidgets import (
     QLabel,
     QTableWidget,
     QTableWidgetItem,
+    QTextEdit,
     QVBoxLayout,
     QWidget,
 )
 
+from core.conflict_resolution import describe_conflict
 from core.logging_config import get_logger
 from gui.grammar_reference import GrammarReferencePane
 from gui.palette import (
@@ -62,6 +64,7 @@ class ConflictView(QWidget):
         self.table.verticalHeader().setVisible(False)
         self.table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self.table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
+        self.table.itemSelectionChanged.connect(self._show_detail)
         header = self.table.horizontalHeader()
         header.setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)
         header.setSectionResizeMode(1, QHeaderView.ResizeMode.ResizeToContents)
@@ -71,17 +74,36 @@ class ConflictView(QWidget):
         header.setSectionResizeMode(5, QHeaderView.ResizeMode.ResizeToContents)
         layout.addWidget(self.table, 1)
 
+        self.detail = QTextEdit()
+        self.detail.setReadOnly(True)
+        self.detail.setLineWrapMode(QTextEdit.LineWrapMode.WidgetWidth)
+        self.detail.setPlaceholderText(
+            "Select a conflict to see the items, the reason, and a suggested "
+            "resolution."
+        )
+        self.detail.setMaximumHeight(180)
+        layout.addWidget(self.detail, 0)
+
+        self._analysis = None
+        self._conflicts = []
+
     def clear(self) -> None:
         """Reset the view."""
+        self._analysis = None
+        self._conflicts = []
         self.table.setRowCount(0)
+        self.detail.clear()
         self.grammar.clear()
         self.header.setText("Generate a grammar to see conflicts.")
         self.header.setStyleSheet("color: #555;")
 
     def update_from(self, analysis) -> None:
         """Populate the table from an analysis result."""
+        self._analysis = analysis
         conflicts = analysis.conflicts
+        self._conflicts = list(conflicts)
         resolutions = {(r.state, r.terminal): r for r in analysis.resolutions}
+        self.detail.clear()
         self.grammar.set_grammar(analysis.grammar_text)
 
         self.table.setRowCount(len(conflicts))
@@ -126,3 +148,19 @@ class ConflictView(QWidget):
             f"{resolved} resolved, {unresolved} unresolved.{prec_note}"
         )
         self.header.setStyleSheet(f"color: {color};")
+
+    def _show_detail(self) -> None:
+        """Show a full explanation for the selected conflict."""
+        selection = self.table.selectionModel()
+        rows = selection.selectedRows() if selection is not None else []
+        if not rows:
+            return
+        row = rows[0].row()
+        if self._analysis is None or row < 0 or row >= len(self._conflicts):
+            return
+        conflict = self._conflicts[row]
+        self.detail.setPlainText(
+            describe_conflict(
+                conflict, self._analysis.automaton, self._analysis.parser_type
+            )
+        )

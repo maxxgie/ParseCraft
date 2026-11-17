@@ -4187,3 +4187,613 @@
 2026-11-17 18:53:38 [INFO] core.grammar_transform: Left factoring applied to grammar
 2026-11-17 18:53:38 [INFO] core.engine: Analysis complete: LR(0), 16 states, 4 conflicts, 4 resolved, 0 warnings, transforms: left-recursion removal
 2026-11-17 18:53:38 [INFO] core.codegen: Generated LR parser code (172 lines)
+2026-11-17 19:24:54 [INFO] core.database: Database connection closed
+2026-11-17 19:24:54 [INFO] __main__: Application shutdown complete
+2026-11-17 19:24:57 [INFO] __main__: Starting Bottom-Up Parser Simulator
+2026-11-17 19:24:57 [INFO] core.database: Connected to database: C:\Users\maxwe\Downloads\projo\ttom-up_parsing\bottom_up_parser_simulator\data\parser_simulator.db
+2026-11-17 19:24:57 [INFO] core.database: Database schema initialized
+2026-11-17 19:24:57 [INFO] __main__: Database initialized
+2026-11-17 19:24:58 [DEBUG] gui.grammar_editor: GrammarEditor initialized
+2026-11-17 19:24:58 [INFO] gui.main_window: Main window initialized
+2026-11-17 19:26:02 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-17 19:26:02 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-17 19:26:02 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-17 19:26:02 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-17 19:26:02 [INFO] core.topdown.ll1: LL(1) table built: 3 rows, 6 columns, 4 conflict(s)
+2026-11-17 19:26:02 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'E' computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'T' computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'F' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on '(' computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'id' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 5 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on '+' computed: 5 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on '*' computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'E' computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'T' computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'F' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on '(' computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'id' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'T' computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'F' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on '(' computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'id' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'F' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on '(' computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'id' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 5 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on '+' computed: 5 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on ')' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on '*' computed: 3 items
+2026-11-17 19:26:02 [INFO] core.automaton: LR automaton built: 12 states
+2026-11-17 19:26:02 [WARNING] core.table_builder: lr0 table: 2 conflict(s) detected
+2026-11-17 19:26:02 [INFO] core.table_builder: lr0 table generated: 12 states
+2026-11-17 19:26:02 [INFO] core.grammar_analyzer: Grammar analysis complete: 0 error(s), 5 warning(s), 0 note(s)
+2026-11-17 19:26:02 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-17 19:26:02 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-17 19:26:02 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-17 19:26:02 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-17 19:26:02 [INFO] core.topdown.ll1: LL(1) table built: 3 rows, 6 columns, 4 conflict(s)
+2026-11-17 19:26:02 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-17 19:26:02 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-17 19:26:02 [INFO] core.topdown.engine: Top-down analysis (LL(1)): left_recursion=True, left_factoring=False, conflicts=4
+2026-11-17 19:26:02 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-17 19:26:02 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-17 19:26:02 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-17 19:26:02 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-17 19:26:02 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'E' computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'T' computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'F' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on '(' computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'id' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 5 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on '+' computed: 5 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on '*' computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'E' computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'T' computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'F' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on '(' computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'id' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'T' computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'F' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on '(' computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'id' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'F' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on '(' computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'id' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 5 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on '+' computed: 5 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on ')' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on '*' computed: 3 items
+2026-11-17 19:26:02 [INFO] core.automaton: LR automaton built: 12 states
+2026-11-17 19:26:02 [WARNING] core.table_builder: lr0 table: 2 conflict(s) detected
+2026-11-17 19:26:02 [INFO] core.table_builder: lr0 table generated: 12 states
+2026-11-17 19:26:02 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-17 19:26:02 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-17 19:26:02 [INFO] core.engine: Analysis complete: LR(0), 12 states, 2 conflicts, 0 resolved, 0 warnings
+2026-11-17 19:26:02 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-17 19:26:02 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-17 19:26:02 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-17 19:26:02 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-17 19:26:02 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'E' computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'T' computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'F' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on '(' computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'id' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 5 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on '+' computed: 5 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on '*' computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'E' computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'T' computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'F' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on '(' computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'id' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'T' computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'F' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on '(' computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'id' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'F' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on '(' computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'id' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 5 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on '+' computed: 5 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on ')' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on '*' computed: 3 items
+2026-11-17 19:26:02 [INFO] core.automaton: LR automaton built: 12 states
+2026-11-17 19:26:02 [INFO] core.table_builder: slr1 table generated: 12 states
+2026-11-17 19:26:02 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-17 19:26:02 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-17 19:26:02 [INFO] core.engine: Analysis complete: SLR(1), 12 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-17 19:26:02 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-17 19:26:02 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-17 19:26:02 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-17 19:26:02 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-17 19:26:02 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-17 19:26:02 [INFO] core.first_follow: FIRST sets computed for 10 symbols
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 17 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 14 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 14 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 14 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-17 19:26:02 [INFO] core.lr1_automaton: Canonical LR(1) automaton built: 22 states
+2026-11-17 19:26:02 [INFO] core.table_builder: clr1 table generated: 22 states
+2026-11-17 19:26:02 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-17 19:26:02 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-17 19:26:02 [INFO] core.engine: Analysis complete: CLR(1), 22 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-17 19:26:02 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-17 19:26:02 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-17 19:26:02 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-17 19:26:02 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-17 19:26:02 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-17 19:26:02 [INFO] core.first_follow: FIRST sets computed for 10 symbols
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 17 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 14 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 14 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 14 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-17 19:26:02 [INFO] core.lr1_automaton: LALR(1) automaton built: 12 states (merged from 22 canonical states)
+2026-11-17 19:26:02 [INFO] core.table_builder: lalr1 table generated: 12 states
+2026-11-17 19:26:02 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-17 19:26:02 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-17 19:26:02 [INFO] core.engine: Analysis complete: LALR(1), 12 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-17 19:26:02 [INFO] core.comparison: Parser compatibility complete: Compatible: SLR(1), CLR(1), LALR(1). Conflict-free: SLR(1), CLR(1), LALR(1). Recommended: LALR(1).
+2026-11-17 19:26:02 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-17 19:26:02 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-17 19:26:02 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-17 19:26:02 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-17 19:26:02 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'E' computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'T' computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'F' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on '(' computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'id' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 5 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on '+' computed: 5 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on '*' computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'E' computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'T' computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'F' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on '(' computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'id' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'T' computed: 2 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'F' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on '(' computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'id' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'F' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on '(' computed: 7 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on 'id' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 5 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on '+' computed: 5 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on ')' computed: 1 items
+2026-11-17 19:26:02 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-17 19:26:02 [DEBUG] core.goto: GOTO on '*' computed: 3 items
+2026-11-17 19:26:02 [INFO] core.automaton: LR automaton built: 12 states
+2026-11-17 19:26:02 [WARNING] core.table_builder: lr0 table: 2 conflict(s) detected
+2026-11-17 19:26:02 [INFO] core.table_builder: lr0 table generated: 12 states
+2026-11-17 19:26:02 [INFO] core.conflict_resolution: Resolved 2 conflict(s)
+2026-11-17 19:26:02 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-17 19:26:02 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-17 19:26:02 [INFO] core.engine: Analysis complete: LR(0), 12 states, 2 conflicts, 2 resolved, 0 warnings
+2026-11-17 19:26:02 [INFO] core.codegen: Generated LR parser code (144 lines)
+2026-11-17 19:31:22 [INFO] core.parser_simulator: Parse accepted in 11 steps
+2026-11-17 19:34:45 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-17 19:34:45 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-17 19:34:45 [INFO] core.first_follow: FIRST sets computed for 10 symbols
+2026-11-17 19:34:45 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-17 19:34:45 [INFO] core.topdown.ll1: LL(1) table built: 3 rows, 7 columns, 0 conflict(s)
+2026-11-17 19:34:45 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-17 19:34:45 [DEBUG] core.closure: Closure computed: 5 items
+2026-11-17 19:34:45 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.goto: GOTO on 'S' computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.goto: GOTO on 'SC' computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.goto: GOTO on 'C' computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.goto: GOTO on 'MA' computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.goto: GOTO on 'T' computed: 1 items
+2026-11-17 19:34:45 [INFO] core.automaton: LR automaton built: 6 states
+2026-11-17 19:34:45 [INFO] core.table_builder: lr0 table generated: 6 states
+2026-11-17 19:34:45 [INFO] core.grammar_analyzer: Grammar analysis complete: 1 error(s), 1 warning(s), 0 note(s)
+2026-11-17 19:34:45 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-17 19:34:45 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-17 19:34:45 [INFO] core.first_follow: FIRST sets computed for 10 symbols
+2026-11-17 19:34:45 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-17 19:34:45 [INFO] core.topdown.ll1: LL(1) table built: 3 rows, 7 columns, 0 conflict(s)
+2026-11-17 19:34:45 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-17 19:34:45 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-17 19:34:45 [INFO] core.topdown.engine: Top-down analysis (LL(1)): left_recursion=False, left_factoring=False, conflicts=0
+2026-11-17 19:34:45 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-17 19:34:45 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-17 19:34:45 [INFO] core.first_follow: FIRST sets computed for 10 symbols
+2026-11-17 19:34:45 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-17 19:34:45 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-17 19:34:45 [DEBUG] core.closure: Closure computed: 5 items
+2026-11-17 19:34:45 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.goto: GOTO on 'S' computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.goto: GOTO on 'SC' computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.goto: GOTO on 'C' computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.goto: GOTO on 'MA' computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.goto: GOTO on 'T' computed: 1 items
+2026-11-17 19:34:45 [INFO] core.automaton: LR automaton built: 6 states
+2026-11-17 19:34:45 [INFO] core.table_builder: lr0 table generated: 6 states
+2026-11-17 19:34:45 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-17 19:34:45 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-17 19:34:45 [INFO] core.engine: Analysis complete: LR(0), 6 states, 0 conflicts, 0 resolved, 1 warnings
+2026-11-17 19:34:45 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-17 19:34:45 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-17 19:34:45 [INFO] core.first_follow: FIRST sets computed for 10 symbols
+2026-11-17 19:34:45 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-17 19:34:45 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-17 19:34:45 [DEBUG] core.closure: Closure computed: 5 items
+2026-11-17 19:34:45 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.goto: GOTO on 'S' computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.goto: GOTO on 'SC' computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.goto: GOTO on 'C' computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.goto: GOTO on 'MA' computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.goto: GOTO on 'T' computed: 1 items
+2026-11-17 19:34:45 [INFO] core.automaton: LR automaton built: 6 states
+2026-11-17 19:34:45 [INFO] core.table_builder: slr1 table generated: 6 states
+2026-11-17 19:34:45 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-17 19:34:45 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-17 19:34:45 [INFO] core.engine: Analysis complete: SLR(1), 6 states, 0 conflicts, 0 resolved, 1 warnings
+2026-11-17 19:34:45 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-17 19:34:45 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-17 19:34:45 [INFO] core.first_follow: FIRST sets computed for 10 symbols
+2026-11-17 19:34:45 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-17 19:34:45 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-17 19:34:45 [INFO] core.first_follow: FIRST sets computed for 11 symbols
+2026-11-17 19:34:45 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-17 19:34:45 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-17 19:34:45 [INFO] core.lr1_automaton: Canonical LR(1) automaton built: 6 states
+2026-11-17 19:34:45 [INFO] core.table_builder: clr1 table generated: 6 states
+2026-11-17 19:34:45 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-17 19:34:45 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-17 19:34:45 [INFO] core.engine: Analysis complete: CLR(1), 6 states, 0 conflicts, 0 resolved, 1 warnings
+2026-11-17 19:34:45 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-17 19:34:45 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-17 19:34:45 [INFO] core.first_follow: FIRST sets computed for 10 symbols
+2026-11-17 19:34:45 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-17 19:34:45 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-17 19:34:45 [INFO] core.first_follow: FIRST sets computed for 11 symbols
+2026-11-17 19:34:45 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-17 19:34:45 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-17 19:34:45 [INFO] core.lr1_automaton: LALR(1) automaton built: 6 states (merged from 6 canonical states)
+2026-11-17 19:34:45 [INFO] core.table_builder: lalr1 table generated: 6 states
+2026-11-17 19:34:45 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-17 19:34:45 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-17 19:34:45 [INFO] core.engine: Analysis complete: LALR(1), 6 states, 0 conflicts, 0 resolved, 1 warnings
+2026-11-17 19:34:45 [INFO] core.comparison: Parser compatibility complete: Compatible: LL(1), LR(0), SLR(1), CLR(1), LALR(1). Conflict-free: LL(1), LR(0), SLR(1), CLR(1), LALR(1). Recommended: LALR(1).
+2026-11-17 19:34:45 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-17 19:34:45 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-17 19:34:45 [INFO] core.first_follow: FIRST sets computed for 10 symbols
+2026-11-17 19:34:45 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-17 19:34:45 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-17 19:34:45 [DEBUG] core.closure: Closure computed: 5 items
+2026-11-17 19:34:45 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.goto: GOTO on 'S' computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.goto: GOTO on 'SC' computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.goto: GOTO on 'C' computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.goto: GOTO on 'MA' computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:34:45 [DEBUG] core.goto: GOTO on 'T' computed: 1 items
+2026-11-17 19:34:45 [INFO] core.automaton: LR automaton built: 6 states
+2026-11-17 19:34:45 [INFO] core.table_builder: lr0 table generated: 6 states
+2026-11-17 19:34:45 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-17 19:34:45 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-17 19:34:45 [INFO] core.engine: Analysis complete: LR(0), 6 states, 0 conflicts, 0 resolved, 1 warnings
+2026-11-17 19:34:45 [INFO] core.codegen: Generated LR parser code (122 lines)
+2026-11-17 19:48:48 [INFO] core.database: Database connection closed
+2026-11-17 19:48:48 [INFO] __main__: Application shutdown complete
+2026-11-17 19:49:07 [INFO] __main__: Starting Bottom-Up Parser Simulator
+2026-11-17 19:49:08 [INFO] core.database: Connected to database: C:\Users\maxwe\Downloads\projo\ttom-up_parsing\bottom_up_parser_simulator\data\parser_simulator.db
+2026-11-17 19:49:08 [INFO] core.database: Database schema initialized
+2026-11-17 19:49:08 [INFO] __main__: Database initialized
+2026-11-17 19:49:09 [DEBUG] gui.grammar_editor: GrammarEditor initialized
+2026-11-17 19:49:09 [INFO] gui.main_window: Main window initialized
+2026-11-17 19:49:21 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-17 19:49:21 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-17 19:49:21 [INFO] core.first_follow: FIRST sets computed for 10 symbols
+2026-11-17 19:49:21 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-17 19:49:21 [INFO] core.topdown.ll1: LL(1) table built: 3 rows, 7 columns, 0 conflict(s)
+2026-11-17 19:49:21 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-17 19:49:21 [DEBUG] core.closure: Closure computed: 5 items
+2026-11-17 19:49:21 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:49:21 [DEBUG] core.goto: GOTO on 'S' computed: 1 items
+2026-11-17 19:49:21 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:49:21 [DEBUG] core.goto: GOTO on 'SC' computed: 1 items
+2026-11-17 19:49:21 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:49:21 [DEBUG] core.goto: GOTO on 'C' computed: 1 items
+2026-11-17 19:49:21 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:49:21 [DEBUG] core.goto: GOTO on 'MA' computed: 1 items
+2026-11-17 19:49:21 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:49:21 [DEBUG] core.goto: GOTO on 'T' computed: 1 items
+2026-11-17 19:49:21 [INFO] core.automaton: LR automaton built: 6 states
+2026-11-17 19:49:21 [INFO] core.table_builder: lr0 table generated: 6 states
+2026-11-17 19:49:21 [INFO] core.grammar_analyzer: Grammar analysis complete: 1 error(s), 1 warning(s), 0 note(s)
+2026-11-17 19:49:21 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-17 19:49:21 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-17 19:49:21 [INFO] core.first_follow: FIRST sets computed for 10 symbols
+2026-11-17 19:49:21 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-17 19:49:21 [INFO] core.topdown.ll1: LL(1) table built: 3 rows, 7 columns, 0 conflict(s)
+2026-11-17 19:49:21 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-17 19:49:21 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-17 19:49:21 [INFO] core.topdown.engine: Top-down analysis (LL(1)): left_recursion=False, left_factoring=False, conflicts=0
+2026-11-17 19:49:21 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-17 19:49:21 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-17 19:49:21 [INFO] core.first_follow: FIRST sets computed for 10 symbols
+2026-11-17 19:49:21 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-17 19:49:21 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-17 19:49:21 [DEBUG] core.closure: Closure computed: 5 items
+2026-11-17 19:49:21 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:49:21 [DEBUG] core.goto: GOTO on 'S' computed: 1 items
+2026-11-17 19:49:21 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:49:21 [DEBUG] core.goto: GOTO on 'SC' computed: 1 items
+2026-11-17 19:49:21 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:49:21 [DEBUG] core.goto: GOTO on 'C' computed: 1 items
+2026-11-17 19:49:21 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:49:21 [DEBUG] core.goto: GOTO on 'MA' computed: 1 items
+2026-11-17 19:49:21 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:49:21 [DEBUG] core.goto: GOTO on 'T' computed: 1 items
+2026-11-17 19:49:21 [INFO] core.automaton: LR automaton built: 6 states
+2026-11-17 19:49:21 [INFO] core.table_builder: lr0 table generated: 6 states
+2026-11-17 19:49:21 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-17 19:49:21 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-17 19:49:21 [INFO] core.engine: Analysis complete: LR(0), 6 states, 0 conflicts, 0 resolved, 1 warnings
+2026-11-17 19:49:21 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-17 19:49:21 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-17 19:49:21 [INFO] core.first_follow: FIRST sets computed for 10 symbols
+2026-11-17 19:49:21 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-17 19:49:21 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-17 19:49:21 [DEBUG] core.closure: Closure computed: 5 items
+2026-11-17 19:49:21 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:49:21 [DEBUG] core.goto: GOTO on 'S' computed: 1 items
+2026-11-17 19:49:21 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:49:21 [DEBUG] core.goto: GOTO on 'SC' computed: 1 items
+2026-11-17 19:49:21 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:49:21 [DEBUG] core.goto: GOTO on 'C' computed: 1 items
+2026-11-17 19:49:21 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:49:21 [DEBUG] core.goto: GOTO on 'MA' computed: 1 items
+2026-11-17 19:49:21 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:49:21 [DEBUG] core.goto: GOTO on 'T' computed: 1 items
+2026-11-17 19:49:21 [INFO] core.automaton: LR automaton built: 6 states
+2026-11-17 19:49:21 [INFO] core.table_builder: slr1 table generated: 6 states
+2026-11-17 19:49:21 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-17 19:49:21 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-17 19:49:21 [INFO] core.engine: Analysis complete: SLR(1), 6 states, 0 conflicts, 0 resolved, 1 warnings
+2026-11-17 19:49:21 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-17 19:49:21 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-17 19:49:21 [INFO] core.first_follow: FIRST sets computed for 10 symbols
+2026-11-17 19:49:21 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-17 19:49:21 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-17 19:49:21 [INFO] core.first_follow: FIRST sets computed for 11 symbols
+2026-11-17 19:49:21 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-17 19:49:21 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-17 19:49:21 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-17 19:49:21 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-17 19:49:21 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-17 19:49:21 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-17 19:49:21 [INFO] core.lr1_automaton: Canonical LR(1) automaton built: 6 states
+2026-11-17 19:49:21 [INFO] core.table_builder: clr1 table generated: 6 states
+2026-11-17 19:49:21 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-17 19:49:21 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-17 19:49:21 [INFO] core.engine: Analysis complete: CLR(1), 6 states, 0 conflicts, 0 resolved, 1 warnings
+2026-11-17 19:49:21 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-17 19:49:22 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-17 19:49:22 [INFO] core.first_follow: FIRST sets computed for 10 symbols
+2026-11-17 19:49:22 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-17 19:49:22 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-17 19:49:22 [INFO] core.first_follow: FIRST sets computed for 11 symbols
+2026-11-17 19:49:22 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-17 19:49:22 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-17 19:49:22 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-17 19:49:22 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-17 19:49:22 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-17 19:49:22 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-17 19:49:22 [INFO] core.lr1_automaton: LALR(1) automaton built: 6 states (merged from 6 canonical states)
+2026-11-17 19:49:22 [INFO] core.table_builder: lalr1 table generated: 6 states
+2026-11-17 19:49:22 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-17 19:49:22 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-17 19:49:22 [INFO] core.engine: Analysis complete: LALR(1), 6 states, 0 conflicts, 0 resolved, 1 warnings
+2026-11-17 19:49:22 [INFO] core.comparison: Parser compatibility complete: Compatible: LL(1), LR(0), SLR(1), CLR(1), LALR(1). Conflict-free: LL(1), LR(0), SLR(1), CLR(1), LALR(1). Recommended: LALR(1).
+2026-11-17 19:49:22 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-17 19:49:22 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-17 19:49:22 [INFO] core.first_follow: FIRST sets computed for 10 symbols
+2026-11-17 19:49:22 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-17 19:49:22 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-17 19:49:22 [DEBUG] core.closure: Closure computed: 5 items
+2026-11-17 19:49:22 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:49:22 [DEBUG] core.goto: GOTO on 'S' computed: 1 items
+2026-11-17 19:49:22 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:49:22 [DEBUG] core.goto: GOTO on 'SC' computed: 1 items
+2026-11-17 19:49:22 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:49:22 [DEBUG] core.goto: GOTO on 'C' computed: 1 items
+2026-11-17 19:49:22 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:49:22 [DEBUG] core.goto: GOTO on 'MA' computed: 1 items
+2026-11-17 19:49:22 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-17 19:49:22 [DEBUG] core.goto: GOTO on 'T' computed: 1 items
+2026-11-17 19:49:22 [INFO] core.automaton: LR automaton built: 6 states
+2026-11-17 19:49:22 [INFO] core.table_builder: lr0 table generated: 6 states
+2026-11-17 19:49:22 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-17 19:49:22 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-17 19:49:22 [INFO] core.engine: Analysis complete: LR(0), 6 states, 0 conflicts, 0 resolved, 1 warnings
+2026-11-17 19:49:22 [DEBUG] core.closure: Closure computed with trace: 5 items
+2026-11-17 19:49:22 [INFO] core.codegen: Generated LR parser code (122 lines)
+2026-11-17 19:52:41 [DEBUG] core.closure: Closure computed with trace: 1 items
+2026-11-17 19:53:17 [DEBUG] core.closure: Closure computed with trace: 1 items
+2026-11-17 19:53:20 [DEBUG] core.closure: Closure computed with trace: 1 items
+2026-11-17 19:53:22 [DEBUG] core.closure: Closure computed with trace: 1 items
+2026-11-17 19:53:27 [DEBUG] core.closure: Closure computed with trace: 1 items

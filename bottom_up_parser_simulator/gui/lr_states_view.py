@@ -110,13 +110,19 @@ class LRStatesView(QWidget):
         if self._analysis is None:
             return
         state = self._analysis.automaton.get_state(state_id)
-        lines = [f"State {state_id}", "=" * 40, "", "Items:", ""]
-        lines.append(state.get_items_string())
-        lines.append("")
-        if state.transitions:
-            lines.append("Transitions:")
-            for symbol, target in state.transitions.items():
-                lines.append(f"  on '{symbol}'  ->  State {target}")
-        else:
-            lines.append("Transitions: (none)")
+        lines = [
+            f"STATE {state_id}",
+            "=" * 48,
+            "",
+            "Items:",
+            "",
+            state.get_items_string(),
+            "",
+            "Transitions:",
+            "",
+            f"{'Consume':<12}Next State",
+            f"{'-' * 12}{'-' * 11}",
+        ]
+        for symbol, target in state.transitions.items():
+            lines.append(f"{symbol:<12}{target}")
         self.detail.setPlainText("\n".join(lines))

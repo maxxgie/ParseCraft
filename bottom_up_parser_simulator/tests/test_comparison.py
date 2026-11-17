@@ -46,7 +46,7 @@ def test_left_recursive_grammar_not_ll1():
     report = compare_parsers(LEFT_REC_GRAMMAR)
     ll1 = next(s for s in report.parser_stats if s.parser == "LL(1)")
     assert ll1.compatible is False
-    assert "left recursion" in "; ".join(ll1.notes)
+    assert "left recursion" in ll1.reason.lower()
 
 
 def test_lr0_conflicts_reported():
@@ -66,5 +66,12 @@ def test_summary_mentions_parsers():
 def test_as_row_shape():
     report = compare_parsers(LL1_GRAMMAR)
     row = report.parser_stats[0].as_row()
-    assert len(row) == 6
+    assert len(row) == 3
     assert row[0] == "LL(1)"
+
+
+def test_report_has_grammar_text_and_suggestion():
+    report = compare_parsers(LL1_GRAMMAR)
+    assert "E ->" in report.grammar_text
+    assert report.suggested is not None
+    assert report.suggested in [s.parser for s in report.parser_stats]

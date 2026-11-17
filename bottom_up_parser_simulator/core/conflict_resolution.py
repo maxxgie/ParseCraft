@@ -16,11 +16,11 @@ in place and returning a record of what it did.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import List, Optional, Tuple
 
 from core.logging_config import get_logger
-from core.precedence import LEFT, NONASSOC, RIGHT, PrecedenceInfo
+from core.precedence import LEFT, RIGHT, PrecedenceInfo
 from models.parsing_table import Conflict, ParseTable, TableAction
 
 logger = get_logger(__name__)
@@ -173,6 +173,115 @@ def _resolve_reduce_reduce(
         chosen = ordered[0]
         return chosen, "no precedence declared; default to first rule"
     return best, f"higher precedence (R{best.rule_number}, level {best_level})"
+
+
+def _describe_actions(conflict: Conflict) -> str:
+    """Return a readable list of the competing actions."""
+    parts: List[str] = []
+    for action in conflict.actions:
+        if action.action_type == "shift":
+            parts.append(f"shift '{conflict.terminal}' (S{action.state})")
+        elif action.action_type == "reduce":
+            lhs = action.production_lhs or "?"
+            rhs = " ".join(action.production_rhs or ()) or "ε"
+            rule = (
+                f"R{action.rule_number}"
+                if action.rule_number is not None
+                else "R?"
+            )
+            parts.append(f"reduce by {rule}: {lhs} -> {rhs}")
+        elif action.action_type == "accept":
+            parts.append("accept")
+    return "\n".join(f"  • {part}" for part in parts)
+
+
+def describe_conflict(conflict: Conflict, automaton, parser_type: str = "") -> str:
+    """Return a teaching-oriented explanation of a conflict.
+
+    Args:
+        conflict: The conflict to describe.
+        automaton: The automaton that produced the conflict (used to show the
+            state's items).
+        parser_type: The LR algorithm being used, for a tailored suggestion.
+
+    Returns:
+        A multi-line explanation with the conflict type, state items, the
+        reason the parser cannot decide, and a suggested resolution.
+    """
+    lines: List[str] = [
+        f"Conflict type: {conflict.conflict_type}",
+        f"State: I{conflict.state}",
+        f"Lookahead terminal: '{conflict.terminal}'",
+        "",
+        "Items:",
+    ]
+    state = automaton.get_state(conflict.state) if automaton is not None else None
+    if state is not None:
+        lines.append(state.get_items_string())
+    else:
+        lines.append("  (state items unavailable)")
+
+    lines.append("")
+    lines.append("Competing actions:")
+    lines.append(_describe_actions(conflict))
+
+    lines.append("")
+    lines.append("Reason:")
+    if conflict.conflict_type == "shift/reduce":
+        lines.append(
+            "  The parser can either shift the next token or reduce a "
+            "completed production. It cannot decide which action is correct "
+            "from the current state alone."
+        )
+        lines.append(
+            "  LR(0) has no lookahead, so this conflict is expected whenever "
+            "a completed item and a shift item coexist."
+        )
+    elif conflict.conflict_type == "reduce/reduce":
+        lines.append(
+            "  Two different completed items can be reduced by the same "
+            "lookahead. The grammar does not determine which production was "
+            "used."
+        )
+    elif conflict.conflict_type == "accept/reduce":
+        lines.append(
+            "  The parser can either accept or reduce. This usually means the "
+            "grammar can derive the input in two ways."
+        )
+    else:
+        lines.append("  The parser has multiple possible actions for one cell.")
+
+    lines.append("")
+    lines.append("Suggested solution:")
+    suggestion = {
+        "LR(0)": (
+            "  Use SLR(1), CLR(1) or LALR(1). They add lookahead information "
+            "that can decide this cell."
+        ),
+        "SLR(1)": (
+            "  Use CLR(1) or LALR(1). FOLLOW sets are too coarse here; precise "
+            "per-state lookaheads may resolve the conflict."
+        ),
+        "CLR(1)": (
+            "  The canonical LR(1) automaton is itself ambiguous. Inspect the "
+            "grammar for ambiguity; no conflict-free LR parser may exist."
+        ),
+        "LALR(1)": (
+            "  Use CLR(1). LALR(1) merged states and lost distinct lookaheads; "
+            "the unmerged automaton is conflict-free."
+        ),
+    }.get(
+        parser_type,
+        "  Use a more powerful LR algorithm, or resolve the conflict "
+        "explicitly and document why the chosen action is correct.",
+    )
+    lines.append(suggestion)
+    lines.append("")
+    lines.append(
+        "  Do not resolve this silently: any resolution must be an explicit, "
+        "explained choice."
+    )
+    return "\n".join(lines)
 
 
 def resolve_conflicts(

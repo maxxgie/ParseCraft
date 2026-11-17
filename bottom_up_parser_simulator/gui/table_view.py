@@ -180,3 +180,144 @@ class TableView(QWidget):
                 else:
                     cell = _cell("", BLANK_BG, BLANK_FG)
                 self.goto_table.setItem(state, col, cell)
+
+
+class ActionTableView(QWidget):
+    """Standalone ACTION table view."""
+
+    def __init__(self, parent: QWidget | None = None) -> None:
+        super().__init__(parent)
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(4, 4, 4, 4)
+        layout.setSpacing(4)
+
+        self.header = QLabel("Generate a grammar to see the ACTION table.")
+        self.header.setWordWrap(True)
+        self.header.setStyleSheet("color: #555;")
+
+        self.grammar = GrammarReferencePane()
+        top_row = QHBoxLayout()
+        top_row.addWidget(self.header, 1)
+        top_row.addWidget(self.grammar, 0)
+        layout.addLayout(top_row)
+
+        self.table = QTableWidget(0, 0)
+        self.table.verticalHeader().setVisible(False)
+        self.table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
+        self.table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
+        header = self.table.horizontalHeader()
+        header.setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
+        layout.addWidget(self.table, 1)
+
+        self._show_errors = False
+
+    def clear(self) -> None:
+        """Reset the table."""
+        self.table.clear()
+        self.table.setRowCount(0)
+        self.table.setColumnCount(0)
+        self.grammar.clear()
+        self.header.setText("Generate a grammar to see the ACTION table.")
+        self.header.setStyleSheet("color: #555;")
+
+    def update_from(self, analysis, show_errors: bool = False) -> None:
+        """Fill the ACTION table."""
+        self._show_errors = show_errors
+        table = analysis.table
+        self.grammar.set_grammar(analysis.grammar_text)
+
+        terminals = table.terminals
+        self.table.clear()
+        self.table.setColumnCount(len(terminals) + 1)
+        self.table.setHorizontalHeaderLabels(["State", *terminals])
+        self.table.setRowCount(table.num_states)
+
+        for state in range(table.num_states):
+            state_item = QTableWidgetItem(str(state))
+            state_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+            self.table.setItem(state, 0, state_item)
+            for col, terminal in enumerate(terminals, start=1):
+                action = table.get_action(state, terminal)
+                if action is None:
+                    if self._show_errors:
+                        cell = _cell("Error", ERROR_BG, ERROR_FG)
+                    else:
+                        cell = _cell("", BLANK_BG, BLANK_FG)
+                else:
+                    bg, fg = action_colors(action.action_type)
+                    bold = action.action_type == "accept"
+                    cell = _cell(action.to_string(), bg, fg, bold=bold)
+                self.table.setItem(state, col, cell)
+
+        conflicts = len(analysis.conflicts)
+        resolved = len(analysis.resolutions)
+        note = f" — {conflicts} conflict(s), {resolved} resolved" if conflicts else ""
+        self.header.setText(
+            f"{analysis.parser_type}: ACTION table ({table.num_states} states){note}."
+        )
+        self.header.setStyleSheet("color: #333;")
+
+
+class GotoTableView(QWidget):
+    """Standalone GOTO table view."""
+
+    def __init__(self, parent: QWidget | None = None) -> None:
+        super().__init__(parent)
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(4, 4, 4, 4)
+        layout.setSpacing(4)
+
+        self.header = QLabel("Generate a grammar to see the GOTO table.")
+        self.header.setWordWrap(True)
+        self.header.setStyleSheet("color: #555;")
+
+        self.grammar = GrammarReferencePane()
+        top_row = QHBoxLayout()
+        top_row.addWidget(self.header, 1)
+        top_row.addWidget(self.grammar, 0)
+        layout.addLayout(top_row)
+
+        self.table = QTableWidget(0, 0)
+        self.table.verticalHeader().setVisible(False)
+        self.table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
+        self.table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
+        header = self.table.horizontalHeader()
+        header.setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
+        layout.addWidget(self.table, 1)
+
+    def clear(self) -> None:
+        """Reset the table."""
+        self.table.clear()
+        self.table.setRowCount(0)
+        self.table.setColumnCount(0)
+        self.grammar.clear()
+        self.header.setText("Generate a grammar to see the GOTO table.")
+        self.header.setStyleSheet("color: #555;")
+
+    def update_from(self, analysis) -> None:
+        """Fill the GOTO table."""
+        table = analysis.table
+        self.grammar.set_grammar(analysis.grammar_text)
+
+        non_terminals = table.non_terminals
+        self.table.clear()
+        self.table.setColumnCount(len(non_terminals) + 1)
+        self.table.setHorizontalHeaderLabels(["State", *non_terminals])
+        self.table.setRowCount(table.num_states)
+
+        for state in range(table.num_states):
+            state_item = QTableWidgetItem(str(state))
+            state_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+            self.table.setItem(state, 0, state_item)
+            for col, nt in enumerate(non_terminals, start=1):
+                target = table.get_goto(state, nt)
+                if target is not None:
+                    cell = _cell(str(target), GOTO_BG, GOTO_FG, bold=True)
+                else:
+                    cell = _cell("", BLANK_BG, BLANK_FG)
+                self.table.setItem(state, col, cell)
+
+        self.header.setText(
+            f"{analysis.parser_type}: GOTO table ({table.num_states} states)."
+        )
+        self.header.setStyleSheet("color: #333;")

@@ -22,7 +22,7 @@ def test_clean_grammar_has_no_errors():
 
 def test_left_recursion_reported():
     report = analyze_grammar(parse_grammar("E -> E + id | id"))
-    assert "left_recursion" in _codes(report)
+    assert "direct_left_recursion" in _codes(report)
     assert not report.is_ok is False  # left recursion is a warning, not error
 
 
@@ -60,7 +60,7 @@ def test_left_factoring_suggested():
 
 def test_ll1_conflicts_reported():
     report = analyze_grammar(parse_grammar("S -> S a | b"))
-    assert "ll1_conflict" in _codes(report)
+    assert "first_first_conflict" in _codes(report)
 
 
 def test_ll1_grammar_is_clean():
@@ -69,7 +69,9 @@ def test_ll1_grammar_is_clean():
             "E -> T E'\nE' -> + T E' | ε\nT -> id"
         )
     )
-    assert "ll1_conflict" not in _codes(report)
+    codes = _codes(report)
+    assert "first_first_conflict" not in codes
+    assert "first_follow_conflict" not in codes
 
 
 def test_duplicate_production_is_warning():

@@ -169,10 +169,14 @@ def test_apply_transforms_order():
     assert has_common_prefixes(result) is False
 
 
-def test_analyze_records_transforms():
+def test_analyze_ignores_transforms_for_lr():
     analysis = analyze(EXPRESSION, "SLR(1)", remove_left_recursion=True)
-    assert analysis.transforms == ["left-recursion removal"]
-    assert "E'" in analysis.grammar.non_terminals
+    # LR parsers must always operate on the original grammar.
+    assert analysis.transforms == []
+    assert "E'" not in analysis.grammar.non_terminals
+    assert any(
+        body and body[0] == "E" for body in analysis.grammar.productions["E"]
+    )
 
 
 def test_analyze_without_transforms_keeps_original():

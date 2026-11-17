@@ -44,16 +44,21 @@ from gui.code_view import CodeView
 from gui.conflict_view import ConflictView
 from gui.dfa_view import DFAView
 from gui.first_follow_view import FirstFollowView
+from gui.closure_steps_view import ClosureStepsView
+from gui.goto_steps_view import GotoStepsView
 from gui.grammar_analyzer_view import GrammarAnalyzerView
 from gui.grammar_editor import GenerateOptions, GrammarEditor
+from gui.lr_items_view import LRItemsView
 from gui.lr_states_view import LRStatesView
 from gui.parse_tree_view import ParseTreeView
 from gui.parser_comparison_view import ParserComparisonView
+from gui.productions_view import ProductionsView
 from gui.settings import APP_NAME, APP_ORGANIZATION, APP_VERSION
 from gui.simulation_view import SimulationView
-from gui.table_view import TableView
+from gui.table_view import ActionTableView, GotoTableView
 from gui.topdown_view import TopDownView
 from gui.transition_table_view import TransitionTableView
+from gui.validation_view import ValidationView
 
 logger = get_logger(__name__)
 
@@ -99,11 +104,17 @@ class MainWindow(QMainWindow):
     # ------------------------------------------------------------------
     def _build_central_tabs(self) -> None:
         self.grammar_editor = GrammarEditor()
+        self.productions_view = ProductionsView()
         self.first_follow_view = FirstFollowView()
+        self.lr_items_view = LRItemsView()
+        self.closure_view = ClosureStepsView()
+        self.goto_steps_view = GotoStepsView()
         self.lr_states_view = LRStatesView()
         self.transition_table_view = TransitionTableView()
+        self.validation_view = ValidationView()
         self.dfa_view = DFAView()
-        self.table_view = TableView()
+        self.action_view = ActionTableView()
+        self.goto_view = GotoTableView()
         self.conflict_view = ConflictView()
         self.simulation_view = SimulationView()
         self.parse_tree_view = ParseTreeView()
@@ -115,18 +126,24 @@ class MainWindow(QMainWindow):
 
         self._central_tabs = QTabWidget()
         self._central_tabs.addTab(self.grammar_editor, "Grammar")
-        self._central_tabs.addTab(self.first_follow_view, "FIRST/FOLLOW")
-        self._central_tabs.addTab(self.lr_states_view, "LR States")
+        self._central_tabs.addTab(self.productions_view, "Augmented Grammar")
+        self._central_tabs.addTab(self.lr_items_view, "LR Items")
+        self._central_tabs.addTab(self.closure_view, "Closure Steps")
+        self._central_tabs.addTab(self.goto_steps_view, "GOTO Steps")
+        self._central_tabs.addTab(self.lr_states_view, "Canonical Collection")
         self._central_tabs.addTab(self.transition_table_view, "State Transitions")
+        self._central_tabs.addTab(self.validation_view, "State Validation")
         self._central_tabs.addTab(self.dfa_view, "DFA")
-        self._central_tabs.addTab(self.table_view, "ACTION/GOTO")
-        self._central_tabs.addTab(self.conflict_view, "Conflicts")
+        self._central_tabs.addTab(self.action_view, "ACTION Table")
+        self._central_tabs.addTab(self.goto_view, "GOTO Table")
+        self._central_tabs.addTab(self.conflict_view, "Conflict Report")
         self._central_tabs.addTab(self.simulation_view, "Simulation")
+        self._central_tabs.addTab(self.first_follow_view, "FIRST/FOLLOW")
         self._central_tabs.addTab(self.topdown_view, "Top-Down")
         self._central_tabs.addTab(self.parse_tree_view, "Parse Tree")
         self._central_tabs.addTab(self.ast_view, "AST")
         self._central_tabs.addTab(self.analyzer_view, "Grammar Analyzer")
-        self._central_tabs.addTab(self.comparison_view, "Parser Comparison")
+        self._central_tabs.addTab(self.comparison_view, "Grammar Compatibility")
         self._central_tabs.addTab(self.code_view, "Generated Parser")
         self.setCentralWidget(self._central_tabs)
 
@@ -346,10 +363,16 @@ class MainWindow(QMainWindow):
         self.grammar_editor.set_grammar_variants(result.stages)
 
         # Clear bottom-up-only views.
+        self.productions_view.clear()
+        self.lr_items_view.clear()
+        self.closure_view.clear()
+        self.goto_steps_view.clear()
         self.lr_states_view.clear()
         self.transition_table_view.clear()
+        self.validation_view.clear()
         self.dfa_view.clear()
-        self.table_view.clear()
+        self.action_view.clear()
+        self.goto_view.clear()
         self.conflict_view.clear()
         self.simulation_view.clear()
         self.parse_tree_view.clear()
@@ -407,10 +430,16 @@ class MainWindow(QMainWindow):
 
         self._analysis = analysis
         self.first_follow_view.update_from(analysis)
+        self.productions_view.update_from(analysis)
+        self.lr_items_view.update_from(analysis)
+        self.closure_view.update_from(analysis)
+        self.goto_steps_view.update_from(analysis)
         self.lr_states_view.update_from(analysis)
         self.transition_table_view.update_from(analysis)
+        self.validation_view.update_from(analysis)
         self.dfa_view.update_from(analysis)
-        self.table_view.update_from(analysis, show_errors=options.show_error_cells)
+        self.action_view.update_from(analysis, show_errors=options.show_error_cells)
+        self.goto_view.update_from(analysis)
         self.conflict_view.update_from(analysis)
         self.simulation_view.set_analysis(analysis)
         self.topdown_view.clear()
@@ -420,18 +449,39 @@ class MainWindow(QMainWindow):
         # Show the grammar that was actually analysed (post-transform).
         self.grammar_editor.set_grammar_variants(analysis.stages)
 
-        # Generate a runnable parser from the current analysis.
+        # Generate a runnable parser only when every conflict was explicitly
+        # resolved. A grammar whose conflicts are not mathematically resolved
+        # must not produce a parser that silently picks an arbitrary action.
+        unresolved = analysis.unresolved_conflicts
         sample = self.simulation_view.input_edit.text().split() or None
-        try:
-            code = generate_lr_parser(analysis, sample_input=sample)
+        if unresolved:
             self.code_view.set_code(
-                code,
-                note=f"Generated {analysis.parser_type} parser "
-                f"({analysis.table.num_states} states). Save or copy it.",
+                "# Parser generation blocked: unresolved conflicts.\n"
+                "#\n"
+                + "\n".join(
+                    f"# - state {c.state} on '{c.terminal}': {c.conflict_type}"
+                    for c in unresolved
+                )
+                + "\n#\n"
+                "# Resolve the conflicts explicitly, or rebuild the table with a "
+                "more powerful\nalgorithm (SLR(1), CLR(1) or LALR(1)) that can "
+                "mathematically decide the cell.",
+                note=(
+                    f"Parser not generated — {len(unresolved)} unresolved "
+                    "conflict(s). See the Conflicts tab."
+                ),
             )
-        except Exception:  # pragma: no cover - codegen is best-effort
-            logger.exception("Code generation failed")
-            self.code_view.clear()
+        else:
+            try:
+                code = generate_lr_parser(analysis, sample_input=sample)
+                self.code_view.set_code(
+                    code,
+                    note=f"Generated {analysis.parser_type} parser "
+                    f"({analysis.table.num_states} states). Save or copy it.",
+                )
+            except Exception:  # pragma: no cover - codegen is best-effort
+                logger.exception("Code generation failed")
+                self.code_view.clear()
 
         transform_note = (
             f" [transforms: {', '.join(analysis.transforms)}]"
@@ -535,10 +585,16 @@ class MainWindow(QMainWindow):
 
     def _reset_views(self) -> None:
         self.first_follow_view.clear()
+        self.productions_view.clear()
+        self.lr_items_view.clear()
+        self.closure_view.clear()
+        self.goto_steps_view.clear()
         self.lr_states_view.clear()
         self.transition_table_view.clear()
+        self.validation_view.clear()
         self.dfa_view.clear()
-        self.table_view.clear()
+        self.action_view.clear()
+        self.goto_view.clear()
         self.conflict_view.clear()
         self.simulation_view.clear()
         self.topdown_view.clear()

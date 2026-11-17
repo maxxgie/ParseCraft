@@ -30,6 +30,7 @@ AUGMENTED_START = "S'"
 
 # Maps a public parser-type label to the internal mode string.
 MODES: Dict[str, str] = {
+    "Shift Reduce": "slr1",
     "LR(0)": "lr0",
     "SLR(1)": "slr1",
     "CLR(1)": "clr1",

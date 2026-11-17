@@ -8,7 +8,7 @@ from typing import List, Optional, Set
 
 from core.first_follow import compute_first, compute_follow
 from core.grammar_engine import undefined_symbols
-from core.grammar_transform import has_common_prefixes, has_left_recursion
+from core.grammar_transform import has_common_prefixes
 from core.logging_config import get_logger
 from core.topdown.ll1 import build_ll1_table
 from models.grammar import Grammar
@@ -127,6 +127,36 @@ def _unit_cycle_symbols(grammar: Grammar) -> List[str]:
     return cyclic
 
 
+def _nullable_symbols(grammar: Grammar) -> Set[str]:
+    """Return non-terminals that can derive the empty string.
+
+    A body derives ``ε`` only when it is empty or every symbol in it is a
+    nullable non-terminal. Terminals are never nullable.
+    """
+    nullable: Set[str] = set()
+    changed = True
+    while changed:
+        changed = False
+        for nt, bodies in grammar.productions.items():
+            if nt in nullable:
+                continue
+            for body in bodies:
+                if not body or all(sym in nullable for sym in body):
+                    nullable.add(nt)
+                    changed = True
+                    break
+    return nullable
+
+
+def _direct_left_recursive(grammar: Grammar) -> List[str]:
+    """Return non-terminals with a production that starts with themselves."""
+    result: List[str] = []
+    for nt, bodies in grammar.productions.items():
+        if any(body and body[0] == nt for body in bodies):
+            result.append(nt)
+    return result
+
+
 def _duplicate_productions(grammar: Grammar) -> List[GrammarIssue]:
     issues: List[GrammarIssue] = []
     reported: Set[str] = set()
@@ -180,6 +210,27 @@ def analyze_grammar(
         A :class:`GrammarReport`.
     """
     issues: List[GrammarIssue] = []
+
+    # Structural checks.
+    if not grammar.productions:
+        issues.append(
+            GrammarIssue(
+                level=ERROR,
+                code="empty_grammar",
+                message="The grammar has no productions.",
+            )
+        )
+    elif grammar.start_symbol not in grammar.productions:
+        issues.append(
+            GrammarIssue(
+                level=ERROR,
+                code="missing_start_production",
+                message=(
+                    f"Start symbol '{grammar.start_symbol}' has no productions."
+                ),
+                symbols=[grammar.start_symbol],
+            )
+        )
 
     # Duplicate productions.
     issues.extend(_duplicate_productions(grammar))
@@ -273,19 +324,35 @@ def analyze_grammar(
             )
         )
 
-    # Left recursion.
-    if has_left_recursion(grammar):
-        recursive = _left_recursive_symbols(grammar)
+    # Left recursion (split into direct and indirect for teaching clarity).
+    direct_recursive = _direct_left_recursive(grammar)
+    all_recursive = _left_recursive_symbols(grammar)
+    indirect_recursive = [s for s in all_recursive if s not in direct_recursive]
+    if direct_recursive:
         issues.append(
             GrammarIssue(
                 level=WARNING,
-                code="left_recursion",
+                code="direct_left_recursion",
                 message=(
-                    "Left recursion detected in: "
-                    + (", ".join(recursive) if recursive else "(indirect)")
+                    "Direct left recursion detected in: "
+                    + ", ".join(direct_recursive)
+                    + ". A recursive-descent parser would loop forever; remove "
+                    "it before using a top-down parser."
+                ),
+                symbols=direct_recursive,
+            )
+        )
+    if indirect_recursive:
+        issues.append(
+            GrammarIssue(
+                level=WARNING,
+                code="indirect_left_recursion",
+                message=(
+                    "Indirect left recursion detected in: "
+                    + ", ".join(indirect_recursive)
                     + ". Remove it before using a top-down parser."
                 ),
-                symbols=recursive,
+                symbols=indirect_recursive,
             )
         )
 
@@ -302,22 +369,74 @@ def analyze_grammar(
             )
         )
 
-    # LL(1) conflicts (ambiguity signal).
-    try:
-        table = build_ll1_table(
-            grammar, compute_first(grammar), compute_follow(grammar)
+    # Nullable non-terminals.
+    nullable = _nullable_symbols(grammar)
+    if nullable:
+        issues.append(
+            GrammarIssue(
+                level=INFO,
+                code="nullable",
+                message=(
+                    "Nullable non-terminal(s) (can derive ε): "
+                    + ", ".join(sorted(nullable))
+                ),
+                symbols=sorted(nullable),
+            )
         )
+
+    # LL(1) conflicts, classified as FIRST/FIRST or FIRST/FOLLOW.
+    first = compute_first(grammar)
+    follow = compute_follow(grammar, first)
+    try:
+        table = build_ll1_table(grammar, first, follow)
         for conflict in table.conflicts:
+            has_epsilon = any(not body for body in conflict.productions)
+            if has_epsilon:
+                code = "first_follow_conflict"
+                kind = "FIRST/FOLLOW"
+            else:
+                code = "first_first_conflict"
+                kind = "FIRST/FIRST"
             issues.append(
                 GrammarIssue(
                     level=WARNING,
-                    code="ll1_conflict",
-                    message=conflict.message() + " (grammar is not LL(1))",
+                    code=code,
+                    message=(
+                        f"{kind} conflict: {conflict.message()} "
+                        "(grammar is not LL(1))"
+                    ),
                     symbols=[conflict.nonterminal, conflict.terminal],
                 )
             )
     except Exception:  # pragma: no cover - analysis is best-effort
         logger.exception("LL(1) conflict analysis failed")
+
+    # Ambiguity signal: reduce/reduce conflicts in the LR(0) automaton mean the
+    # grammar may derive the same string in two ways.
+    try:
+        from core.automaton import LRAutomaton
+        from core.table_builder import build_parsing_table
+
+        lr0 = LRAutomaton(grammar)
+        _, lr0_conflicts = build_parsing_table(lr0, grammar, "lr0", follow)
+        reduce_reduce = [
+            c for c in lr0_conflicts if c.conflict_type == "reduce/reduce"
+        ]
+        if reduce_reduce:
+            issues.append(
+                GrammarIssue(
+                    level=WARNING,
+                    code="ambiguous",
+                    message=(
+                        "Possible ambiguity: the LR(0) automaton has "
+                        f"{len(reduce_reduce)} reduce/reduce conflict(s). "
+                        "The same input may have two parse trees; verify with "
+                        "CLR(1) or rewrite the grammar."
+                    ),
+                )
+            )
+    except Exception:  # pragma: no cover - analysis is best-effort
+        logger.exception("Ambiguity analysis failed")
 
     issues.sort(key=lambda i: {ERROR: 0, WARNING: 1, INFO: 2}[i.level])
     logger.info("Grammar analysis complete: %s", GrammarReport(issues).summary())

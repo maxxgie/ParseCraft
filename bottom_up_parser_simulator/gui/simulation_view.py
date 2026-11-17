@@ -103,19 +103,20 @@ class SimulationView(QWidget):
         )
         layout.addWidget(self.config_label)
 
-        self.steps_table = QTableWidget(0, 5)
+        self.steps_table = QTableWidget(0, 6)
         self.steps_table.setHorizontalHeaderLabels(
-            ["#", "Stack (state:symbol)", "Input remaining", "Action", "Rule"]
+            ["Step", "Stack States", "Symbols", "Input remaining", "Action", "Rule"]
         )
         self.steps_table.verticalHeader().setVisible(False)
         self.steps_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self.steps_table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         header = self.steps_table.horizontalHeader()
         header.setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)
-        header.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
-        header.setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
+        header.setSectionResizeMode(1, QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)
         header.setSectionResizeMode(3, QHeaderView.ResizeMode.Stretch)
-        header.setSectionResizeMode(4, QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(4, QHeaderView.ResizeMode.Stretch)
+        header.setSectionResizeMode(5, QHeaderView.ResizeMode.ResizeToContents)
         layout.addWidget(self.steps_table, 1)
 
         self._set_controls_enabled(False)
@@ -196,7 +197,8 @@ class SimulationView(QWidget):
             )
             cells = [
                 str(step.index + 1),
-                step.stack_string(),
+                " ".join(str(state) for state in step.stack_states),
+                " ".join(step.stack_symbols),
                 " ".join(step.input_remaining),
                 step.action_text,
                 rule_text,

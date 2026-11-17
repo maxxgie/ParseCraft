@@ -14,7 +14,7 @@ The precedence of a production is the precedence of its right-most terminal.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, Iterable, Optional, Sequence
+from typing import Dict, Optional, Sequence
 
 from core.logging_config import get_logger
 

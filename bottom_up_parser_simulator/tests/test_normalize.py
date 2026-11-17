@@ -129,16 +129,15 @@ def test_normalize_grammar_flags():
     assert has_unit_productions(result) is False
 
 
-def test_analyze_records_only_applied_transforms():
-    # Unit removal requested but the grammar has no unit productions.
-    result = analyze("S -> a", "SLR(1)", remove_unit=True)
+def test_analyze_ignores_normalization_for_lr():
+    # LR parsers always operate on the original grammar; normalization requests
+    # are ignored by the bottom-up pipeline.
+    result = analyze("S -> A\nA -> a", "SLR(1)", remove_unit=True)
     assert result.transforms == []
-
-    result2 = analyze("S -> A\nA -> a", "SLR(1)", remove_unit=True)
-    assert "unit-production removal" in result2.transforms
+    assert result.grammar.productions == parse_grammar("S -> A\nA -> a").productions
 
 
-def test_analyze_all_normalizations_together():
+def test_analyze_ignores_all_normalizations_for_lr():
     result = analyze(
         "S -> A a | b\nA -> A | c | ε\nB -> b",
         "SLR(1)",
@@ -146,8 +145,6 @@ def test_analyze_all_normalizations_together():
         remove_epsilon=True,
         remove_unit=True,
     )
-    assert "useless-symbol removal" in result.transforms
-    assert "ε-production removal" in result.transforms
-    assert "unit-production removal" in result.transforms
+    assert result.transforms == []
     # The result must still be a usable grammar.
     assert len(result.automaton.states) > 0

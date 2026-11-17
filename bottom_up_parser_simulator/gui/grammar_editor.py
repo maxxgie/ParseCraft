@@ -137,6 +137,11 @@ class GrammarEditor(QWidget):
         row2.addStretch(1)
         layout.addLayout(row2)
 
+        self.transform_hint = QLabel("")
+        self.transform_hint.setWordWrap(True)
+        self.transform_hint.setStyleSheet("color: #666;")
+        layout.addWidget(self.transform_hint)
+
         # Row 3: conflict resolution.
         row3 = QHBoxLayout()
         self.resolve_cb = QCheckBox("Resolve Conflicts")
@@ -208,6 +213,8 @@ class GrammarEditor(QWidget):
 
         self._variants: dict[str, str] = {}
         self.variant_combo.currentTextChanged.connect(self._on_variant_changed)
+        self.parser_combo.currentTextChanged.connect(self._on_parser_changed)
+        self._on_parser_changed(self.parser_combo.currentText())
         self._update_resolution_enabled(False)
         self.set_grammar_text(EXAMPLE_GRAMMAR)
         logger.debug("GrammarEditor initialized")
@@ -319,6 +326,32 @@ class GrammarEditor(QWidget):
     def _on_variant_changed(self, label: str) -> None:
         """Show the selected grammar variant."""
         self.preview.setPlainText(self._variants.get(label, ""))
+
+    def _on_parser_changed(self, parser_type: str) -> None:
+        """Enable grammar transforms only for top-down parsers.
+
+        LR parsers must always operate on the original grammar, so the
+        transform checkboxes are disabled (and ignored by the engine) for them.
+        """
+        is_topdown = parser_type in TOPDOWN_METHODS
+        for checkbox in (
+            self.remove_left_recursion_cb,
+            self.left_factoring_cb,
+            self.remove_epsilon_cb,
+            self.remove_unit_cb,
+            self.remove_useless_cb,
+        ):
+            checkbox.setEnabled(is_topdown)
+        if is_topdown:
+            self.transform_hint.setText(
+                "Top-down pipeline: grammar transforms are applied before "
+                "FIRST/FOLLOW and the LL(1) table."
+            )
+        else:
+            self.transform_hint.setText(
+                "Bottom-up pipeline: LR parsers always use the original grammar "
+                "— grammar transforms are disabled."
+            )
 
     def _on_generate(self) -> None:
         self.generate_requested.emit(self.grammar_text(), self.current_options())

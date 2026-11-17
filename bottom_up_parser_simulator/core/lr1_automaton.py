@@ -132,6 +132,98 @@ def lr1_goto(
     return lr1_closure(moved, grammar, first)
 
 
+def _sort_items(items: Set[LRItem]) -> List[LRItem]:
+    """Return LR(1) items in a stable, human-readable order."""
+    return sorted(
+        items, key=lambda item: (item.lhs, item.rhs, item.dot, item.lookahead)
+    )
+
+
+def lr1_closure_with_trace(
+    items: Set[LRItem], grammar: Grammar, first: Dict[str, Set[str]]
+) -> Tuple[Set[LRItem], List[dict]]:
+    """LR(1) closure with a deterministic teaching trace.
+
+    Args:
+        items: The seed set of LR(1) items.
+        grammar: The (augmented) grammar.
+        first: Pre-computed FIRST sets.
+
+    Returns:
+        ``(closure_set, steps)`` where each step records a seed or an added
+        item (including the lookahead that caused it).
+    """
+    result: Set[LRItem] = set(items)
+    ordered: List[LRItem] = list(items)
+    steps: List[dict] = [{"kind": "seed", "items": list(ordered)}]
+
+    index = 0
+    while index < len(ordered):
+        item = ordered[index]
+        index += 1
+        next_sym = item.next_symbol()
+        if next_sym is None or next_sym not in grammar.non_terminals:
+            continue
+        beta = item.rhs[item.dot + 1:]
+        lookaheads = _first_of_sequence(beta, item.lookahead, first)
+        for rhs in grammar.get_productions_for(next_sym):
+            for la in sorted(lookaheads):
+                new_item = LRItem(
+                    lhs=next_sym, rhs=tuple(rhs), dot=0, lookahead=la
+                )
+                if new_item in result:
+                    continue
+                result.add(new_item)
+                ordered.append(new_item)
+                steps.append(
+                    {
+                        "kind": "add",
+                        "from": item,
+                        "symbol": next_sym,
+                        "item": new_item,
+                    }
+                )
+    return result, steps
+
+
+def lr1_goto_with_trace(
+    items: Set[LRItem],
+    symbol: str,
+    grammar: Grammar,
+    first: Dict[str, Set[str]],
+) -> Tuple[Set[LRItem], Dict[str, object]]:
+    """Compute LR(1) GOTO and return a step-by-step trace.
+
+    Args:
+        items: The current item set.
+        symbol: The grammar symbol to advance over.
+        grammar: The (augmented) grammar.
+        first: Pre-computed FIRST sets.
+
+    Returns:
+        ``(result, trace)`` with ``symbol``, ``moved`` and ``closure_steps``.
+    """
+    moved_list: List[LRItem] = []
+    moved_set: Set[LRItem] = set()
+    for item in _sort_items(items):
+        if item.next_symbol() != symbol:
+            continue
+        advanced = item.advance_dot()
+        if advanced not in moved_set:
+            moved_set.add(advanced)
+            moved_list.append(advanced)
+
+    if not moved_list:
+        return set(), {"symbol": symbol, "moved": [], "closure_steps": []}
+
+    result, steps = lr1_closure_with_trace(moved_set, grammar, first)
+    return result, {
+        "symbol": symbol,
+        "moved": moved_list,
+        "closure_steps": steps,
+    }
+
+
 class LR1Automaton:
     """LR(1) automaton (canonical collection).
 
@@ -187,6 +279,40 @@ class LR1Automaton:
             item.next_symbol() for item in items if item.next_symbol() is not None
         }
         return [s for s in ordered_symbols(self.augmented_grammar) if s in available]
+
+    def kernel_items(self, state: LRState) -> Set[LRItem]:
+        """Return the kernel (seed) items of an LR(1) state."""
+        aug_start = self.augmented_grammar.start_symbol
+        return {
+            item
+            for item in state.items
+            if item.dot > 0 or (item.lhs == aug_start and item.dot == 0)
+        }
+
+    def closure_trace(self, state_id: int) -> Dict[str, object]:
+        """Recompute an LR(1) state's closure with a teaching trace."""
+        state = self.get_state(state_id)
+        kernel = self.kernel_items(state)
+        result, steps = lr1_closure_with_trace(
+            kernel, self.augmented_grammar, self.first
+        )
+        return {
+            "state": state_id,
+            "kernel": kernel,
+            "result": result,
+            "steps": steps,
+            "matches": result == state.items,
+        }
+
+    def goto_trace(self, state_id: int, symbol: str) -> Dict[str, object]:
+        """Recompute an LR(1) GOTO transition with a teaching trace."""
+        state = self.get_state(state_id)
+        result, trace = lr1_goto_with_trace(
+            state.items, symbol, self.augmented_grammar, self.first
+        )
+        trace["target"] = self.transitions.get((state_id, symbol))
+        trace["result"] = result
+        return trace
 
     def _build(self) -> None:
         initial = self._start_items()

@@ -8,7 +8,7 @@ convenience :func:`simulate_input` wrapper used by the GUI.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Set
+from typing import Dict, List, Set
 
 from core.automaton import LRAutomaton
 from core.conflict_resolution import (
@@ -17,14 +17,8 @@ from core.conflict_resolution import (
     resolve_conflicts,
 )
 from core.first_follow import compute_first, compute_follow
-from core.grammar_normalize import (
-    remove_epsilon_productions,
-    remove_unit_productions,
-    remove_useless_symbols,
-)
 from core.grammar_parser import GrammarParseError, parse_grammar, validate_grammar
 from core.grammar_transform import (
-    apply_transforms,
     build_grammar_stages,
     describe_features,
     has_common_prefixes,
@@ -40,7 +34,7 @@ from models.parsing_table import Conflict, ParseTable
 
 logger = get_logger(__name__)
 
-ALL_PARSER_TYPES = ["LR(0)", "SLR(1)", "CLR(1)", "LALR(1)"]
+ALL_PARSER_TYPES = ["Shift Reduce", "LR(0)", "SLR(1)", "CLR(1)", "LALR(1)"]
 
 
 @dataclass
@@ -136,23 +130,28 @@ def analyze(
 ) -> AnalysisResult:
     """Parse ``text`` and compute the full analysis for ``parser_type``.
 
+    LR parsers always operate on the **original** grammar. The grammar
+    transformation flags are accepted for API compatibility but are
+    deliberately ignored by this bottom-up pipeline: applying left-recursion
+    removal or left factoring to an LR grammar would change the automaton and
+    is not valid compiler-construction practice. Transformation belongs to the
+    top-down pipeline (:func:`core.topdown.engine.analyze_topdown`).
+
     Args:
         text: Grammar text in BNF format (may include ``%left``/``%right``/
             ``%nonassoc`` precedence declarations).
         parser_type: One of :data:`ALL_PARSER_TYPES`.
-        remove_left_recursion: Apply left-recursion removal before analysis.
-        left_factoring: Apply left factoring before analysis.
-        remove_epsilon: Eliminate ε-productions before analysis.
-        remove_unit: Eliminate unit productions before analysis.
-        remove_useless: Eliminate unreachable/non-generating symbols.
+        remove_left_recursion: Ignored for LR parsers (original grammar is used).
+        left_factoring: Ignored for LR parsers (original grammar is used).
+        remove_epsilon: Ignored for LR parsers (original grammar is used).
+        remove_unit: Ignored for LR parsers (original grammar is used).
+        remove_useless: Ignored for LR parsers (original grammar is used).
         resolution: Conflict-resolution strategy. When enabled, conflicts are
-            resolved after the table is built.
+            resolved after the table is built (with an explanation).
 
     Returns:
         A fully populated :class:`AnalysisResult`. Its ``grammar`` attribute is
-        the (possibly transformed) grammar that was analysed; ``transforms``
-        lists the transformations that actually ran; ``conflicts`` holds the
-        detected conflicts and ``resolutions`` the ones that were resolved.
+        always the original grammar; ``transforms`` is therefore empty.
 
     Raises:
         ValueError: If ``parser_type`` is unknown.
@@ -169,35 +168,29 @@ def analyze(
     precedence = parse_precedence(text)
     resolution = resolution or ResolutionConfig()
 
+    # LR parsers must operate on the original grammar. Any transform requested
+    # by the caller is intentionally not applied and is reported instead of
+    # being silently honoured.
+    ignored: List[str] = []
+    if remove_left_recursion:
+        ignored.append("left-recursion removal")
+    if left_factoring:
+        ignored.append("left factoring")
+    if remove_epsilon:
+        ignored.append("ε-production removal")
+    if remove_unit:
+        ignored.append("unit-production removal")
+    if remove_useless:
+        ignored.append("useless-symbol removal")
+    if ignored:
+        logger.info(
+            "%s parser uses the original grammar; ignoring transforms: %s",
+            parser_type,
+            ", ".join(ignored),
+        )
+
     transforms: List[str] = []
     grammar = original
-
-    def _apply(label: str, transformer) -> None:
-        nonlocal grammar
-        new_grammar = transformer(grammar)
-        if (
-            new_grammar.start_symbol != grammar.start_symbol
-            or new_grammar.productions != grammar.productions
-        ):
-            transforms.append(label)
-        grammar = new_grammar
-
-    if remove_useless:
-        _apply("useless-symbol removal", remove_useless_symbols)
-    if remove_left_recursion:
-        _apply(
-            "left-recursion removal",
-            lambda g: apply_transforms(g, remove_left_recursion=True),
-        )
-    if left_factoring:
-        _apply(
-            "left factoring",
-            lambda g: apply_transforms(g, left_factoring=True),
-        )
-    if remove_epsilon:
-        _apply("ε-production removal", remove_epsilon_productions)
-    if remove_unit:
-        _apply("unit-production removal", remove_unit_productions)
 
     first = compute_first(grammar)
     follow = compute_follow(grammar, first)

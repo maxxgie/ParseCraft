@@ -6,13 +6,30 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Set, Optional, Tuple
 
 from core.logging_config import get_logger
-from core.closure import closure
-from core.goto import goto
+from core.closure import closure, closure_with_trace
+from core.goto import goto, goto_with_trace
 from core.grammar_engine import ordered_symbols, production_order_map
 from models.lr_item import LRItem
 from models.grammar import Grammar
 
 logger = get_logger(__name__)
+
+
+@dataclass
+class ValidationIssue:
+    """A single state-validation finding.
+
+    Attributes:
+        state: The state the finding belongs to (``None`` for global checks).
+        check: The name of the check (e.g. ``Closure complete``).
+        ok: ``True`` when the check passed.
+        detail: Additional explanation for failures.
+    """
+
+    state: Optional[int]
+    check: str
+    ok: bool
+    detail: str = ""
 
 
 @dataclass
@@ -230,6 +247,66 @@ class LRAutomaton:
             symbols.add(symbol)
         return symbols
 
+    def kernel_items(self, state: LRState) -> Set[LRItem]:
+        """Return the kernel (seed) items of a state.
+
+        The kernel is the set of items whose dot is not at the beginning,
+        plus the augmented start item for the initial state. Taking the
+        closure of the kernel reproduces the whole state, which is exactly
+        what the Closure Steps view displays.
+
+        Args:
+            state: The state to inspect.
+
+        Returns:
+            The kernel item set.
+        """
+        aug_start = self.augmented_grammar.start_symbol
+        return {
+            item
+            for item in state.items
+            if item.dot > 0 or (item.lhs == aug_start and item.dot == 0)
+        }
+
+    def closure_trace(self, state_id: int) -> Dict[str, object]:
+        """Recompute a state's closure and return a step-by-step trace.
+
+        Args:
+            state_id: The state to recompute.
+
+        Returns:
+            A dict with ``state``, ``kernel``, ``result``, ``steps`` and
+            ``matches`` (whether the recomputed closure equals the stored
+            state).
+        """
+        state = self.get_state(state_id)
+        kernel = self.kernel_items(state)
+        result, steps = closure_with_trace(kernel, self.augmented_grammar)
+        return {
+            "state": state_id,
+            "kernel": kernel,
+            "result": result,
+            "steps": steps,
+            "matches": result == state.items,
+        }
+
+    def goto_trace(self, state_id: int, symbol: str) -> Dict[str, object]:
+        """Recompute a GOTO transition and return a step-by-step trace.
+
+        Args:
+            state_id: The source state.
+            symbol: The grammar symbol to advance over.
+
+        Returns:
+            A dict with ``symbol``, ``moved``, ``closure_steps`` and ``target``
+            (the stored target state id, if any).
+        """
+        state = self.get_state(state_id)
+        result, trace = goto_with_trace(state.items, symbol, self.augmented_grammar)
+        trace["target"] = self.transitions.get((state_id, symbol))
+        trace["result"] = result
+        return trace
+
     def to_dot(self) -> str:
         """Generate a Graphviz DOT representation of the automaton.
 
@@ -300,3 +377,179 @@ def format_transition_table(automaton) -> str:
     for row in data:
         lines.append(render(row))
     return "\n".join(lines)
+
+
+def validate_automaton(automaton) -> List[ValidationIssue]:
+    """Validate a constructed LR automaton against the textbook invariants.
+
+    Checks performed for every state:
+
+    * state numbering is contiguous and starts at 0;
+    * the item set has no duplicates;
+    * the closure is complete (every production of a next-symbol non-terminal
+      is present with the dot at the start);
+    * every item's next symbol has a transition;
+    * every transition target is a valid state;
+    * transitions recorded globally match each state's local transition map.
+
+    Args:
+        automaton: Any object exposing ``states``, ``transitions`` and
+            ``augmented_grammar``.
+
+    Returns:
+        A list of :class:`ValidationIssue`; empty means the automaton is valid.
+    """
+    issues: List[ValidationIssue] = []
+    states = automaton.states
+    transitions = automaton.transitions
+    aug = getattr(automaton, "augmented_grammar", None)
+
+    if not states:
+        issues.append(
+            ValidationIssue(None, "Initial state", False, "automaton has no states")
+        )
+        return issues
+
+    # Global: numbering and initial state.
+    for index, state in enumerate(states):
+        if state.state_id != index:
+            issues.append(
+                ValidationIssue(
+                    state.state_id,
+                    "State numbering",
+                    False,
+                    f"expected id {index}",
+                )
+            )
+    if states[0].state_id != 0:
+        issues.append(
+            ValidationIssue(
+                None, "Initial state", False, "state 0 must be the initial state"
+            )
+        )
+
+    # Per-state checks.
+    for state in states:
+        keys = {item.key() for item in state.items}
+
+        if len(keys) != len(state.items):
+            issues.append(
+                ValidationIssue(
+                    state.state_id,
+                    "No duplicate items",
+                    False,
+                    "duplicate LR items found",
+                )
+            )
+        else:
+            issues.append(
+                ValidationIssue(state.state_id, "No duplicate items", True)
+            )
+
+        if aug is not None:
+            missing: List[str] = []
+            for item in state.items:
+                next_sym = item.next_symbol()
+                if next_sym is None or next_sym not in aug.non_terminals:
+                    continue
+                for body in aug.get_productions_for(next_sym):
+                    expected = LRItem(
+                        lhs=next_sym,
+                        rhs=tuple(body),
+                        dot=0,
+                        lookahead=item.lookahead,
+                    )
+                    if expected.key() not in keys:
+                        text = f"{next_sym} -> {' '.join(body) if body else 'ε'}"
+                        if text not in missing:
+                            missing.append(text)
+            if missing:
+                issues.append(
+                    ValidationIssue(
+                        state.state_id,
+                        "Closure complete",
+                        False,
+                        "missing: " + ", ".join(missing),
+                    )
+                )
+            else:
+                issues.append(
+                    ValidationIssue(state.state_id, "Closure complete", True)
+                )
+
+        missing_transitions = sorted(
+            {
+                item.next_symbol()
+                for item in state.items
+                if item.next_symbol() is not None
+                and item.next_symbol() not in state.transitions
+            }
+        )
+        if missing_transitions:
+            issues.append(
+                ValidationIssue(
+                    state.state_id,
+                    "Transitions complete",
+                    False,
+                    "missing on: " + ", ".join(missing_transitions),
+                )
+            )
+        else:
+            issues.append(
+                ValidationIssue(state.state_id, "Transitions complete", True)
+            )
+
+        bad_targets = sorted(
+            {
+                target
+                for target in state.transitions.values()
+                if target < 0 or target >= len(states)
+            }
+        )
+        if bad_targets:
+            issues.append(
+                ValidationIssue(
+                    state.state_id,
+                    "Transition targets valid",
+                    False,
+                    "invalid targets: " + ", ".join(str(t) for t in bad_targets),
+                )
+            )
+        else:
+            issues.append(
+                ValidationIssue(state.state_id, "Transition targets valid", True)
+            )
+
+    # Global: reverse consistency between transitions and state maps.
+    for (from_id, symbol), to_id in transitions.items():
+        if from_id < 0 or from_id >= len(states):
+            issues.append(
+                ValidationIssue(
+                    None,
+                    "Transitions consistent",
+                    False,
+                    f"transition from invalid state {from_id}",
+                )
+            )
+            continue
+        if to_id < 0 or to_id >= len(states):
+            issues.append(
+                ValidationIssue(
+                    from_id,
+                    "Transitions consistent",
+                    False,
+                    f"transition on '{symbol}' targets invalid state {to_id}",
+                )
+            )
+            continue
+        if states[from_id].transitions.get(symbol) != to_id:
+            issues.append(
+                ValidationIssue(
+                    from_id,
+                    "Transitions consistent",
+                    False,
+                    f"state map for '{symbol}' does not match global transition",
+                )
+            )
+
+    return issues
