@@ -2,12 +2,51 @@
 
 from __future__ import annotations
 
-from typing import Dict, List
+from typing import Dict, List, Set
 
 from core.logging_config import get_logger
 from models.grammar import Grammar
 
 logger = get_logger(__name__)
+
+
+def _defined_non_terminals(text: str) -> Set[str]:
+    """Return every non-terminal defined on a left-hand side.
+
+    A pre-scan is needed so that right-hand-side tokenization can tell a
+    multi-character non-terminal (e.g. ``Expr``) apart from a run of single
+    symbols written without spaces (e.g. ``MA`` meaning ``M A``).
+    """
+    defined: Set[str] = set()
+    for raw_line in text.split("\n"):
+        line = raw_line.strip()
+        if not line or line.startswith("#") or line.startswith("%"):
+            continue
+        if "->" not in line:
+            continue
+        lhs = line.split("->", 1)[0].strip()
+        if lhs and " " not in lhs and "|" not in lhs:
+            defined.add(lhs)
+    return defined
+
+
+def _expand_token(token: str, non_terminals: Set[str]) -> List[str]:
+    """Expand a whitespace-delimited RHS token into grammar symbols.
+
+    Rules:
+
+    * A token that names a non-terminal is kept whole (``Expr`` stays ``Expr``).
+    * A token made only of uppercase letters is split into single symbols, so
+      ``MA`` becomes ``M`` and ``A``. This lets ``C -> MA`` mean ``C -> M A``
+      without requiring spaces, while word terminals such as ``id`` or ``if``
+      (lower-case) and mixed-case names are left untouched.
+    * Everything else (operators, ``id``, ``E'`` ...) is kept whole.
+    """
+    if token in non_terminals:
+        return [token]
+    if len(token) > 1 and token.isalpha() and token.isupper():
+        return list(token)
+    return [token]
 
 
 class GrammarParseError(Exception):
@@ -46,6 +85,7 @@ def parse_grammar(text: str) -> Grammar:
     productions: Dict[str, List[List[str]]] = {}
     start_symbol: str | None = None
     duplicates: List[str] = []
+    defined_non_terminals = _defined_non_terminals(text)
 
     lines = text.split("\n")
     for line_number, raw_line in enumerate(lines, start=1):
@@ -105,7 +145,9 @@ def parse_grammar(text: str) -> Grammar:
                 key: tuple = ()
                 body: List[str] = []
             else:
-                symbols = alt.split()
+                symbols: List[str] = []
+                for token in alt.split():
+                    symbols.extend(_expand_token(token, defined_non_terminals))
                 for sym in symbols:
                     if sym == "ε":
                         # Epsilon is only valid as the sole symbol.

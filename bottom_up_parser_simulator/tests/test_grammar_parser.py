@@ -103,3 +103,23 @@ def test_epsilon_with_other_symbols_raises():
 def test_comments_and_blank_lines_ignored():
     grammar = parse_grammar("# a comment\n\nE -> a\n")
     assert grammar.has_production("E", ["a"])
+
+
+def test_uppercase_run_split_into_single_symbols():
+    # ``MA`` (no spaces) is a run of single symbols M and A, not one terminal.
+    grammar = parse_grammar("S -> C\nC -> MA\nA -> a")
+    assert grammar.has_production("C", ["M", "A"])
+    assert "M" in grammar.terminals
+    assert "A" in grammar.non_terminals
+
+
+def test_lowercase_word_terminal_is_not_split():
+    grammar = parse_grammar("S -> id")
+    assert grammar.has_production("S", ["id"])
+    assert "id" in grammar.terminals
+
+
+def test_mixed_case_nonterminal_is_not_split():
+    grammar = parse_grammar("S -> Expr\nExpr -> a")
+    assert grammar.has_production("S", ["Expr"])
+    assert "Expr" in grammar.non_terminals

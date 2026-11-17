@@ -15,6 +15,7 @@ from PyQt6.QtWidgets import (
 
 from core.automaton import validate_automaton
 from core.logging_config import get_logger
+from core.table_validation import validate_parsing_table
 from gui.grammar_reference import GrammarReferencePane
 
 logger = get_logger(__name__)
@@ -68,7 +69,9 @@ class ValidationView(QWidget):
     def update_from(self, analysis) -> None:
         """Fill the table from an analysis result."""
         self.grammar.set_grammar(analysis.grammar_text)
-        issues = validate_automaton(analysis.automaton)
+        issues = validate_automaton(analysis.automaton) + validate_parsing_table(
+            analysis
+        )
         self.table.setRowCount(len(issues))
         for row, issue in enumerate(issues):
             state_text = "-" if issue.state is None else f"I{issue.state}"

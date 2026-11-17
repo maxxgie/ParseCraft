@@ -52,15 +52,97 @@ from gui.lr_items_view import LRItemsView
 from gui.lr_states_view import LRStatesView
 from gui.parse_tree_view import ParseTreeView
 from gui.parser_comparison_view import ParserComparisonView
-from gui.productions_view import ProductionsView
 from gui.settings import APP_NAME, APP_ORGANIZATION, APP_VERSION
 from gui.simulation_view import SimulationView
-from gui.table_view import ActionTableView, GotoTableView
+from gui.table_view import CombinedTableView
 from gui.topdown_view import TopDownView
 from gui.transition_table_view import TransitionTableView
 from gui.validation_view import ValidationView
 
 logger = get_logger(__name__)
+
+# ----------------------------------------------------------------------
+# Parser-specific tab layout
+# ----------------------------------------------------------------------
+# Each central tab has a stable key. A parser type maps to an ordered list of
+# the keys it should display, so selecting a parser rebuilds the tab bar with
+# only the relevant tabs (no horizontal scrolling, no unrelated panels).
+
+TAB_GRAMMAR = "grammar"
+TAB_FIRST_FOLLOW = "first_follow"
+TAB_LR_ITEMS = "lr_items"
+TAB_CLOSURE = "closure"
+TAB_GOTO = "goto"
+TAB_STATES = "states"
+TAB_TRANSITIONS = "transitions"
+TAB_VALIDATION = "validation"
+TAB_DFA = "dfa"
+TAB_TABLE = "table"
+TAB_CONFLICTS = "conflicts"
+TAB_SIMULATION = "simulation"
+TAB_TOPDOWN = "topdown"
+TAB_PARSE_TREE = "parse_tree"
+TAB_AST = "ast"
+TAB_ANALYZER = "analyzer"
+TAB_COMPARISON = "comparison"
+TAB_CODE = "code"
+
+# Bottom-up (LR) tabs. ``first_follow`` is inserted for the parsers that need
+# FIRST/FOLLOW sets (SLR, CLR, LALR); LR(0) does not.
+_LR_TABS = [
+    TAB_GRAMMAR,
+    TAB_LR_ITEMS,
+    TAB_CLOSURE,
+    TAB_GOTO,
+    TAB_STATES,
+    TAB_TRANSITIONS,
+    TAB_VALIDATION,
+    TAB_DFA,
+    TAB_TABLE,
+    TAB_CONFLICTS,
+    TAB_SIMULATION,
+    TAB_PARSE_TREE,
+    TAB_CODE,
+]
+_LR_TABS_WITH_FIRST = [
+    TAB_GRAMMAR,
+    TAB_FIRST_FOLLOW,
+    TAB_LR_ITEMS,
+    TAB_CLOSURE,
+    TAB_GOTO,
+    TAB_STATES,
+    TAB_TRANSITIONS,
+    TAB_VALIDATION,
+    TAB_DFA,
+    TAB_TABLE,
+    TAB_CONFLICTS,
+    TAB_SIMULATION,
+    TAB_PARSE_TREE,
+    TAB_CODE,
+]
+# Top-down (LL / recursive descent) tabs.
+_TOPDOWN_TABS = [
+    TAB_GRAMMAR,
+    TAB_FIRST_FOLLOW,
+    TAB_TOPDOWN,
+    TAB_PARSE_TREE,
+    TAB_AST,
+    TAB_ANALYZER,
+    TAB_CODE,
+]
+
+# Ordered tabs shown for each selectable parser type.
+PARSER_TABS: dict[str, list[str]] = {
+    "Shift Reduce": _LR_TABS,
+    "LR(0)": _LR_TABS,
+    "SLR(1)": _LR_TABS_WITH_FIRST,
+    "CLR(1)": _LR_TABS_WITH_FIRST,
+    "LALR(1)": _LR_TABS_WITH_FIRST,
+    "Recursive Descent": _TOPDOWN_TABS,
+    "Backtracking Recursive Descent": _TOPDOWN_TABS,
+    "Predictive (LL(1))": _TOPDOWN_TABS,
+    "LL(1)": _TOPDOWN_TABS,
+}
 
 
 class _GUILogHandler(logging.Handler):
@@ -104,7 +186,6 @@ class MainWindow(QMainWindow):
     # ------------------------------------------------------------------
     def _build_central_tabs(self) -> None:
         self.grammar_editor = GrammarEditor()
-        self.productions_view = ProductionsView()
         self.first_follow_view = FirstFollowView()
         self.lr_items_view = LRItemsView()
         self.closure_view = ClosureStepsView()
@@ -113,8 +194,7 @@ class MainWindow(QMainWindow):
         self.transition_table_view = TransitionTableView()
         self.validation_view = ValidationView()
         self.dfa_view = DFAView()
-        self.action_view = ActionTableView()
-        self.goto_view = GotoTableView()
+        self.combined_view = CombinedTableView()
         self.conflict_view = ConflictView()
         self.simulation_view = SimulationView()
         self.parse_tree_view = ParseTreeView()
@@ -124,27 +204,48 @@ class MainWindow(QMainWindow):
         self.analyzer_view = GrammarAnalyzerView()
         self.comparison_view = ParserComparisonView()
 
+        self._tab_titles = {
+            TAB_GRAMMAR: "Grammar",
+            TAB_FIRST_FOLLOW: "FIRST/FOLLOW",
+            TAB_LR_ITEMS: "LR Items",
+            TAB_CLOSURE: "Closure Steps",
+            TAB_GOTO: "GOTO Steps",
+            TAB_STATES: "Canonical Collection",
+            TAB_TRANSITIONS: "State Transitions",
+            TAB_VALIDATION: "State Validation",
+            TAB_DFA: "DFA",
+            TAB_TABLE: "ACTION/GOTO Table",
+            TAB_CONFLICTS: "Conflict Report",
+            TAB_SIMULATION: "Simulation",
+            TAB_TOPDOWN: "Top-Down",
+            TAB_PARSE_TREE: "Parse Tree",
+            TAB_AST: "AST",
+            TAB_ANALYZER: "Grammar Analyzer",
+            TAB_COMPARISON: "Grammar Compatibility",
+            TAB_CODE: "Generated Parser",
+        }
+        self._tab_widgets = {
+            TAB_GRAMMAR: self.grammar_editor,
+            TAB_FIRST_FOLLOW: self.first_follow_view,
+            TAB_LR_ITEMS: self.lr_items_view,
+            TAB_CLOSURE: self.closure_view,
+            TAB_GOTO: self.goto_steps_view,
+            TAB_STATES: self.lr_states_view,
+            TAB_TRANSITIONS: self.transition_table_view,
+            TAB_VALIDATION: self.validation_view,
+            TAB_DFA: self.dfa_view,
+            TAB_TABLE: self.combined_view,
+            TAB_CONFLICTS: self.conflict_view,
+            TAB_SIMULATION: self.simulation_view,
+            TAB_TOPDOWN: self.topdown_view,
+            TAB_PARSE_TREE: self.parse_tree_view,
+            TAB_AST: self.ast_view,
+            TAB_ANALYZER: self.analyzer_view,
+            TAB_COMPARISON: self.comparison_view,
+            TAB_CODE: self.code_view,
+        }
+
         self._central_tabs = QTabWidget()
-        self._central_tabs.addTab(self.grammar_editor, "Grammar")
-        self._central_tabs.addTab(self.productions_view, "Augmented Grammar")
-        self._central_tabs.addTab(self.lr_items_view, "LR Items")
-        self._central_tabs.addTab(self.closure_view, "Closure Steps")
-        self._central_tabs.addTab(self.goto_steps_view, "GOTO Steps")
-        self._central_tabs.addTab(self.lr_states_view, "Canonical Collection")
-        self._central_tabs.addTab(self.transition_table_view, "State Transitions")
-        self._central_tabs.addTab(self.validation_view, "State Validation")
-        self._central_tabs.addTab(self.dfa_view, "DFA")
-        self._central_tabs.addTab(self.action_view, "ACTION Table")
-        self._central_tabs.addTab(self.goto_view, "GOTO Table")
-        self._central_tabs.addTab(self.conflict_view, "Conflict Report")
-        self._central_tabs.addTab(self.simulation_view, "Simulation")
-        self._central_tabs.addTab(self.first_follow_view, "FIRST/FOLLOW")
-        self._central_tabs.addTab(self.topdown_view, "Top-Down")
-        self._central_tabs.addTab(self.parse_tree_view, "Parse Tree")
-        self._central_tabs.addTab(self.ast_view, "AST")
-        self._central_tabs.addTab(self.analyzer_view, "Grammar Analyzer")
-        self._central_tabs.addTab(self.comparison_view, "Grammar Compatibility")
-        self._central_tabs.addTab(self.code_view, "Generated Parser")
         self.setCentralWidget(self._central_tabs)
 
         # Cross-widget wiring.
@@ -155,6 +256,50 @@ class MainWindow(QMainWindow):
         self.topdown_view.parse_tree_ready.connect(self.parse_tree_view.show_tree)
         self.topdown_view.ast_ready.connect(self.ast_view.set_ast)
         self.topdown_view.parse_finished.connect(self._on_topdown_finished)
+
+        # Rebuild the visible tabs whenever the parser type changes, and apply
+        # the initial (default) parser's tab set.
+        self.grammar_editor.parser_combo.currentTextChanged.connect(
+            self._on_parser_selected
+        )
+        self._apply_parser_tabs(self.grammar_editor.selected_parser_type())
+
+    # ------------------------------------------------------------------
+    # Parser-specific tabs
+    # ------------------------------------------------------------------
+    def _apply_parser_tabs(self, parser_type: str) -> None:
+        """Show only the tabs relevant to ``parser_type``.
+
+        The tab widgets are kept alive as attributes; this method detaches them
+        from the tab bar and re-adds only the relevant ones in the order defined
+        by :data:`PARSER_TABS`, so no widget state is lost when switching.
+
+        Args:
+            parser_type: The selected parser type (e.g. ``"SLR(1)"``).
+        """
+        keys = PARSER_TABS.get(parser_type, _LR_TABS_WITH_FIRST)
+        tabs = self._central_tabs
+
+        # Detach every page without destroying the widgets.
+        while tabs.count():
+            tabs.removeTab(0)
+
+        for key in keys:
+            widget = self._tab_widgets.get(key)
+            if widget is None:
+                continue
+            tabs.addTab(widget, self._tab_titles[key])
+
+        if tabs.count():
+            tabs.setCurrentIndex(0)
+
+        logger.debug("Applied %d tabs for parser %s", tabs.count(), parser_type)
+
+    def _on_parser_selected(self, parser_type: str) -> None:
+        """Slot for parser-type changes: rebuild the visible tabs."""
+        self._apply_parser_tabs(parser_type)
+        if self._status_bar is not None:
+            self._status_bar.showMessage(f"Parser: {parser_type}", 3000)
 
     # ------------------------------------------------------------------
     # Menu bar
@@ -363,7 +508,6 @@ class MainWindow(QMainWindow):
         self.grammar_editor.set_grammar_variants(result.stages)
 
         # Clear bottom-up-only views.
-        self.productions_view.clear()
         self.lr_items_view.clear()
         self.closure_view.clear()
         self.goto_steps_view.clear()
@@ -371,8 +515,7 @@ class MainWindow(QMainWindow):
         self.transition_table_view.clear()
         self.validation_view.clear()
         self.dfa_view.clear()
-        self.action_view.clear()
-        self.goto_view.clear()
+        self.combined_view.clear()
         self.conflict_view.clear()
         self.simulation_view.clear()
         self.parse_tree_view.clear()
@@ -430,7 +573,6 @@ class MainWindow(QMainWindow):
 
         self._analysis = analysis
         self.first_follow_view.update_from(analysis)
-        self.productions_view.update_from(analysis)
         self.lr_items_view.update_from(analysis)
         self.closure_view.update_from(analysis)
         self.goto_steps_view.update_from(analysis)
@@ -438,8 +580,7 @@ class MainWindow(QMainWindow):
         self.transition_table_view.update_from(analysis)
         self.validation_view.update_from(analysis)
         self.dfa_view.update_from(analysis)
-        self.action_view.update_from(analysis, show_errors=options.show_error_cells)
-        self.goto_view.update_from(analysis)
+        self.combined_view.update_from(analysis, show_errors=options.show_error_cells)
         self.conflict_view.update_from(analysis)
         self.simulation_view.set_analysis(analysis)
         self.topdown_view.clear()
@@ -585,7 +726,6 @@ class MainWindow(QMainWindow):
 
     def _reset_views(self) -> None:
         self.first_follow_view.clear()
-        self.productions_view.clear()
         self.lr_items_view.clear()
         self.closure_view.clear()
         self.goto_steps_view.clear()
@@ -593,8 +733,7 @@ class MainWindow(QMainWindow):
         self.transition_table_view.clear()
         self.validation_view.clear()
         self.dfa_view.clear()
-        self.action_view.clear()
-        self.goto_view.clear()
+        self.combined_view.clear()
         self.conflict_view.clear()
         self.simulation_view.clear()
         self.topdown_view.clear()

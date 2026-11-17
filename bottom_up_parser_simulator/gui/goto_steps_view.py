@@ -82,8 +82,15 @@ class GotoStepsView(QWidget):
         self.state_combo.blockSignals(False)
         self._updating = False
         if self.state_combo.count() > 0:
+            # ``addItem`` already moved the current index to 0 while signals
+            # were blocked, so setCurrentIndex(0) would be a no-op and no
+            # signal would fire. Populate and render the first transition
+            # explicitly so the tab is never left blank after Generate.
             self.state_combo.setCurrentIndex(0)
+            self._populate_symbols()
+            self._render()
         else:
+            self.symbol_combo.clear()
             self.text.clear()
 
     def _on_state_changed(self) -> None:

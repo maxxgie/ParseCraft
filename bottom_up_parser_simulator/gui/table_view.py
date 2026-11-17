@@ -1,21 +1,24 @@
-"""ACTION / GOTO parsing-table display."""
+"""Combined ACTION / GOTO parsing-table display."""
 
 from __future__ import annotations
 
-from PyQt6.QtGui import QFont
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QColor, QFont
 from PyQt6.QtWidgets import (
+    QCheckBox,
     QHBoxLayout,
     QHeaderView,
     QLabel,
-    QTabWidget,
+    QPlainTextEdit,
     QTableWidget,
     QTableWidgetItem,
+    QTextEdit,
     QVBoxLayout,
     QWidget,
 )
-from PyQt6.QtCore import Qt
 
 from core.logging_config import get_logger
+from core.table_explain import explain_action, explain_goto
 from gui.grammar_reference import GrammarReferencePane
 from gui.palette import (
     BLANK_BG,
@@ -28,6 +31,9 @@ from gui.palette import (
 )
 
 logger = get_logger(__name__)
+
+# Neutral colour for the thin divider that separates ACTION from GOTO.
+DIVIDER_BG = QColor("#CFD8DC")
 
 
 def _cell(
@@ -46,8 +52,34 @@ def _cell(
     return item
 
 
-class TableView(QWidget):
-    """Tabbed ACTION and GOTO tables with conflict reporting."""
+def _verbose_action(action) -> str:
+    """Render an action verbosely (``SHIFT 5`` / ``REDUCE ...`` / ``ACCEPT``)."""
+    if action.action_type == "shift":
+        return f"SHIFT {action.state}"
+    if action.action_type == "reduce":
+        body = action.production_rhs or ()
+        text = " ".join(body) if body else "ε"
+        return f"REDUCE {action.production_lhs} -> {text} (r{action.rule_number})"
+    if action.action_type == "accept":
+        return "ACCEPT"
+    return action.to_string()
+
+
+class CombinedTableView(QWidget):
+    """Combined ACTION/GOTO parsing table.
+
+    Terminals (ACTION) are shown first, then a thin divider, then
+    non-terminals (GOTO), matching the classic single-table layout used in
+    compiler-construction textbooks.
+
+    Two display modes are provided:
+
+    * *full* (default) — the grid with every terminal and non-terminal column;
+    * *compact* — a per-state list of only the entries that actually exist.
+
+    Clicking any ACTION or GOTO cell shows a full explanation of where the
+    entry came from (the responsible LR item and the DFA transition).
+    """
 
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
@@ -55,191 +87,108 @@ class TableView(QWidget):
         layout.setContentsMargins(4, 4, 4, 4)
         layout.setSpacing(4)
 
-        self.header = QLabel("Generate a grammar to see ACTION/GOTO tables.")
+        self.header = QLabel("Generate a grammar to see the ACTION/GOTO table.")
         self.header.setWordWrap(True)
         self.header.setStyleSheet("color: #555;")
 
         self.grammar = GrammarReferencePane()
-        top_row = QHBoxLayout()
-        top_row.addWidget(self.header, 1)
-        top_row.addWidget(self.grammar, 0)
-        layout.addLayout(top_row)
-
-        self._show_errors = False
-
-        self.tabs = QTabWidget()
-
-        self.action_table = QTableWidget(0, 0)
-        self.action_table.verticalHeader().setVisible(True)
-        self.action_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
-        self.action_table.setAlternatingRowColors(False)
-        self.tabs.addTab(self.action_table, "ACTION")
-
-        self.goto_table = QTableWidget(0, 0)
-        self.goto_table.verticalHeader().setVisible(True)
-        self.goto_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
-        self.tabs.addTab(self.goto_table, "GOTO")
-
-        layout.addWidget(self.tabs, 1)
-
-    # ------------------------------------------------------------------
-    def clear(self) -> None:
-        """Reset the tables."""
-        self.action_table.clear()
-        self.action_table.setRowCount(0)
-        self.action_table.setColumnCount(0)
-        self.goto_table.clear()
-        self.goto_table.setRowCount(0)
-        self.goto_table.setColumnCount(0)
-        self.grammar.clear()
-        self.header.setText("Generate a grammar to see ACTION/GOTO tables.")
-        self.header.setStyleSheet("color: #555;")
-
-    def update_from(self, analysis, show_errors: bool = False) -> None:
-        """Fill the tables from an analysis result.
-
-        Args:
-            analysis: The analysis to display.
-            show_errors: When ``True``, empty ACTION cells read ``Error``
-                instead of being left blank.
-        """
-        self._show_errors = show_errors
-        table = analysis.table
-        self.grammar.set_grammar(analysis.grammar_text)
-        self._fill_action(table)
-        self._fill_goto(table)
-
-        conflicts = analysis.conflicts
-        resolutions = analysis.resolutions
-        if conflicts:
-            resolved_count = len(resolutions)
-            unresolved = len(analysis.unresolved_conflicts)
-            preview = "\n".join(c.message for c in conflicts[:6])
-            more = "" if len(conflicts) <= 6 else f"\n... (+{len(conflicts) - 6} more)"
-            self.header.setText(
-                f"⚠ {analysis.parser_type} table: {len(conflicts)} conflict(s), "
-                f"{resolved_count} resolved, {unresolved} unresolved.\n"
-                f"{preview}{more}"
-            )
-            self.header.setStyleSheet(
-                "color: #B00020;" if unresolved else "color: #8A6D00;"
-            )
-        else:
-            self.header.setText(
-                f"{analysis.parser_type}: conflict-free table with "
-                f"{table.num_states} states. "
-                "Legend: ACTION — blue = shift, green = reduce, "
-                "dark green (bold) = accept, red = error; "
-                "GOTO — lavender = state transition."
-            )
-            self.header.setStyleSheet("color: #1E6B34;")
-
-    def _prepare(self, table_widget: QTableWidget, columns: list[str], rows: int) -> None:
-        table_widget.clear()
-        table_widget.setColumnCount(len(columns) + 1)
-        table_widget.setRowCount(rows)
-        headers = ["State"] + columns
-        table_widget.setHorizontalHeaderLabels(headers)
-        table_widget.setVerticalHeaderLabels([str(i) for i in range(rows)])
-        table_widget.horizontalHeader().setSectionResizeMode(
-            QHeaderView.ResizeMode.ResizeToContents
+        self.compact_cb = QCheckBox("Compact view")
+        self.compact_cb.setToolTip(
+            "Show only the ACTION/GOTO entries that exist, one state at a time."
         )
-        table_widget.verticalHeader().setDefaultSectionSize(22)
-
-    def _fill_action(self, table) -> None:
-        terminals = table.terminals
-        self._prepare(self.action_table, terminals, table.num_states)
-        for state in range(table.num_states):
-            self.action_table.setItem(state, 0, _cell(str(state)))
-            for col, terminal in enumerate(terminals, start=1):
-                action = table.get_action(state, terminal)
-                if action is None:
-                    if self._show_errors:
-                        cell = _cell("Error", ERROR_BG, ERROR_FG)
-                    else:
-                        cell = _cell("", BLANK_BG, BLANK_FG)
-                else:
-                    bg, fg = action_colors(action.action_type)
-                    cell = _cell(
-                        action.to_string(),
-                        bg,
-                        fg,
-                        bold=action.action_type == "accept",
-                    )
-                self.action_table.setItem(state, col, cell)
-
-    def _fill_goto(self, table) -> None:
-        non_terminals = table.non_terminals
-        self._prepare(self.goto_table, non_terminals, table.num_states)
-        for state in range(table.num_states):
-            self.goto_table.setItem(state, 0, _cell(str(state)))
-            for col, nt in enumerate(non_terminals, start=1):
-                target = table.get_goto(state, nt)
-                if target is not None:
-                    cell = _cell(str(target), GOTO_BG, GOTO_FG, bold=True)
-                else:
-                    cell = _cell("", BLANK_BG, BLANK_FG)
-                self.goto_table.setItem(state, col, cell)
-
-
-class ActionTableView(QWidget):
-    """Standalone ACTION table view."""
-
-    def __init__(self, parent: QWidget | None = None) -> None:
-        super().__init__(parent)
-        layout = QVBoxLayout(self)
-        layout.setContentsMargins(4, 4, 4, 4)
-        layout.setSpacing(4)
-
-        self.header = QLabel("Generate a grammar to see the ACTION table.")
-        self.header.setWordWrap(True)
-        self.header.setStyleSheet("color: #555;")
-
-        self.grammar = GrammarReferencePane()
         top_row = QHBoxLayout()
         top_row.addWidget(self.header, 1)
+        top_row.addWidget(self.compact_cb, 0)
         top_row.addWidget(self.grammar, 0)
         layout.addLayout(top_row)
 
         self.table = QTableWidget(0, 0)
         self.table.verticalHeader().setVisible(False)
         self.table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
-        self.table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
+        self.table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectItems)
         header = self.table.horizontalHeader()
         header.setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
+        self.table.cellClicked.connect(self._on_cell_clicked)
         layout.addWidget(self.table, 1)
 
-        self._show_errors = False
+        self.compact_text = QPlainTextEdit()
+        self.compact_text.setReadOnly(True)
+        self.compact_text.setLineWrapMode(QPlainTextEdit.LineWrapMode.NoWrap)
+        self.compact_text.setVisible(False)
+        layout.addWidget(self.compact_text, 1)
 
+        self.detail = QTextEdit()
+        self.detail.setReadOnly(True)
+        self.detail.setLineWrapMode(QTextEdit.LineWrapMode.WidgetWidth)
+        self.detail.setPlaceholderText(
+            "Click an ACTION or GOTO cell to see which LR item and transition "
+            "produced it."
+        )
+        self.detail.setMaximumHeight(150)
+        layout.addWidget(self.detail, 0)
+
+        self._analysis = None
+        self._terminals: list[str] = []
+        self._non_terminals: list[str] = []
+        self._divider_col = -1
+        self._goto_start = -1
+
+        self.compact_cb.toggled.connect(self._on_compact_toggled)
+
+    # ------------------------------------------------------------------
     def clear(self) -> None:
         """Reset the table."""
+        self._analysis = None
+        self._terminals = []
+        self._non_terminals = []
         self.table.clear()
         self.table.setRowCount(0)
         self.table.setColumnCount(0)
+        self.compact_text.clear()
+        self.detail.clear()
         self.grammar.clear()
-        self.header.setText("Generate a grammar to see the ACTION table.")
+        self.header.setText("Generate a grammar to see the ACTION/GOTO table.")
         self.header.setStyleSheet("color: #555;")
 
     def update_from(self, analysis, show_errors: bool = False) -> None:
-        """Fill the ACTION table."""
-        self._show_errors = show_errors
+        """Fill the combined ACTION/GOTO table.
+
+        Args:
+            analysis: The analysis result to display.
+            show_errors: When ``True``, empty ACTION cells read ``Error``
+                instead of being left blank.
+        """
+        self._analysis = analysis
         table = analysis.table
         self.grammar.set_grammar(analysis.grammar_text)
 
-        terminals = table.terminals
+        terminals = list(table.terminals)
+        non_terminals = list(table.non_terminals)
+        self._terminals = terminals
+        self._non_terminals = non_terminals
+        self._divider_col = 1 + len(terminals)
+        self._goto_start = self._divider_col + 1
+
+        headers = ["State", *terminals, "", *non_terminals]
         self.table.clear()
-        self.table.setColumnCount(len(terminals) + 1)
-        self.table.setHorizontalHeaderLabels(["State", *terminals])
+        self.table.setColumnCount(len(headers))
+        self.table.setHorizontalHeaderLabels(headers)
         self.table.setRowCount(table.num_states)
+
+        divider_header = self.table.horizontalHeaderItem(self._divider_col)
+        if divider_header is not None:
+            divider_header.setBackground(DIVIDER_BG)
+            divider_header.setText("")
 
         for state in range(table.num_states):
             state_item = QTableWidgetItem(str(state))
             state_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             self.table.setItem(state, 0, state_item)
+
             for col, terminal in enumerate(terminals, start=1):
                 action = table.get_action(state, terminal)
                 if action is None:
-                    if self._show_errors:
+                    if show_errors:
                         cell = _cell("Error", ERROR_BG, ERROR_FG)
                     else:
                         cell = _cell("", BLANK_BG, BLANK_FG)
@@ -249,67 +198,11 @@ class ActionTableView(QWidget):
                     cell = _cell(action.to_string(), bg, fg, bold=bold)
                 self.table.setItem(state, col, cell)
 
-        conflicts = len(analysis.conflicts)
-        resolved = len(analysis.resolutions)
-        note = f" — {conflicts} conflict(s), {resolved} resolved" if conflicts else ""
-        self.header.setText(
-            f"{analysis.parser_type}: ACTION table ({table.num_states} states){note}."
-        )
-        self.header.setStyleSheet("color: #333;")
+            self.table.setItem(
+                state, self._divider_col, _cell("", DIVIDER_BG, DIVIDER_BG)
+            )
 
-
-class GotoTableView(QWidget):
-    """Standalone GOTO table view."""
-
-    def __init__(self, parent: QWidget | None = None) -> None:
-        super().__init__(parent)
-        layout = QVBoxLayout(self)
-        layout.setContentsMargins(4, 4, 4, 4)
-        layout.setSpacing(4)
-
-        self.header = QLabel("Generate a grammar to see the GOTO table.")
-        self.header.setWordWrap(True)
-        self.header.setStyleSheet("color: #555;")
-
-        self.grammar = GrammarReferencePane()
-        top_row = QHBoxLayout()
-        top_row.addWidget(self.header, 1)
-        top_row.addWidget(self.grammar, 0)
-        layout.addLayout(top_row)
-
-        self.table = QTableWidget(0, 0)
-        self.table.verticalHeader().setVisible(False)
-        self.table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
-        self.table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
-        header = self.table.horizontalHeader()
-        header.setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
-        layout.addWidget(self.table, 1)
-
-    def clear(self) -> None:
-        """Reset the table."""
-        self.table.clear()
-        self.table.setRowCount(0)
-        self.table.setColumnCount(0)
-        self.grammar.clear()
-        self.header.setText("Generate a grammar to see the GOTO table.")
-        self.header.setStyleSheet("color: #555;")
-
-    def update_from(self, analysis) -> None:
-        """Fill the GOTO table."""
-        table = analysis.table
-        self.grammar.set_grammar(analysis.grammar_text)
-
-        non_terminals = table.non_terminals
-        self.table.clear()
-        self.table.setColumnCount(len(non_terminals) + 1)
-        self.table.setHorizontalHeaderLabels(["State", *non_terminals])
-        self.table.setRowCount(table.num_states)
-
-        for state in range(table.num_states):
-            state_item = QTableWidgetItem(str(state))
-            state_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
-            self.table.setItem(state, 0, state_item)
-            for col, nt in enumerate(non_terminals, start=1):
+            for col, nt in enumerate(non_terminals, start=self._goto_start):
                 target = table.get_goto(state, nt)
                 if target is not None:
                     cell = _cell(str(target), GOTO_BG, GOTO_FG, bold=True)
@@ -317,7 +210,67 @@ class GotoTableView(QWidget):
                     cell = _cell("", BLANK_BG, BLANK_FG)
                 self.table.setItem(state, col, cell)
 
+        self.table.setColumnWidth(self._divider_col, 6)
+        self.compact_text.setPlainText(self._compact_text())
+        self._on_compact_toggled(self.compact_cb.isChecked())
+
+        conflicts = len(analysis.conflicts)
+        resolved = len(analysis.resolutions)
+        note = f" — {conflicts} conflict(s), {resolved} resolved" if conflicts else ""
         self.header.setText(
-            f"{analysis.parser_type}: GOTO table ({table.num_states} states)."
+            f"{analysis.parser_type}: ACTION/GOTO table "
+            f"({table.num_states} states){note}. "
+            "ACTION = terminals (blue shift, green reduce); "
+            "GOTO = non-terminals (lavender). Click a cell for details."
         )
         self.header.setStyleSheet("color: #333;")
+
+    # ------------------------------------------------------------------
+    def _compact_text(self) -> str:
+        """Return the compact per-state ACTION/GOTO listing."""
+        if self._analysis is None:
+            return ""
+        table = self._analysis.table
+        lines: list[str] = ["ACTION"]
+        for state in range(table.num_states):
+            entries = [
+                f"  {terminal} : {_verbose_action(table.get_action(state, terminal))}"
+                for terminal in table.terminals
+                if table.get_action(state, terminal) is not None
+            ]
+            if entries:
+                lines.append(f"State {state}:")
+                lines.extend(entries)
+        lines.append("")
+        lines.append("GOTO")
+        for state in range(table.num_states):
+            entries = [
+                f"  {nt} : {table.get_goto(state, nt)}"
+                for nt in table.non_terminals
+                if table.get_goto(state, nt) is not None
+            ]
+            if entries:
+                lines.append(f"State {state}:")
+                lines.extend(entries)
+        return "\n".join(lines)
+
+    def _on_compact_toggled(self, enabled: bool) -> None:
+        """Switch between the full grid and the compact listing."""
+        self.table.setVisible(not enabled)
+        self.compact_text.setVisible(enabled)
+
+    def _on_cell_clicked(self, row: int, col: int) -> None:
+        """Show an explanation for the clicked ACTION/GOTO cell."""
+        if self._analysis is None:
+            return
+        if col == 0 or col == self._divider_col:
+            self.detail.clear()
+            return
+        if col <= len(self._terminals):
+            terminal = self._terminals[col - 1]
+            self.detail.setPlainText(explain_action(self._analysis, row, terminal))
+            return
+        index = col - self._goto_start
+        if 0 <= index < len(self._non_terminals):
+            nt = self._non_terminals[index]
+            self.detail.setPlainText(explain_goto(self._analysis, row, nt))
