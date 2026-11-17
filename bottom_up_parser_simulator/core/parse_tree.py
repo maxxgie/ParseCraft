@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 from models.parse_tree import ParseTreeNode
 
@@ -135,3 +135,94 @@ def collapse_unary_chains(root: Optional[ParseTreeNode]) -> Optional[ParseTreeNo
     for child in new_children:
         new_node.add_child(child)
     return new_node
+
+
+# ---------------------------------------------------------------------------
+# Display helpers (preserve original node references so callers can map a
+# clicked/selected display row back to the real parse-tree node for inspection).
+# ---------------------------------------------------------------------------
+DisplayTree = List[Tuple[ParseTreeNode, List["DisplayTree"]]]
+
+
+def build_display_tree(
+    root: Optional[ParseTreeNode],
+    collapse: bool = False,
+    folded: Optional[Any] = None,
+) -> Optional[Tuple[ParseTreeNode, List["DisplayTree"]]]:
+    """Build a display tree that keeps references to the original nodes.
+
+    Each entry is ``(original_node, [child_entries])``.  Unlike
+    :func:`collapse_unary_chains` (which copies nodes and therefore loses the
+    link back to the source tree), this preserves the original
+    :class:`ParseTreeNode` instances so a UI can map a selection to the real
+    node for inspection.
+
+    Args:
+        root: The parse-tree root.
+        collapse: When ``True``, collapse single-child (grammar-only) nodes and
+            drop ε-production branches, mirroring :func:`collapse_unary_chains`.
+        folded: Optional set of ``id(node)`` whose children should be hidden
+            (manual folding).  The node itself is still shown.
+
+    Returns:
+        ``(node, children)`` or ``None`` when the branch is hidden.
+    """
+    folded = folded or set()
+
+    def build(node: ParseTreeNode):
+        # Manual fold: show the node but not its children.
+        if id(node) in folded:
+            return (node, [])
+
+        # Drop ε-production nodes (non-terminal whose only child is a leaf ε).
+        if (
+            collapse
+            and len(node.children) == 1
+            and node.children[0].is_leaf()
+            and node.children[0].symbol == "ε"
+        ):
+            return None
+
+        child_entries = []
+        for child in node.children:
+            entry = build(child)
+            if entry is not None:
+                child_entries.append(entry)
+
+        if not child_entries:
+            # A terminal leaf is kept; a node whose children all vanished
+            # (an all-ε production) is dropped.
+            if node.children:
+                return None
+            return (node, [])
+
+        if collapse and len(child_entries) == 1 and not node.is_leaf():
+            return child_entries[0]
+
+        return (node, child_entries)
+
+    return build(root)
+
+
+def preorder(
+    entry: Optional[Tuple[ParseTreeNode, List["DisplayTree"]]]
+) -> List[ParseTreeNode]:
+    """Return the original nodes of a display tree in preorder."""
+    result: List[ParseTreeNode] = []
+    if entry is None:
+        return result
+    node, children = entry
+    result.append(node)
+    for child in children:
+        result.extend(preorder(child))
+    return result
+
+
+def subtree_ids(node: Optional[ParseTreeNode]) -> set:
+    """Return ``{id(n)}`` for ``node`` and every descendant (original tree)."""
+    if node is None:
+        return set()
+    ids = {id(node)}
+    for child in node.children:
+        ids |= subtree_ids(child)
+    return ids

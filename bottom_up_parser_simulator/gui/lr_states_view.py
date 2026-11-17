@@ -11,7 +11,13 @@ kept and is refreshed whenever a state row is selected.
 
 from __future__ import annotations
 
-from PyQt6.QtCore import QModelIndex, QRectF, Qt
+from PyQt6.QtCore import (
+    QItemSelection,
+    QItemSelectionModel,
+    QModelIndex,
+    QRectF,
+    Qt,
+)
 from PyQt6.QtGui import (
     QColor,
     QFont,
@@ -181,7 +187,7 @@ class LRStatesView(QWidget):
         self.table.verticalHeader().setVisible(False)
         self.table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self.table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
-        self.table.setSelectionMode(QTableWidget.SelectionMode.SingleSelection)
+        self.table.setSelectionMode(QTableWidget.SelectionMode.ContiguousSelection)
         self.table.setAlternatingRowColors(False)
         self.table.setStyleSheet(
             "QTableWidget { background: %s; alternate-background-color: %s; }"
@@ -458,13 +464,27 @@ class LRStatesView(QWidget):
         first_row = self._rows_by_state.get(state_id)
         if first_row is None:
             return
+        # Find the last row of this state's group.
+        last_row = first_row
+        total = len(self._item_rows)
+        while (
+            last_row + 1 < total
+            and self._item_rows[last_row + 1].state_id == state_id
+        ):
+            last_row += 1
+        # Select the whole group through the selection model.  (Loop calling
+        # ``selectRow`` would keep only the last row under a single-selection
+        # mode, so the clicked row never appeared to respond.)
         self._suppress = True
         self.table.clearSelection()
-        for row in range(first_row, self.table.rowCount()):
-            entry = self._item_rows[row]
-            if entry.state_id != state_id:
-                break
-            self.table.selectRow(row)
+        selection = QItemSelection()
+        model = self.table.model()
+        selection.select(model.index(first_row, 0), model.index(last_row, 2))
+        self.table.selectionModel().select(
+            selection,
+            QItemSelectionModel.SelectionFlag.Select
+            | QItemSelectionModel.SelectionFlag.Rows,
+        )
         self.table.scrollToItem(self.table.item(first_row, 0))
         self._suppress = False
         self._show_state(state_id)
