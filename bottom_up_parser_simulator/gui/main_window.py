@@ -53,6 +53,7 @@ from gui.settings import APP_NAME, APP_ORGANIZATION, APP_VERSION
 from gui.simulation_view import SimulationView
 from gui.table_view import TableView
 from gui.topdown_view import TopDownView
+from gui.transition_table_view import TransitionTableView
 
 logger = get_logger(__name__)
 
@@ -100,6 +101,7 @@ class MainWindow(QMainWindow):
         self.grammar_editor = GrammarEditor()
         self.first_follow_view = FirstFollowView()
         self.lr_states_view = LRStatesView()
+        self.transition_table_view = TransitionTableView()
         self.dfa_view = DFAView()
         self.table_view = TableView()
         self.conflict_view = ConflictView()
@@ -115,6 +117,7 @@ class MainWindow(QMainWindow):
         self._central_tabs.addTab(self.grammar_editor, "Grammar")
         self._central_tabs.addTab(self.first_follow_view, "FIRST/FOLLOW")
         self._central_tabs.addTab(self.lr_states_view, "LR States")
+        self._central_tabs.addTab(self.transition_table_view, "State Transitions")
         self._central_tabs.addTab(self.dfa_view, "DFA")
         self._central_tabs.addTab(self.table_view, "ACTION/GOTO")
         self._central_tabs.addTab(self.conflict_view, "Conflicts")
@@ -340,10 +343,11 @@ class MainWindow(QMainWindow):
         self._analysis = None
         self.topdown_view.set_analysis(result)
         self.first_follow_view.update_from(result)
-        self.grammar_editor.set_transform_preview(result.grammar_text)
+        self.grammar_editor.set_grammar_variants(result.stages)
 
         # Clear bottom-up-only views.
         self.lr_states_view.clear()
+        self.transition_table_view.clear()
         self.dfa_view.clear()
         self.table_view.clear()
         self.conflict_view.clear()
@@ -404,8 +408,9 @@ class MainWindow(QMainWindow):
         self._analysis = analysis
         self.first_follow_view.update_from(analysis)
         self.lr_states_view.update_from(analysis)
+        self.transition_table_view.update_from(analysis)
         self.dfa_view.update_from(analysis)
-        self.table_view.update_from(analysis)
+        self.table_view.update_from(analysis, show_errors=options.show_error_cells)
         self.conflict_view.update_from(analysis)
         self.simulation_view.set_analysis(analysis)
         self.topdown_view.clear()
@@ -413,7 +418,7 @@ class MainWindow(QMainWindow):
         self.parse_tree_view.clear()
 
         # Show the grammar that was actually analysed (post-transform).
-        self.grammar_editor.set_transform_preview(analysis.grammar_text)
+        self.grammar_editor.set_grammar_variants(analysis.stages)
 
         # Generate a runnable parser from the current analysis.
         sample = self.simulation_view.input_edit.text().split() or None
@@ -531,6 +536,7 @@ class MainWindow(QMainWindow):
     def _reset_views(self) -> None:
         self.first_follow_view.clear()
         self.lr_states_view.clear()
+        self.transition_table_view.clear()
         self.dfa_view.clear()
         self.table_view.clear()
         self.conflict_view.clear()

@@ -8,6 +8,7 @@ from typing import Dict, List, Set, Optional, Tuple
 from core.logging_config import get_logger
 from core.closure import closure
 from core.goto import goto
+from core.grammar_engine import ordered_symbols, production_order_map
 from models.lr_item import LRItem
 from models.grammar import Grammar
 
@@ -22,20 +23,75 @@ class LRState:
         state_id: Unique identifier for the state.
         items: Set of LR items in this state.
         transitions: Dictionary mapping symbols to target state IDs.
+        production_order: Mapping from ``(lhs, rhs)`` to its production index,
+            used to display items in grammar (definition) order rather than
+            alphabetically.
     """
 
     state_id: int
     items: Set[LRItem] = field(default_factory=set)
     transitions: Dict[str, int] = field(default_factory=dict)
+    production_order: Dict[Tuple[str, Tuple[str, ...]], int] = field(
+        default_factory=dict
+    )
 
-    def get_items_string(self) -> str:
-        """Return a string representation of the items in this state.
+    def sorted_items(self) -> List[LRItem]:
+        """Return the items in textbook order (production order, then dot).
+
+        Items are grouped by the production that generated them, in the order
+        the productions appear in the grammar. The closure algorithm may add
+        items, but never reorders them; this method only imposes the display
+        order.
 
         Returns:
-            Multi-line string of items.
+            The state's items as a list in display order.
         """
-        sorted_items = sorted(self.items, key=lambda x: (x.lhs, x.rhs, x.dot, x.lookahead))
-        return "\n".join(item.to_string() for item in sorted_items)
+        if self.production_order:
+            return sorted(
+                self.items,
+                key=lambda item: (
+                    self.production_order.get((item.lhs, item.rhs), 1 << 30),
+                    item.dot,
+                    item.lookahead,
+                ),
+            )
+        return sorted(
+            self.items, key=lambda item: (item.lhs, item.rhs, item.dot, item.lookahead)
+        )
+
+    def get_items_string(self) -> str:
+        """Return the items as an aligned, multi-line string.
+
+        Returns:
+            Multi-line string of items with aligned dots.
+        """
+        items = self.sorted_items()
+        width = max((len(item.lhs) for item in items), default=0)
+        return "\n".join(item.to_string(lhs_width=width) for item in items)
+
+    def get_transition_rows(self) -> List[Tuple[int, str, str, int | None]]:
+        """Return one row per item that consumes a symbol.
+
+        Each row is ``(state_id, configuration, consume, next_state)``. Items
+        whose dot is at the end (completed items) consume nothing and are
+        omitted. The consume symbol is shown beside the item that generated the
+        transition, exactly as in handwritten lecture notes.
+
+        Returns:
+            A list of ``(state, configuration, symbol, target)`` tuples.
+        """
+        items = self.sorted_items()
+        width = max((len(item.lhs) for item in items), default=0)
+        rows: List[Tuple[int, str, str, int | None]] = []
+        for item in items:
+            symbol = item.next_symbol()
+            if symbol is None:
+                continue
+            target = self.transitions.get(symbol)
+            rows.append(
+                (self.state_id, item.to_string(lhs_width=width), symbol, target)
+            )
+        return rows
 
     def __str__(self) -> str:
         return f"State {self.state_id}:\n{self.get_items_string()}"
@@ -93,6 +149,9 @@ class LRAutomaton:
         # Process states
         unprocessed = [0]
         state_ids = {frozenset(item.key() for item in initial_items): 0}
+        # Symbols are visited in the order they appear in the grammar so that
+        # state numbering matches textbook presentations (E, T, (, id, ...).
+        symbol_order = ordered_symbols(self.augmented_grammar)
 
         while unprocessed:
             current_id = unprocessed.pop(0)
@@ -105,8 +164,10 @@ class LRAutomaton:
                 if next_sym is not None:
                     symbols.add(next_sym)
 
-            # Compute GOTO for each symbol
-            for symbol in sorted(symbols):
+            # Compute GOTO for each symbol, in grammar order.
+            for symbol in symbol_order:
+                if symbol not in symbols:
+                    continue
                 goto_items = goto(current_state.items, symbol, self.augmented_grammar)
                 if not goto_items:
                     continue
@@ -125,6 +186,11 @@ class LRAutomaton:
                 # Record transition
                 self.transitions[(current_id, symbol)] = target_id
                 current_state.transitions[symbol] = target_id
+
+        # Share the production ordering with every state for display.
+        order = production_order_map(self.augmented_grammar)
+        for state in self.states:
+            state.production_order = order
 
         logger.info("LR automaton built: %d states", len(self.states))
 
@@ -185,3 +251,52 @@ class LRAutomaton:
 
         lines.append("}")
         return "\n".join(lines)
+
+
+def transition_rows(automaton) -> List[Tuple[int, str, str, int | None]]:
+    """Return the state-transition table rows for any LR automaton.
+
+    Args:
+        automaton: An object exposing ``states`` (each an :class:`LRState`).
+
+    Returns:
+        A list of ``(state, configuration, consume, next_state)`` tuples in
+        state order, then item (production) order.
+    """
+    rows: List[Tuple[int, str, str, int | None]] = []
+    for state in automaton.states:
+        rows.extend(state.get_transition_rows())
+    return rows
+
+
+def format_transition_table(automaton) -> str:
+    """Render the state-transition table as aligned plain text.
+
+    The columns are ``State``, ``Configuration State``, ``Consume`` and
+    ``Next State``, matching the layout used in compiler-construction notes.
+
+    Args:
+        automaton: An object exposing ``states``.
+
+    Returns:
+        A multi-line, column-aligned string.
+    """
+    headers = ("State", "Configuration State", "Consume", "Next State")
+    rows = transition_rows(automaton)
+    data = [
+        [str(state), config, consume, "" if target is None else str(target)]
+        for state, config, consume, target in rows
+    ]
+    widths = [len(header) for header in headers]
+    for row in data:
+        for index, cell in enumerate(row):
+            widths[index] = max(widths[index], len(cell))
+
+    def render(cells: List[str]) -> str:
+        return "  ".join(cell.ljust(widths[i]) for i, cell in enumerate(cells))
+
+    lines = [render(list(headers))]
+    lines.append("  ".join("-" * width for width in widths))
+    for row in data:
+        lines.append(render(row))
+    return "\n".join(lines)

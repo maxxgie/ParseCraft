@@ -31,12 +31,12 @@ def table_to_csv(analysis) -> str:
 
 def _action_cell(analysis, state: int, terminal: str) -> str:
     action = analysis.table.get_action(state, terminal)
-    return action.to_string() if action else "."
+    return action.to_string() if action else ""
 
 
 def _goto_cell(analysis, state: int, non_terminal: str) -> str:
     target = analysis.table.get_goto(state, non_terminal)
-    return str(target) if target is not None else "."
+    return str(target) if target is not None else ""
 
 
 def analysis_to_markdown(analysis) -> str:
@@ -168,7 +168,7 @@ def analysis_to_html(analysis) -> str:
         for terminal in table.terminals:
             action = table.get_action(state, terminal)
             cls = action.action_type if action else ""
-            text = action.to_string() if action else "."
+            text = action.to_string() if action else ""
             parts.append(f"<td class='{cls}'>{_html_escape(text)}</td>")
         parts.append("</tr>")
     parts.append("</table>")

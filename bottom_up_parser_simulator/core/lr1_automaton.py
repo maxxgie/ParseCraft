@@ -12,6 +12,11 @@ from typing import Dict, List, Set, Tuple
 
 from core.automaton import LRState
 from core.first_follow import compute_first
+from core.grammar_engine import (
+    augment_grammar as _augment_grammar,
+    ordered_symbols,
+    production_order_map,
+)
 from core.logging_config import get_logger
 from models.grammar import Grammar
 from models.lr_item import LRItem
@@ -26,16 +31,16 @@ EPSILON = "ε"
 def augment_grammar(grammar: Grammar) -> Grammar:
     """Return an augmented grammar with ``S' -> S``.
 
+    Delegates to :func:`core.grammar_engine.augment_grammar` so that a grammar
+    which already uses ``S'`` still gets a collision-free augmented start.
+
     Args:
         grammar: The original grammar.
 
     Returns:
-        A new grammar whose start symbol is ``S'``.
+        A new grammar whose start symbol produces the original start.
     """
-    productions: Dict[str, List[List[str]]] = {AUGMENTED_START: [[grammar.start_symbol]]}
-    for lhs, rhs_list in grammar.productions.items():
-        productions[lhs] = [list(rhs) for rhs in rhs_list]
-    return Grammar(start_symbol=AUGMENTED_START, productions=productions)
+    return _augment_grammar(grammar)
 
 
 def _first_of_sequence(
@@ -160,17 +165,28 @@ class LR1Automaton:
         self.merged = merge
         self._build()
 
+        order = production_order_map(self.augmented_grammar)
+        for state in self.states:
+            state.production_order = order
+
     # ------------------------------------------------------------------
     # Construction
     # ------------------------------------------------------------------
     def _start_items(self) -> Set[LRItem]:
         start = LRItem(
-            lhs=AUGMENTED_START,
+            lhs=self.augmented_grammar.start_symbol,
             rhs=(self.grammar.start_symbol,),
             dot=0,
             lookahead=END_MARKER,
         )
         return lr1_closure({start}, self.augmented_grammar, self.first)
+
+    def _ordered_symbols(self, items: Set[LRItem]) -> List[str]:
+        """Return the transition symbols of ``items`` in grammar order."""
+        available = {
+            item.next_symbol() for item in items if item.next_symbol() is not None
+        }
+        return [s for s in ordered_symbols(self.augmented_grammar) if s in available]
 
     def _build(self) -> None:
         initial = self._start_items()
@@ -191,14 +207,7 @@ class LR1Automaton:
         while unprocessed:
             current_id = unprocessed.pop(0)
             current_state = self.states[current_id]
-            symbols = sorted(
-                {
-                    it.next_symbol()
-                    for it in current_state.items
-                    if it.next_symbol() is not None
-                }
-            )
-            for symbol in symbols:
+            for symbol in self._ordered_symbols(current_state.items):
                 goto_items = lr1_goto(
                     current_state.items, symbol, self.augmented_grammar, self.first
                 )
@@ -230,9 +239,12 @@ class LR1Automaton:
         while unprocessed:
             current_id = unprocessed.pop(0)
             items = canonical_states[current_id]
-            symbols = sorted(
-                {it.next_symbol() for it in items if it.next_symbol() is not None}
-            )
+            available = {
+                it.next_symbol() for it in items if it.next_symbol() is not None
+            }
+            symbols = [
+                s for s in ordered_symbols(self.augmented_grammar) if s in available
+            ]
             for symbol in symbols:
                 goto_items = lr1_goto(
                     items, symbol, self.augmented_grammar, self.first

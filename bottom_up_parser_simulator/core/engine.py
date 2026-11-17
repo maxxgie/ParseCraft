@@ -25,6 +25,7 @@ from core.grammar_normalize import (
 from core.grammar_parser import GrammarParseError, parse_grammar, validate_grammar
 from core.grammar_transform import (
     apply_transforms,
+    build_grammar_stages,
     describe_features,
     has_common_prefixes,
     has_left_recursion,
@@ -60,6 +61,7 @@ class AnalysisResult:
     precedence: PrecedenceInfo = field(default_factory=PrecedenceInfo)
     resolutions: List[Resolution] = field(default_factory=list)
     resolution_config: ResolutionConfig = field(default_factory=ResolutionConfig)
+    stages: Dict[str, str] = field(default_factory=dict)
 
     @property
     def is_conflict_free(self) -> bool:
@@ -226,6 +228,7 @@ def analyze(
         precedence=precedence,
         resolutions=resolutions,
         resolution_config=resolution,
+        stages=build_grammar_stages(original, grammar),
     )
     logger.info(
         "Analysis complete: %s, %d states, %d conflicts, %d resolved, %d warnings%s",

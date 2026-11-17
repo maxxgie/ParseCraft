@@ -93,7 +93,7 @@ class LRStatesView(QWidget):
         lines.append("")
         if state.transitions:
             lines.append("Transitions:")
-            for symbol, target in sorted(state.transitions.items()):
+            for symbol, target in state.transitions.items():
                 lines.append(f"  on '{symbol}'  ->  State {target}")
         else:
             lines.append("Transitions: (none)")

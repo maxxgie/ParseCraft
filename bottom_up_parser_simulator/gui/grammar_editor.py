@@ -69,6 +69,7 @@ class GenerateOptions:
     remove_unit: bool = False
     remove_useless: bool = False
     resolution: ResolutionConfig = field(default_factory=ResolutionConfig)
+    show_error_cells: bool = False
 
 
 class GrammarEditor(QWidget):
@@ -157,6 +158,13 @@ class GrammarEditor(QWidget):
         for value in REDUCE_REDUCE_OPTIONS:
             self.reduce_reduce_combo.addItem(_REDUCE_REDUCE_LABELS[value], value)
         row3.addWidget(self.reduce_reduce_combo)
+
+        self.show_error_cb = QCheckBox("Show 'Error' cells")
+        self.show_error_cb.setToolTip(
+            "When enabled, empty ACTION cells display 'Error' instead of "
+            "being left blank (as in handwritten notes)."
+        )
+        row3.addWidget(self.show_error_cb)
         row3.addStretch(1)
         layout.addLayout(row3)
 
@@ -174,9 +182,15 @@ class GrammarEditor(QWidget):
         self.editor.setLineWrapMode(QPlainTextEdit.LineWrapMode.NoWrap)
         layout.addWidget(self.editor, 3)
 
-        self.preview_caption = QLabel("Grammar used (after transforms):")
+        self.preview_caption = QLabel("Grammar preview (ordering preserved):")
         self.preview_caption.setStyleSheet("color: #444;")
         layout.addWidget(self.preview_caption)
+
+        variant_row = QHBoxLayout()
+        variant_row.addWidget(QLabel("Show:"))
+        self.variant_combo = QComboBox()
+        variant_row.addWidget(self.variant_combo, 1)
+        layout.addLayout(variant_row)
 
         self.preview = QPlainTextEdit()
         self.preview.setReadOnly(True)
@@ -192,6 +206,8 @@ class GrammarEditor(QWidget):
         )
         layout.addWidget(self.status_label)
 
+        self._variants: dict[str, str] = {}
+        self.variant_combo.currentTextChanged.connect(self._on_variant_changed)
         self._update_resolution_enabled(False)
         self.set_grammar_text(EXAMPLE_GRAMMAR)
         logger.debug("GrammarEditor initialized")
@@ -243,6 +259,7 @@ class GrammarEditor(QWidget):
             remove_unit=self.remove_unit_cb.isChecked(),
             remove_useless=self.remove_useless_cb.isChecked(),
             resolution=self.current_resolution(),
+            show_error_cells=self.show_error_cb.isChecked(),
         )
 
     def set_feature_note(self, note: str) -> None:
@@ -251,7 +268,38 @@ class GrammarEditor(QWidget):
 
     def set_transform_preview(self, text: str) -> None:
         """Show the grammar that was actually analysed."""
+        if "Used (after transforms)" in self._variants:
+            self._variants["Used (after transforms)"] = text
+        else:
+            self._variants = {"Used (after transforms)": text}
+            self.variant_combo.blockSignals(True)
+            self.variant_combo.clear()
+            self.variant_combo.addItem("Used (after transforms)")
+            self.variant_combo.blockSignals(False)
         self.preview.setPlainText(text)
+
+    def set_grammar_variants(self, variants: dict[str, str]) -> None:
+        """Populate the grammar-variant selector.
+
+        Args:
+            variants: Ordered mapping of label to BNF text, typically
+                ``Original``, ``Left-recursion removed``, ``Left-factored`` and
+                ``Used (after transforms)``.
+        """
+        self._variants = dict(variants)
+        preferred = "Used (after transforms)"
+        target = preferred if preferred in self._variants else next(
+            iter(self._variants), ""
+        )
+        self.variant_combo.blockSignals(True)
+        self.variant_combo.clear()
+        for label in self._variants:
+            self.variant_combo.addItem(label)
+        index = self.variant_combo.findText(target)
+        if index >= 0:
+            self.variant_combo.setCurrentIndex(index)
+        self.variant_combo.blockSignals(False)
+        self.preview.setPlainText(self._variants.get(target, ""))
 
     def set_status(self, message: str, is_error: bool = False) -> None:
         """Show a status message, coloured red on error."""
@@ -267,6 +315,10 @@ class GrammarEditor(QWidget):
     def _update_resolution_enabled(self, enabled: bool) -> None:
         self.shift_reduce_combo.setEnabled(enabled)
         self.reduce_reduce_combo.setEnabled(enabled)
+
+    def _on_variant_changed(self, label: str) -> None:
+        """Show the selected grammar variant."""
+        self.preview.setPlainText(self._variants.get(label, ""))
 
     def _on_generate(self) -> None:
         self.generate_requested.emit(self.grammar_text(), self.current_options())

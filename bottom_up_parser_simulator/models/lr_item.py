@@ -84,18 +84,33 @@ class LRItem:
             lookahead=lookahead,
         )
 
-    def to_string(self) -> str:
-        """Return a string representation of the item.
+    def to_string(self, lhs_width: int | None = None) -> str:
+        """Return a textbook-style representation of the item.
+
+        The dot is rendered as ``•`` (U+2022) and is placed so that the
+        productions of a state line up in a monospace font. When ``lhs_width``
+        is given, the left-hand side is padded to that width, which keeps the
+        dots aligned across items with different non-terminal names.
+
+        Args:
+            lhs_width: Optional width to pad the left-hand side to.
 
         Returns:
-            String like "[A -> α . β , a]" for LR(1) or "A -> α . β" for LR(0).
+            String like ``[A -> α • β , a]`` for LR(1) or ``A -> α • β`` for
+            LR(0).
         """
-        rhs_list = list(self.rhs)
-        rhs_with_dot = rhs_list[: self.dot] + ["."] + rhs_list[self.dot :]
-        body = " ".join(rhs_with_dot)
+        lhs = self.lhs if lhs_width is None else self.lhs.ljust(lhs_width)
+        before = list(self.rhs[: self.dot])
+        after = list(self.rhs[self.dot :])
+        if not before:
+            body = "•" + " ".join(after)
+        elif not after:
+            body = " ".join(before) + "•"
+        else:
+            body = " ".join(before) + "• " + " ".join(after)
         if self.lookahead:
-            return f"[{self.lhs} -> {body} , {self.lookahead}]"
-        return f"{self.lhs} -> {body}"
+            return f"[{lhs} -> {body} , {self.lookahead}]"
+        return f"{lhs} -> {body}"
 
     def __str__(self) -> str:
         return self.to_string()

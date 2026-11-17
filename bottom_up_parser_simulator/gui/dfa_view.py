@@ -43,6 +43,11 @@ class DFAView(QWidget):
         automaton = analysis.automaton
         states = automaton.states
         start = automaton.start_state
+        augmented_start = getattr(
+            getattr(automaton, "augmented_grammar", None),
+            "start_symbol",
+            AUGMENTED_START,
+        )
 
         # Group states into BFS layers starting from the start state.
         layers: Dict[int, List[int]] = {}
@@ -67,7 +72,7 @@ class DFAView(QWidget):
             for idx, state_id in enumerate(sorted(members)):
                 state = states[state_id]
                 y = (idx - (len(members) - 1) / 2) * Y_GAP + layer * 28
-                kind = "accept" if self._is_accept(state.items) else "state"
+                kind = "accept" if self._is_accept(state.items, augmented_start) else "state"
                 nodes.append(
                     GraphNode(
                         id=state_id,
@@ -97,8 +102,8 @@ class DFAView(QWidget):
         self.header.setStyleSheet("color: #333;")
 
     @staticmethod
-    def _is_accept(items) -> bool:
+    def _is_accept(items, augmented_start: str = AUGMENTED_START) -> bool:
         for item in items:
-            if item.lhs == AUGMENTED_START and item.is_complete():
+            if item.lhs == augmented_start and item.is_complete():
                 return True
         return False

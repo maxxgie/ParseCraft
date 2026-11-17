@@ -6,6 +6,31 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple
 
 
+def _render_table(headers: List[str], rows: List[List[str]]) -> str:
+    """Render a table with column-aligned, space-padded cells.
+
+    Args:
+        headers: Column labels.
+        rows: Row values, one list per row.
+
+    Returns:
+        A multi-line string with aligned columns and a separator line.
+    """
+    widths = [len(header) for header in headers]
+    for row in rows:
+        for index, cell in enumerate(row):
+            widths[index] = max(widths[index], len(cell))
+
+    def render(cells: List[str]) -> str:
+        return "  ".join(cell.ljust(widths[i]) for i, cell in enumerate(cells)).rstrip()
+
+    lines = [render(headers)]
+    lines.append("  ".join("-" * width for width in widths))
+    for row in rows:
+        lines.append(render(row))
+    return "\n".join(lines)
+
+
 @dataclass
 class TableAction:
     """Represents an action in the ACTION table.
@@ -28,14 +53,15 @@ class TableAction:
         """Return a string representation of the action.
 
         Returns:
-            String like 'S5', 'R2', 'ACC', or '.' for error.
+            String like ``S5`` (shift to state 5), ``R2`` (reduce by
+            production 2), ``Accept``, or ``.`` for an error cell.
         """
         if self.action_type == "shift":
             return f"S{self.state}"
         elif self.action_type == "reduce":
             return f"R{self.rule_number if self.rule_number is not None else self.state}"
         elif self.action_type == "accept":
-            return "ACC"
+            return "Accept"
         else:
             return "."
 
@@ -142,43 +168,39 @@ class ParseTable:
         return self.goto.get((state, non_terminal))
 
     def to_action_string(self) -> str:
-        """Return a string representation of the ACTION table.
+        """Return an aligned ACTION table as plain text.
 
         Returns:
-            Multi-line string with the ACTION table.
+            Multi-line string with column-aligned rows.
         """
         if not self.terminals:
             return "Empty ACTION table"
 
-        header = "State\t" + "\t".join(self.terminals)
-        lines = [header]
-
+        headers = ["State", *self.terminals]
+        rows: List[List[str]] = []
         for state in range(self.num_states):
             row = [str(state)]
             for terminal in self.terminals:
                 action = self.get_action(state, terminal)
-                row.append(action.to_string() if action else ".")
-            lines.append("\t".join(row))
-
-        return "\n".join(lines)
+                row.append(action.to_string() if action else "")
+            rows.append(row)
+        return _render_table(headers, rows)
 
     def to_goto_string(self) -> str:
-        """Return a string representation of the GOTO table.
+        """Return an aligned GOTO table as plain text.
 
         Returns:
-            Multi-line string with the GOTO table.
+            Multi-line string with column-aligned rows.
         """
         if not self.non_terminals:
             return "Empty GOTO table"
 
-        header = "State\t" + "\t".join(self.non_terminals)
-        lines = [header]
-
+        headers = ["State", *self.non_terminals]
+        rows: List[List[str]] = []
         for state in range(self.num_states):
             row = [str(state)]
             for non_terminal in self.non_terminals:
                 target = self.get_goto(state, non_terminal)
-                row.append(str(target) if target is not None else ".")
-            lines.append("\t".join(row))
-
-        return "\n".join(lines)
+                row.append(str(target) if target is not None else "")
+            rows.append(row)
+        return _render_table(headers, rows)

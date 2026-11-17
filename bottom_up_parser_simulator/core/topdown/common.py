@@ -81,6 +81,7 @@ class TopDownResult:
     failed_attempts: List[Tuple[str, List[str]]] = field(default_factory=list)
     decision_points: List[Tuple[str, int]] = field(default_factory=list)
     transforms: List[str] = field(default_factory=list)
+    stages: Dict[str, str] = field(default_factory=dict)
 
     @property
     def is_ll1(self) -> bool:

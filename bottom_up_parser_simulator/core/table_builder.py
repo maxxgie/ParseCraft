@@ -37,8 +37,61 @@ MODES: Dict[str, str] = {
 }
 
 
+def _is_named_terminal(symbol: str) -> bool:
+    """Return ``True`` for identifier-like terminals such as ``id`` or ``num``.
+
+    Textbook ACTION tables usually list named terminals (identifiers, keywords,
+    literals) before symbolic operators, so this classification is used to
+    produce ``id + * ( ) $`` rather than an arbitrary ordering.
+    """
+    return symbol.isidentifier() or symbol.isalnum()
+
+
+def ordered_terminals(grammar: Grammar) -> List[str]:
+    """Return terminals in textbook order (named first, then symbolic).
+
+    Within each group the order of first appearance in the grammar is kept.
+    The end marker ``$`` is appended by the caller.
+
+    Args:
+        grammar: The grammar whose terminals are ordered.
+
+    Returns:
+        A list of terminal symbols.
+    """
+    named: List[str] = []
+    symbolic: List[str] = []
+    seen: Set[str] = set()
+    for bodies in grammar.productions.values():
+        for body in bodies:
+            for symbol in body:
+                if symbol in grammar.non_terminals or symbol == "ε":
+                    continue
+                if symbol in seen:
+                    continue
+                seen.add(symbol)
+                if _is_named_terminal(symbol):
+                    named.append(symbol)
+                else:
+                    symbolic.append(symbol)
+    return named + symbolic
+
+
+def ordered_non_terminals(grammar: Grammar) -> List[str]:
+    """Return non-terminals in declaration order (helpers after their parent).
+
+    Args:
+        grammar: The grammar whose non-terminals are ordered.
+
+    Returns:
+        A list of non-terminal symbols in grammar order.
+    """
+    return list(grammar.productions.keys())
+
+
 def assign_production_numbers(
     grammar: Grammar,
+    augmented_start: str = AUGMENTED_START,
 ) -> Tuple[Dict[Tuple[str, Tuple[str, ...]], int], List[Tuple[str, Tuple[str, ...]]]]:
     """Assign a number to every production, including the augmented one.
 
@@ -47,6 +100,7 @@ def assign_production_numbers(
 
     Args:
         grammar: The original grammar (not augmented).
+        augmented_start: The name of the augmented start symbol.
 
     Returns:
         A tuple ``(numbers, rules)`` where ``numbers`` maps
@@ -56,7 +110,7 @@ def assign_production_numbers(
     numbers: Dict[Tuple[str, Tuple[str, ...]], int] = {}
     rules: List[Tuple[str, Tuple[str, ...]]] = []
 
-    aug_key = (AUGMENTED_START, (grammar.start_symbol,))
+    aug_key = (augmented_start, (grammar.start_symbol,))
     numbers[aug_key] = 0
     rules.append(aug_key)
 
@@ -116,13 +170,19 @@ def build_parsing_table(
     table = ParseTable()
     table.num_states = len(automaton.states)
 
-    terminals = sorted(grammar.terminals)
+    # The automaton knows the real augmented start name (which may differ from
+    # "S'" when the grammar already uses that symbol).
+    aug_start = getattr(
+        getattr(automaton, "augmented_grammar", None), "start_symbol", AUGMENTED_START
+    )
+
+    terminals = ordered_terminals(grammar)
     if END_MARKER not in terminals:
         terminals.append(END_MARKER)
     table.terminals = terminals
-    table.non_terminals = sorted(grammar.non_terminals)
+    table.non_terminals = ordered_non_terminals(grammar)
 
-    numbers, _rules = assign_production_numbers(grammar)
+    numbers, _rules = assign_production_numbers(grammar, aug_start)
 
     # Collect every candidate action per (state, terminal) cell.
     candidates: Dict[Tuple[int, str], List[TableAction]] = {}
@@ -147,7 +207,7 @@ def build_parsing_table(
             lhs = item.lhs
             body = item.rhs
 
-            if lhs == AUGMENTED_START and body == (grammar.start_symbol,):
+            if lhs == aug_start and body == (grammar.start_symbol,):
                 add((state_id, END_MARKER), TableAction(action_type="accept"))
                 continue
 

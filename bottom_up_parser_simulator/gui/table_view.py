@@ -18,6 +18,8 @@ from core.logging_config import get_logger
 from gui.palette import (
     BLANK_BG,
     BLANK_FG,
+    ERROR_BG,
+    ERROR_FG,
     GOTO_BG,
     GOTO_FG,
     action_colors,
@@ -56,6 +58,8 @@ class TableView(QWidget):
         self.header.setStyleSheet("color: #555;")
         layout.addWidget(self.header)
 
+        self._show_errors = False
+
         self.tabs = QTabWidget()
 
         self.action_table = QTableWidget(0, 0)
@@ -83,8 +87,15 @@ class TableView(QWidget):
         self.header.setText("Generate a grammar to see ACTION/GOTO tables.")
         self.header.setStyleSheet("color: #555;")
 
-    def update_from(self, analysis) -> None:
-        """Fill the tables from an analysis result."""
+    def update_from(self, analysis, show_errors: bool = False) -> None:
+        """Fill the tables from an analysis result.
+
+        Args:
+            analysis: The analysis to display.
+            show_errors: When ``True``, empty ACTION cells read ``Error``
+                instead of being left blank.
+        """
+        self._show_errors = show_errors
         table = analysis.table
         self._fill_action(table)
         self._fill_goto(table)
@@ -134,7 +145,10 @@ class TableView(QWidget):
             for col, terminal in enumerate(terminals, start=1):
                 action = table.get_action(state, terminal)
                 if action is None:
-                    cell = _cell(".", BLANK_BG, BLANK_FG)
+                    if self._show_errors:
+                        cell = _cell("Error", ERROR_BG, ERROR_FG)
+                    else:
+                        cell = _cell("", BLANK_BG, BLANK_FG)
                 else:
                     bg, fg = action_colors(action.action_type)
                     cell = _cell(
@@ -155,5 +169,5 @@ class TableView(QWidget):
                 if target is not None:
                     cell = _cell(str(target), GOTO_BG, GOTO_FG, bold=True)
                 else:
-                    cell = _cell(".", BLANK_BG, BLANK_FG)
+                    cell = _cell("", BLANK_BG, BLANK_FG)
                 self.goto_table.setItem(state, col, cell)

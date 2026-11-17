@@ -13,6 +13,7 @@ from core.grammar_normalize import (
 from core.grammar_parser import parse_grammar
 from core.grammar_transform import (
     apply_transforms,
+    build_grammar_stages,
     has_common_prefixes,
     has_left_recursion,
 )
@@ -117,6 +118,7 @@ def analyze_topdown(
         ll1_table=ll1_table,
         conflicts=conflicts,
         transforms=transforms,
+        stages=build_grammar_stages(original, grammar),
     )
     logger.info(
         "Top-down analysis (%s): left_recursion=%s, left_factoring=%s, conflicts=%d%s",

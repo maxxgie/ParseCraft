@@ -197,3 +197,61 @@ def test_simulate_accepts_unspaced_input(parser_type):
     assert simulate_input(result, "(id+id)*id").accepted
     assert not simulate_input(result, "id+").accepted
     assert not simulate_input(result, "").accepted
+
+
+# ----------------------------------------------------------------------
+# Textbook display ordering / formatting
+# ----------------------------------------------------------------------
+def test_lr0_state_items_grouped_by_production_order():
+    automaton = LRAutomaton(parse_grammar(EXPRESSION))
+    items = automaton.get_state(0).sorted_items()
+    lhs_order: list[str] = []
+    for item in items:
+        if item.lhs not in lhs_order:
+            lhs_order.append(item.lhs)
+    # Definition order, augmented start first, never alphabetical.
+    assert lhs_order == ["S'", "E", "T", "F"]
+
+
+def test_lr0_items_render_with_bullet_and_alignment():
+    automaton = LRAutomaton(parse_grammar(EXPRESSION))
+    text = automaton.get_state(0).get_items_string()
+    assert "S' -> •E" in text
+    assert "E  -> •E + T" in text
+    # Dots of the padded non-terminals line up in the same column.
+    lines = text.splitlines()
+    dot_columns = {line.index("•") for line in lines}
+    assert len(dot_columns) == 1
+
+
+def test_transition_rows_follow_grammar_symbol_order():
+    automaton = LRAutomaton(parse_grammar(EXPRESSION))
+    rows = automaton.get_state(0).get_transition_rows()
+    consumed = [row[2] for row in rows]
+    # Each item gets its own row (duplicates included), but the first
+    # appearance of every symbol follows grammar order.
+    distinct = list(dict.fromkeys(consumed))
+    assert distinct == ["E", "T", "F", "(", "id"]
+    # There is one row per non-completed item in the state.
+    assert len(rows) == len(automaton.get_state(0).items)
+
+
+def test_action_and_goto_columns_use_textbook_order():
+    result = analyze(EXPRESSION, "SLR(1)")
+    assert result.table.terminals == ["id", "+", "*", "(", ")", "$"]
+    assert result.table.non_terminals == ["E", "T", "F"]
+
+
+def test_accept_is_rendered_as_a_word():
+    result = analyze(EXPRESSION, "SLR(1)")
+    assert result.table.get_action(1, "$").to_string() == "Accept"
+
+
+def test_production_numbers_start_with_augmented_rule():
+    from core.table_builder import assign_production_numbers
+
+    numbers, rules = assign_production_numbers(parse_grammar(EXPRESSION))
+    assert rules[0] == ("S'", ("E",))
+    assert numbers[("S'", ("E",))] == 0
+    assert numbers[("E", ("E", "+", "T"))] == 1
+    assert numbers[("E", ("T",))] == 2

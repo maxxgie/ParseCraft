@@ -191,3 +191,27 @@ def test_describe_features():
         describe_features(parse_grammar("S -> a S | b"))
         == "no left recursion or common prefixes"
     )
+
+
+# ----------------------------------------------------------------------
+# Textbook ordering of transformed non-terminals
+# ----------------------------------------------------------------------
+def test_left_recursion_helper_immediately_follows_parent():
+    result = eliminate_left_recursion(parse_grammar(EXPRESSION))
+    assert list(result.productions.keys()) == ["E", "E'", "T", "T'", "F"]
+
+
+def test_left_factor_helper_immediately_follows_parent():
+    result = left_factor(parse_grammar(PREFIX_GRAMMAR))
+    keys = list(result.productions.keys())
+    assert keys[0] == "S"
+    # The first helper is inserted directly after its parent, not at the end.
+    assert keys[1].startswith("S'")
+
+
+def test_left_factor_nested_helpers_follow_their_parent():
+    result = left_factor(parse_grammar("S -> a b c | a b d | a e"))
+    keys = list(result.productions.keys())
+    assert keys[0] == "S"
+    assert keys[1].startswith("S'")
+    assert keys[2].startswith("S'")

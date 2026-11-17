@@ -15,7 +15,7 @@ return a new one, leaving the input untouched.
 
 from __future__ import annotations
 
-from typing import Dict, List, Set, Tuple
+from typing import Dict, List, Optional, Set, Tuple
 
 from core.logging_config import get_logger
 from models.grammar import Grammar
@@ -148,8 +148,13 @@ def has_common_prefixes(grammar: Grammar) -> bool:
 # ----------------------------------------------------------------------
 def _eliminate_immediate(
     productions: Dict[str, List[List[str]]], non_terminal: str, fresh
-) -> None:
-    """Remove immediate left recursion from a single non-terminal."""
+) -> Optional[str]:
+    """Remove immediate left recursion from a single non-terminal.
+
+    Returns:
+        The name of the freshly introduced helper non-terminal, or ``None`` when
+        the non-terminal was not immediately left-recursive.
+    """
     bodies = productions.get(non_terminal, [])
     alpha: List[List[str]] = []  # A -> A α
     beta: List[List[str]] = []  # A -> β (does not start with A)
@@ -160,7 +165,7 @@ def _eliminate_immediate(
             beta.append(body)
 
     if not alpha:
-        return
+        return None
 
     new_nt = fresh(non_terminal)
 
@@ -173,6 +178,7 @@ def _eliminate_immediate(
     tail_bodies: List[List[str]] = [a + [new_nt] for a in alpha]
     tail_bodies.append([])  # A' -> ε
     productions[new_nt] = _dedupe(tail_bodies)
+    return new_nt
 
 
 def eliminate_left_recursion(grammar: Grammar) -> Grammar:
@@ -193,6 +199,7 @@ def eliminate_left_recursion(grammar: Grammar) -> Grammar:
         nt: [list(body) for body in grammar.productions[nt]] for nt in order
     }
     fresh = _make_fresh_name_factory(grammar, productions)
+    prime_of: Dict[str, str] = {}
 
     for i, current in enumerate(order):
         # Substitute indirect recursion: current -> earlier γ
@@ -207,10 +214,27 @@ def eliminate_left_recursion(grammar: Grammar) -> Grammar:
                     rewritten.append(list(body))
             productions[current] = _dedupe(rewritten)
 
-        _eliminate_immediate(productions, current, fresh)
+        new_nt = _eliminate_immediate(productions, current, fresh)
+        if new_nt is not None:
+            prime_of[current] = new_nt
+
+    # Rebuild the production dictionary so that every helper (prime)
+    # non-terminal immediately follows its parent, preserving the original
+    # declaration order. This is the ordering used in textbooks and lecture
+    # notes (E, E', T, T', F), never E, T, F, E', T'.
+    ordered: Dict[str, List[List[str]]] = {}
+    for nt in order:
+        ordered[nt] = productions[nt]
+        prime = prime_of.get(nt)
+        if prime is not None:
+            ordered[prime] = productions[prime]
+    # Defensive: keep any symbol that was somehow not placed above.
+    for nt, bodies in productions.items():
+        if nt not in ordered:
+            ordered[nt] = bodies
 
     logger.info("Left recursion removed from grammar")
-    return Grammar(start_symbol=grammar.start_symbol, productions=productions)
+    return Grammar(start_symbol=grammar.start_symbol, productions=ordered)
 
 
 # ----------------------------------------------------------------------
@@ -238,6 +262,7 @@ def left_factor(grammar: Grammar) -> Grammar:
                 groups.setdefault(body[0], []).append(body)
 
         result: List[List[str]] = []
+        subs: List[Tuple[str, List[List[str]]]] = []
         for sym, group in groups.items():
             if len(group) == 1:
                 result.append(list(group[0]))
@@ -247,10 +272,15 @@ def left_factor(grammar: Grammar) -> Grammar:
             sub = fresh(lhs)
             remainders = [list(tail[len(common):]) for tail in tails]
             result.append([sym] + common + [sub])
-            factor_into(sub, remainders)
+            subs.append((sub, remainders))
 
         result.extend(epsilon)
+        # Register the parent first so that helpers created below (and their
+        # own helpers) are inserted immediately after their parent, matching
+        # the order used in textbooks: S, S', ...
         new_productions[lhs] = _dedupe(result)
+        for sub, remainders in subs:
+            factor_into(sub, remainders)
 
     for lhs, bodies in grammar.productions.items():
         factor_into(lhs, [list(body) for body in bodies])
@@ -296,3 +326,31 @@ def describe_features(grammar: Grammar) -> str:
     if has_common_prefixes(grammar):
         notes.append("common prefixes detected")
     return ", ".join(notes) if notes else "no left recursion or common prefixes"
+
+
+def build_grammar_stages(original: Grammar, final: Grammar) -> Dict[str, str]:
+    """Return the displayable grammar variants, in a stable order.
+
+    The returned mapping always contains ``Original``, ``Left-recursion
+    removed``, ``Left-factored`` and ``Used (after transforms)``. Each variant
+    preserves declaration order (helpers immediately follow their parent), so
+    students can compare the application output with their lecture notes.
+
+    Args:
+        original: The grammar as entered by the user.
+        final: The grammar that was actually analysed (after all transforms).
+
+    Returns:
+        An ordered ``dict`` mapping a human-readable label to BNF text.
+    """
+    stages: Dict[str, str] = {"Original": original.to_text()}
+    try:
+        stages["Left-recursion removed"] = eliminate_left_recursion(original).to_text()
+    except Exception:  # pragma: no cover - display helper is best-effort
+        logger.exception("Could not render left-recursion-removed grammar")
+    try:
+        stages["Left-factored"] = left_factor(original).to_text()
+    except Exception:  # pragma: no cover - display helper is best-effort
+        logger.exception("Could not render left-factored grammar")
+    stages["Used (after transforms)"] = final.to_text()
+    return stages
