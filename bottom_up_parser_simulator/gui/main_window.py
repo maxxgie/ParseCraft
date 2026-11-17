@@ -49,7 +49,7 @@ from gui.goto_steps_view import GotoStepsView
 from gui.grammar_analyzer_view import GrammarAnalyzerView
 from gui.grammar_editor import GenerateOptions, GrammarEditor
 from gui.ll1_table_view import LL1TableView
-from gui.lr_items_view import LRItemsView
+from gui.lr_items_transitions_view import LRItemsTransitionsView
 from gui.lr_states_view import LRStatesView
 from gui.parse_tree_view import ParseTreeView
 from gui.parser_comparison_view import ParserComparisonView
@@ -57,7 +57,6 @@ from gui.settings import APP_NAME, APP_ORGANIZATION, APP_VERSION
 from gui.simulation_view import SimulationView
 from gui.table_view import CombinedTableView
 from gui.topdown_view import TopDownView
-from gui.transition_table_view import TransitionTableView
 from gui.validation_view import ValidationView
 
 logger = get_logger(__name__)
@@ -97,7 +96,6 @@ _LR_TABS = [
     TAB_CLOSURE,
     TAB_GOTO,
     TAB_STATES,
-    TAB_TRANSITIONS,
     TAB_VALIDATION,
     TAB_DFA,
     TAB_TABLE,
@@ -113,7 +111,6 @@ _LR_TABS_WITH_FIRST = [
     TAB_CLOSURE,
     TAB_GOTO,
     TAB_STATES,
-    TAB_TRANSITIONS,
     TAB_VALIDATION,
     TAB_DFA,
     TAB_TABLE,
@@ -200,11 +197,10 @@ class MainWindow(QMainWindow):
     def _build_central_tabs(self) -> None:
         self.grammar_editor = GrammarEditor()
         self.first_follow_view = FirstFollowView()
-        self.lr_items_view = LRItemsView()
+        self.lr_items_view = LRItemsTransitionsView()
         self.closure_view = ClosureStepsView()
         self.goto_steps_view = GotoStepsView()
         self.lr_states_view = LRStatesView()
-        self.transition_table_view = TransitionTableView()
         self.validation_view = ValidationView()
         self.dfa_view = DFAView()
         self.combined_view = CombinedTableView()
@@ -221,11 +217,10 @@ class MainWindow(QMainWindow):
         self._tab_titles = {
             TAB_GRAMMAR: "Grammar",
             TAB_FIRST_FOLLOW: "FIRST/FOLLOW",
-            TAB_LR_ITEMS: "LR Items",
+            TAB_LR_ITEMS: "LR Items & Transitions",
             TAB_CLOSURE: "Closure Steps",
             TAB_GOTO: "GOTO Steps",
             TAB_STATES: "Canonical Collection",
-            TAB_TRANSITIONS: "State Transitions",
             TAB_VALIDATION: "State Validation",
             TAB_DFA: "DFA",
             TAB_TABLE: "ACTION/GOTO Table",
@@ -246,7 +241,6 @@ class MainWindow(QMainWindow):
             TAB_CLOSURE: self.closure_view,
             TAB_GOTO: self.goto_steps_view,
             TAB_STATES: self.lr_states_view,
-            TAB_TRANSITIONS: self.transition_table_view,
             TAB_VALIDATION: self.validation_view,
             TAB_DFA: self.dfa_view,
             TAB_TABLE: self.combined_view,
@@ -529,7 +523,6 @@ class MainWindow(QMainWindow):
         self.closure_view.clear()
         self.goto_steps_view.clear()
         self.lr_states_view.clear()
-        self.transition_table_view.clear()
         self.validation_view.clear()
         self.dfa_view.clear()
         self.combined_view.clear()
@@ -594,7 +587,6 @@ class MainWindow(QMainWindow):
         self.closure_view.update_from(analysis)
         self.goto_steps_view.update_from(analysis)
         self.lr_states_view.update_from(analysis)
-        self.transition_table_view.update_from(analysis)
         self.validation_view.update_from(analysis)
         self.dfa_view.update_from(analysis)
         self.combined_view.update_from(analysis, show_errors=options.show_error_cells)
@@ -748,7 +740,6 @@ class MainWindow(QMainWindow):
         self.closure_view.clear()
         self.goto_steps_view.clear()
         self.lr_states_view.clear()
-        self.transition_table_view.clear()
         self.validation_view.clear()
         self.dfa_view.clear()
         self.combined_view.clear()
