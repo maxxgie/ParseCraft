@@ -60,7 +60,7 @@ ACCEPT_FG = QColor("#1B5E20")
 ERROR_BG = QColor("#FFCDD2")
 ERROR_FG = QColor("#B71C1C")
 BLANK_BG = QColor("#F5F5F5")
-BLANK_FG = QColor("#9E9E9E")
+BLANK_FG = QColor("#475569")   # readable slate for placeholders ("—")
 
 # GOTO / transition colours.
 GOTO_BG = QColor("#D1C4E9")

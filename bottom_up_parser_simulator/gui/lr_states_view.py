@@ -17,7 +17,6 @@ from PyQt6.QtGui import (
     QFont,
     QFontMetrics,
     QPainter,
-    QPalette,
     QTextDocument,
 )
 from PyQt6.QtWidgets import (
@@ -47,6 +46,7 @@ KERNEL_FG = QColor("#1E3A8A")
 CLOSURE_FG = QColor("#1F2937")
 STATE_BG = QColor("#E8EEF7")           # active state-group tint
 STATE_BG_HOVER = QColor("#F0F4FB")     # hover tint for a state group
+SELECTION_BG = QColor("#DBEAFE")       # light-blue selected-row fill (dark text)
 GRID_BG = QColor("#FFFFFF")
 CONSUME_FG = QColor("#0F766E")         # teal for the Consume column
 NEXT_FG = QColor("#7C3AED")            # violet for the Next State column
@@ -55,6 +55,7 @@ REDUCE_FG = QColor("#1B5E20")
 ACCEPT_BG = QColor("#81C784")
 ACCEPT_FG = QColor("#1B5E20")
 DIVIDER_COLOR = QColor("#CBD5E1")
+PLACEHOLDER_FG = QColor("#475569")     # readable slate for "—" placeholders
 
 
 def _mono_font() -> QFont:
@@ -117,7 +118,7 @@ class _ConfigDelegate(QStyledItemDelegate):
         painter.save()
         rect = option.rect
         if option.state & QStyle.StateFlag.State_Selected:
-            painter.fillRect(rect, option.palette.color(QPalette.ColorRole.Highlight))
+            painter.fillRect(rect, SELECTION_BG)
         elif option.state & QStyle.StateFlag.State_MouseOver:
             painter.fillRect(rect, STATE_BG_HOVER)
 
@@ -400,7 +401,7 @@ class LRStatesView(QWidget):
         if entry.consume_kind == "consume":
             consume_item.setForeground(CONSUME_FG)
         else:
-            consume_item.setForeground(QColor("#9CA3AF"))
+            consume_item.setForeground(PLACEHOLDER_FG)
         consume_item.setData(Qt.ItemDataRole.UserRole, entry)
         self.table.setItem(row, 2, consume_item)
 
@@ -419,7 +420,7 @@ class LRStatesView(QWidget):
         elif entry.next_kind == "goto":
             next_item.setForeground(NEXT_FG)
         else:
-            next_item.setForeground(QColor("#9CA3AF"))
+            next_item.setForeground(PLACEHOLDER_FG)
         next_item.setData(Qt.ItemDataRole.UserRole, entry)
         next_item.setToolTip(
             f"Click to jump to State {entry.target_state}"

@@ -18,7 +18,7 @@ ACCEPT_FG = QColor("#1B5E20")
 ERROR_BG = QColor("#FFCDD2")   # soft red (real errors)
 ERROR_FG = QColor("#B71C1C")
 BLANK_BG = QColor("#F5F5F5")   # empty cells
-BLANK_FG = QColor("#9E9E9E")
+BLANK_FG = QColor("#475569")   # readable slate for placeholders ("—")
 
 # --- GOTO table -------------------------------------------------------------
 GOTO_BG = QColor("#D1C4E9")    # soft lavender

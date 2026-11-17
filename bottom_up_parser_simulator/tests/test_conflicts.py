@@ -257,3 +257,41 @@ def test_disabled_resolution_reports_but_does_not_resolve():
     )
     assert result.resolutions == []
     assert len(result.conflicts) == 4
+
+
+# ----------------------------------------------------------------------
+# describe_conflict must branch on the hyphenated conflict_type strings
+# produced by Conflict.conflict_type ("shift-reduce" / "reduce-reduce").
+# A regression of slash-vs-hyphen drift makes these branches dead code.
+# ----------------------------------------------------------------------
+def test_describe_conflict_shift_reduce_branch():
+    from core.conflict_resolution import describe_conflict
+
+    result = analyze("S -> S + S | id", "LR(0)")
+    sr = [c for c in result.conflicts if c.conflict_type == "shift-reduce"]
+    assert sr, "expected at least one shift-reduce conflict"
+    text = describe_conflict(sr[0], result.automaton, "LR(0)")
+    assert "shift the next token or reduce" in text
+    assert "LR(0) has no lookahead" in text
+
+
+def test_describe_conflict_reduce_reduce_branch():
+    from core.conflict_resolution import describe_conflict
+
+    result = analyze("S -> A | B\nA -> a\nB -> a", "SLR(1)")
+    rr = [c for c in result.conflicts if c.conflict_type == "reduce-reduce"]
+    assert rr, "expected a reduce-reduce conflict"
+    text = describe_conflict(rr[0], result.automaton, "SLR(1)")
+    assert "Two different completed items can be reduced" in text
+
+
+def test_grammar_analyzer_flags_reduce_reduce_ambiguity():
+    from core.grammar_analyzer import analyze_grammar
+
+    grammar = parse_grammar("S -> A | B\nA -> a\nB -> a")
+    report = analyze_grammar(grammar)
+    codes = [i.code for i in report.issues]
+    assert "ambiguous" in codes
+    assert any(
+        "reduce-reduce" in i.message for i in report.issues if i.code == "ambiguous"
+    )

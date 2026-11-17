@@ -227,7 +227,7 @@ def describe_conflict(conflict: Conflict, automaton, parser_type: str = "") -> s
 
     lines.append("")
     lines.append("Reason:")
-    if conflict.conflict_type == "shift/reduce":
+    if conflict.conflict_type == "shift-reduce":
         lines.append(
             "  The parser can either shift the next token or reduce a "
             "completed production. It cannot decide which action is correct "
@@ -237,13 +237,13 @@ def describe_conflict(conflict: Conflict, automaton, parser_type: str = "") -> s
             "  LR(0) has no lookahead, so this conflict is expected whenever "
             "a completed item and a shift item coexist."
         )
-    elif conflict.conflict_type == "reduce/reduce":
+    elif conflict.conflict_type == "reduce-reduce":
         lines.append(
             "  Two different completed items can be reduced by the same "
             "lookahead. The grammar does not determine which production was "
             "used."
         )
-    elif conflict.conflict_type == "accept/reduce":
+    elif conflict.conflict_type == "accept":
         lines.append(
             "  The parser can either accept or reduce. This usually means the "
             "grammar can derive the input in two ways."

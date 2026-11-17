@@ -171,6 +171,49 @@ def build_stylesheet() -> str:
         color: #64748B;
     }}
 
+    /* ---- checkboxes / radios ---------------------------------------- */
+    QCheckBox, QRadioButton {{
+        color: #1F2937;
+        spacing: 6px;
+        background: transparent;
+    }}
+    QCheckBox:disabled, QRadioButton:disabled {{
+        color: #94A3B8;
+    }}
+    QCheckBox::indicator, QRadioButton::indicator {{
+        width: 15px;
+        height: 15px;
+        border: 2px solid #64748B;
+        background: #FFFFFF;
+    }}
+    QCheckBox::indicator {{
+        border-radius: 3px;
+    }}
+    QRadioButton::indicator {{
+        border-radius: 8px;
+    }}
+    QCheckBox::indicator:hover, QRadioButton::indicator:hover {{
+        border: 2px solid {FIELD_FOCUS};
+    }}
+    QCheckBox::indicator:checked, QRadioButton::indicator:checked {{
+        background: {FIELD_FOCUS};
+        border: 2px solid #1D4ED8;
+    }}
+    QCheckBox::indicator:focus, QRadioButton::indicator:focus {{
+        border: 2px solid {FIELD_FOCUS};
+    }}
+    QCheckBox::indicator:disabled, QRadioButton::indicator:disabled {{
+        border: 2px solid #CBD5E1;
+        background: #F1F5F9;
+    }}
+
+    /* ---- disabled inputs (keep text readable) ----------------------- */
+    QLineEdit:disabled, QPlainTextEdit:disabled, QTextEdit:disabled,
+    QSpinBox:disabled, QComboBox:disabled {{
+        background-color: #F1F5F9;
+        color: #64748B;
+    }}
+
     /* ---- tabs -------------------------------------------------------- */
     QTabWidget::pane {{
         border: 1px solid {BORDER};

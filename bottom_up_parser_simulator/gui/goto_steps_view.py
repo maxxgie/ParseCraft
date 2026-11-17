@@ -1,26 +1,57 @@
-"""Step-by-step GOTO computation for a selected transition."""
+"""Step-by-step GOTO computation for a selected transition.
+
+Presented as a table (matching the State Transitions tab) instead of a plain
+text dump: rows walk through the origin items, the dot advance over the symbol,
+any closure additions and the resulting target state.
+"""
 
 from __future__ import annotations
-
-from typing import List
 
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import (
     QComboBox,
     QHBoxLayout,
+    QHeaderView,
     QLabel,
-    QPlainTextEdit,
+    QTableWidget,
+    QTableWidgetItem,
     QVBoxLayout,
     QWidget,
 )
 
 from core.logging_config import get_logger
+from gui.grammar_reference import GrammarReferencePane
 
 logger = get_logger(__name__)
+
+COLUMNS = ["Phase", "Item", "Dot-Advanced / Added", "Trigger (• symbol)"]
+
+# Column indices.
+COL_PHASE = 0
+COL_ITEM = 1
+COL_ADDED = 2
+COL_TRIGGER = 3
 
 
 def _item_key(item):
     return (item.lhs, item.rhs, item.dot, item.lookahead)
+
+
+def _mono_cell(text: str) -> QTableWidgetItem:
+    item = QTableWidgetItem(text)
+    font = QFont("Consolas")
+    font.setStyleHint(QFont.StyleHint.Monospace)
+    item.setFont(font)
+    return item
+
+
+def _phase_cell(text: str) -> QTableWidgetItem:
+    item = QTableWidgetItem(text)
+    font = QFont("Consolas")
+    font.setStyleHint(QFont.StyleHint.Monospace)
+    font.setBold(True)
+    item.setFont(font)
+    return item
 
 
 class GotoStepsView(QWidget):
@@ -35,7 +66,12 @@ class GotoStepsView(QWidget):
         self.header = QLabel("Generate a grammar to see GOTO steps.")
         self.header.setWordWrap(True)
         self.header.setStyleSheet("color: #555;")
-        layout.addWidget(self.header)
+
+        self.grammar = GrammarReferencePane()
+        top_row = QHBoxLayout()
+        top_row.addWidget(self.header, 1)
+        top_row.addWidget(self.grammar, 0)
+        layout.addLayout(top_row)
 
         row = QHBoxLayout()
         row.addWidget(QLabel("State:"))
@@ -49,13 +85,16 @@ class GotoStepsView(QWidget):
         self.state_combo.currentIndexChanged.connect(self._on_state_changed)
         self.symbol_combo.currentIndexChanged.connect(self._render)
 
-        self.text = QPlainTextEdit()
-        self.text.setReadOnly(True)
-        self.text.setLineWrapMode(QPlainTextEdit.LineWrapMode.NoWrap)
-        mono = QFont("Consolas")
-        mono.setStyleHint(QFont.StyleHint.Monospace)
-        self.text.setFont(mono)
-        layout.addWidget(self.text, 1)
+        self.table = QTableWidget(0, len(COLUMNS))
+        self.table.setHorizontalHeaderLabels(COLUMNS)
+        self.table.verticalHeader().setVisible(False)
+        self.table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
+        self.table.setAlternatingRowColors(True)
+        self.table.horizontalHeader().setSectionResizeMode(
+            QHeaderView.ResizeMode.ResizeToContents
+        )
+        self.table.horizontalHeader().setStretchLastSection(True)
+        layout.addWidget(self.table, 1)
 
         self._analysis = None
         self._updating = False
@@ -71,13 +110,15 @@ class GotoStepsView(QWidget):
         self.state_combo.blockSignals(False)
         self.symbol_combo.blockSignals(False)
         self._updating = False
-        self.text.clear()
+        self.table.setRowCount(0)
+        self.grammar.clear()
         self.header.setText("Generate a grammar to see GOTO steps.")
         self.header.setStyleSheet("color: #555;")
 
     def update_from(self, analysis) -> None:
         """Populate the state selector and show the first transition."""
         self._analysis = analysis
+        self.grammar.set_grammar(analysis.grammar_text)
         self._updating = True
         self.state_combo.blockSignals(True)
         self.state_combo.clear()
@@ -95,7 +136,7 @@ class GotoStepsView(QWidget):
             self._render()
         else:
             self.symbol_combo.clear()
-            self.text.clear()
+            self.table.setRowCount(0)
 
     def _on_state_changed(self) -> None:
         if self._updating or self._analysis is None:
@@ -119,12 +160,16 @@ class GotoStepsView(QWidget):
         state_id = self.state_combo.currentData()
         symbol = self.symbol_combo.currentData()
         if state_id is None or symbol is None:
-            self.text.clear()
+            self.table.setRowCount(0)
             return
 
         automaton = self._analysis.automaton
         if not hasattr(automaton, "goto_trace"):
-            self.text.setPlainText("GOTO tracing is not available for this automaton.")
+            self.table.setRowCount(0)
+            self.header.setText(
+                "GOTO tracing is not available for this automaton."
+            )
+            self.header.setStyleSheet("color: #B71C1C;")
             return
 
         state = automaton.get_state(state_id)
@@ -134,30 +179,24 @@ class GotoStepsView(QWidget):
         )
         trace = automaton.goto_trace(state_id, symbol)
 
-        lines: List[str] = [
-            f"GOTO(I{state_id}, {symbol})",
-            "=" * 60,
-            "",
-            f"Items with the dot before '{symbol}':",
-            "",
-        ]
-        for item in origin_items:
-            lines.append("  " + item.to_string())
-        if not origin_items:
-            lines.append("  (none)")
+        rows: list[tuple[str, str, str, str]] = []
 
-        lines.append("")
-        lines.append("Move the dot over the symbol (before closure):")
-        lines.append("")
+        # Items with the dot before the symbol.
+        if origin_items:
+            for item in origin_items:
+                rows.append(("Before", item.to_string(), "", f"• {symbol}"))
+        else:
+            rows.append(("Before", "(no item has • before this symbol)", "", ""))
+
+        # Dot advanced over the symbol (pre-closure).
         moved = trace.get("moved", [])
-        for item in sorted(moved, key=_item_key):
-            lines.append("  " + item.to_string())
-        if not moved:
-            lines.append("  (no item has the dot before this symbol)")
+        if moved:
+            for item in sorted(moved, key=_item_key):
+                rows.append(("Dot moved", "", item.to_string(), symbol))
+        else:
+            rows.append(("Dot moved", "(none)", "", ""))
 
-        lines.append("")
-        lines.append("Closure steps:")
-        lines.append("")
+        # Closure additions.
         closure_steps = trace.get("closure_steps", [])
         step_no = 0
         for step in closure_steps:
@@ -166,26 +205,22 @@ class GotoStepsView(QWidget):
             step_no += 1
             origin = step.get("from")
             added = step.get("item")
-            lines.append(
-                f"  {step_no}. {origin.to_string()}   ⇒   add {added.to_string()}"
-            )
+            rows.append(("Closure add", origin.to_string(), added.to_string(), ""))
         if step_no == 0:
-            lines.append("  (no closure additions)")
+            rows.append(("Closure", "(no closure additions)", "", ""))
 
-        lines.append("")
-        target = trace.get("target")
-        if target is None:
-            lines.append("Target state: (none)")
-        else:
-            lines.append(f"Target state: I{target}")
-
-        lines.append("")
-        lines.append("Resulting state items:")
-        lines.append("")
+        # Resulting state items.
         for item in sorted(trace.get("result", []), key=_item_key):
-            lines.append("  " + item.to_string())
+            rows.append(("Result", item.to_string(), "", ""))
 
-        self.text.setPlainText("\n".join(lines))
+        self.table.setRowCount(len(rows))
+        for row_index, (phase, item, added, trigger) in enumerate(rows):
+            self.table.setItem(row_index, COL_PHASE, _phase_cell(phase))
+            self.table.setItem(row_index, COL_ITEM, _mono_cell(item))
+            self.table.setItem(row_index, COL_ADDED, _mono_cell(added))
+            self.table.setItem(row_index, COL_TRIGGER, _mono_cell(trigger))
+
+        target = trace.get("target")
         target_text = "none" if target is None else f"I{target}"
         self.header.setText(
             f"GOTO(I{state_id}, {symbol}) → {target_text} "

@@ -420,7 +420,7 @@ def analyze_grammar(
         lr0 = LRAutomaton(grammar)
         _, lr0_conflicts = build_parsing_table(lr0, grammar, "lr0", follow)
         reduce_reduce = [
-            c for c in lr0_conflicts if c.conflict_type == "reduce/reduce"
+            c for c in lr0_conflicts if c.conflict_type == "reduce-reduce"
         ]
         if reduce_reduce:
             issues.append(
@@ -429,7 +429,7 @@ def analyze_grammar(
                     code="ambiguous",
                     message=(
                         "Possible ambiguity: the LR(0) automaton has "
-                        f"{len(reduce_reduce)} reduce/reduce conflict(s). "
+                        f"{len(reduce_reduce)} reduce-reduce conflict(s). "
                         "The same input may have two parse trees; verify with "
                         "CLR(1) or rewrite the grammar."
                     ),
