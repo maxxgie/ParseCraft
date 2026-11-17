@@ -8,6 +8,7 @@ from core.database import get_database
 from core.logging_config import setup_logging, get_logger
 from gui.main_window import MainWindow
 from gui.settings import APP_NAME
+from gui.theme import apply_theme
 
 logger = get_logger(__name__)
 
@@ -23,6 +24,7 @@ def main() -> int:
 
     app = QApplication(sys.argv)
     app.setApplicationName(APP_NAME)
+    apply_theme(app)
 
     # Initialize the database
     try:

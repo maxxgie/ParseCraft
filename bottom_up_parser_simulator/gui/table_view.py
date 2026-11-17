@@ -11,6 +11,7 @@ from PyQt6.QtWidgets import (
     QLabel,
     QLineEdit,
     QPlainTextEdit,
+    QSplitter,
     QTableWidget,
     QTableWidgetItem,
     QTextEdit,
@@ -114,13 +115,11 @@ class CombinedTableView(QWidget):
         header = self.table.horizontalHeader()
         header.setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
         self.table.cellClicked.connect(self._on_cell_clicked)
-        layout.addWidget(self.table, 1)
 
         self.compact_text = QPlainTextEdit()
         self.compact_text.setReadOnly(True)
         self.compact_text.setLineWrapMode(QPlainTextEdit.LineWrapMode.NoWrap)
         self.compact_text.setVisible(False)
-        layout.addWidget(self.compact_text, 1)
 
         self.detail = QTextEdit()
         self.detail.setReadOnly(True)
@@ -129,8 +128,23 @@ class CombinedTableView(QWidget):
             "Click an ACTION or GOTO cell to see which LR item and transition "
             "produced it."
         )
-        self.detail.setMaximumHeight(150)
-        layout.addWidget(self.detail, 0)
+
+        # Left column stacks the grid and the compact listing; right column
+        # holds the sticky explanation panel.
+        left = QWidget()
+        left_layout = QVBoxLayout(left)
+        left_layout.setContentsMargins(0, 0, 0, 0)
+        left_layout.setSpacing(0)
+        left_layout.addWidget(self.table, 1)
+        left_layout.addWidget(self.compact_text, 1)
+
+        splitter = QSplitter(Qt.Orientation.Horizontal)
+        splitter.addWidget(left)
+        splitter.addWidget(self.detail)
+        splitter.setStretchFactor(0, 68)
+        splitter.setStretchFactor(1, 32)
+        splitter.setSizes([780, 360])
+        layout.addWidget(splitter, 1)
 
         self._analysis = None
         self._terminals: list[str] = []

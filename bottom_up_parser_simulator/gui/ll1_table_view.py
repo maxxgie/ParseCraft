@@ -12,6 +12,7 @@ from PyQt6.QtWidgets import (
     QHeaderView,
     QLabel,
     QLineEdit,
+    QSplitter,
     QTableWidget,
     QTableWidgetItem,
     QTextEdit,
@@ -40,10 +41,10 @@ def _cell(text: str, background=None, foreground=None, bold: bool = False):
         item.setBackground(background)
     if foreground is not None:
         item.setForeground(foreground)
-    if bold:
-        font = QFont()
-        font.setBold(True)
-        item.setFont(font)
+    mono = QFont("Consolas")
+    mono.setStyleHint(QFont.StyleHint.Monospace)
+    mono.setBold(bold)
+    item.setFont(mono)
     return item
 
 
@@ -86,8 +87,10 @@ class LL1TableView(QWidget):
         self.table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectItems)
         header = self.table.horizontalHeader()
         header.setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
+        mono = QFont("Consolas")
+        mono.setStyleHint(QFont.StyleHint.Monospace)
+        self.table.setFont(mono)
         self.table.cellClicked.connect(self._on_cell_clicked)
-        layout.addWidget(self.table, 1)
 
         self.detail = QTextEdit()
         self.detail.setReadOnly(True)
@@ -95,8 +98,14 @@ class LL1TableView(QWidget):
         self.detail.setPlaceholderText(
             "Click a cell to see which production generated it and why."
         )
-        self.detail.setMaximumHeight(160)
-        layout.addWidget(self.detail, 0)
+
+        splitter = QSplitter(Qt.Orientation.Horizontal)
+        splitter.addWidget(self.table)
+        splitter.addWidget(self.detail)
+        splitter.setStretchFactor(0, 68)
+        splitter.setStretchFactor(1, 32)
+        splitter.setSizes([780, 360])
+        layout.addWidget(splitter, 1)
 
         self._result = None
         self._shown_nts: list[str] = []

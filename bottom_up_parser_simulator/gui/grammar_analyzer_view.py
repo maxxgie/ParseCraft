@@ -4,12 +4,15 @@ from __future__ import annotations
 
 from typing import Optional
 
-from PyQt6.QtGui import QColor
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QColor, QFont
 from PyQt6.QtWidgets import (
     QHeaderView,
     QLabel,
+    QSplitter,
     QTableWidget,
     QTableWidgetItem,
+    QTextEdit,
     QVBoxLayout,
     QWidget,
 )
@@ -46,21 +49,48 @@ class GrammarAnalyzerView(QWidget):
         self.table.verticalHeader().setVisible(False)
         self.table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self.table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
+        self.table.setSelectionMode(QTableWidget.SelectionMode.SingleSelection)
         header = self.table.horizontalHeader()
         header.setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)
         header.setSectionResizeMode(1, QHeaderView.ResizeMode.ResizeToContents)
         header.setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
-        layout.addWidget(self.table, 1)
+        mono = QFont("Consolas")
+        mono.setStyleHint(QFont.StyleHint.Monospace)
+        self.table.setFont(mono)
+        self.table.itemSelectionChanged.connect(self._on_selection_changed)
+
+        self.detail = QTextEdit()
+        self.detail.setReadOnly(True)
+        self.detail.setLineWrapMode(QTextEdit.LineWrapMode.WidgetWidth)
+        self.detail.setPlaceholderText(
+            "Select a finding to see the full explanation and any symbols involved."
+        )
+
+        splitter = QSplitter(Qt.Orientation.Horizontal)
+        splitter.addWidget(self.table)
+        splitter.addWidget(self.detail)
+        splitter.setStretchFactor(0, 68)
+        splitter.setStretchFactor(1, 32)
+        splitter.setSizes([700, 360])
+        layout.addWidget(splitter, 1)
+
+        self._report: Optional[GrammarReport] = None
 
     def clear(self) -> None:
         """Reset the view."""
+        self._report = None
+        self.table.clearContents()
         self.table.setRowCount(0)
+        self.detail.clear()
         self.header.setText("Generate a grammar to see analysis results.")
         self.header.setStyleSheet("color: #555;")
 
     def set_report(self, report: Optional[GrammarReport]) -> None:
         """Populate the view from a :class:`GrammarReport`."""
+        self.table.clearContents()
         self.table.setRowCount(0)
+        self.detail.clear()
+        self._report = report
         if report is None:
             self.clear()
             return
@@ -73,6 +103,7 @@ class GrammarAnalyzerView(QWidget):
             for col, text in enumerate(cells):
                 item = QTableWidgetItem(text)
                 item.setToolTip(text)
+                item.setData(Qt.ItemDataRole.UserRole, row)
                 if bg is not None:
                     item.setBackground(bg)
                 if fg is not None:
@@ -86,3 +117,31 @@ class GrammarAnalyzerView(QWidget):
             color = "#B71C1C" if report.errors else "#8A6D00"
             self.header.setText(report.summary())
             self.header.setStyleSheet(f"color: {color};")
+            self.table.selectRow(0)
+
+    # ------------------------------------------------------------------
+    def _on_selection_changed(self) -> None:
+        if self._report is None:
+            return
+        selected = self.table.selectedIndexes()
+        if not selected:
+            return
+        row = min(idx.row() for idx in selected)
+        issues = self._report.issues
+        if 0 <= row < len(issues):
+            self._show_issue(issues[row])
+
+    def _show_issue(self, issue) -> None:
+        lines = [
+            f"{issue.level}: {issue.code}",
+            "=" * 48,
+            "",
+            issue.message,
+        ]
+        symbols = getattr(issue, "symbols", None) or []
+        if symbols:
+            lines.append("")
+            lines.append("Symbols involved:")
+            lines.append("")
+            lines.append("  " + ", ".join(symbols))
+        self.detail.setPlainText("\n".join(lines))

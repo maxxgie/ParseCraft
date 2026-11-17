@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import (
     QHBoxLayout,
     QHeaderView,
     QLabel,
+    QSplitter,
     QTableWidget,
     QTableWidgetItem,
     QTextEdit,
@@ -72,7 +74,9 @@ class ConflictView(QWidget):
         header.setSectionResizeMode(3, QHeaderView.ResizeMode.Stretch)
         header.setSectionResizeMode(4, QHeaderView.ResizeMode.Stretch)
         header.setSectionResizeMode(5, QHeaderView.ResizeMode.ResizeToContents)
-        layout.addWidget(self.table, 1)
+        mono = QFont("Consolas")
+        mono.setStyleHint(QFont.StyleHint.Monospace)
+        self.table.setFont(mono)
 
         self.detail = QTextEdit()
         self.detail.setReadOnly(True)
@@ -81,8 +85,14 @@ class ConflictView(QWidget):
             "Select a conflict to see the items, the reason, and a suggested "
             "resolution."
         )
-        self.detail.setMaximumHeight(180)
-        layout.addWidget(self.detail, 0)
+
+        splitter = QSplitter(Qt.Orientation.Horizontal)
+        splitter.addWidget(self.table)
+        splitter.addWidget(self.detail)
+        splitter.setStretchFactor(0, 68)
+        splitter.setStretchFactor(1, 32)
+        splitter.setSizes([760, 360])
+        layout.addWidget(splitter, 1)
 
         self._analysis = None
         self._conflicts = []

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Optional, Tuple
 
+from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import (
     QCheckBox,
     QFileDialog,
@@ -89,6 +90,9 @@ class ParseTreeView(QWidget):
         self.text_view = QTextEdit()
         self.text_view.setReadOnly(True)
         self.text_view.setLineWrapMode(QTextEdit.LineWrapMode.NoWrap)
+        mono = QFont("Consolas")
+        mono.setStyleHint(QFont.StyleHint.Monospace)
+        self.text_view.setFont(mono)
         self.tabs.addTab(self.text_view, "Text")
 
         self.canvas = GraphCanvas()

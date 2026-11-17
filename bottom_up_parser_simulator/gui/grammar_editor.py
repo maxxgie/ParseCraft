@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import (
     QCheckBox,
     QComboBox,
@@ -185,6 +186,9 @@ class GrammarEditor(QWidget):
         )
         self.editor.setTabChangesFocus(False)
         self.editor.setLineWrapMode(QPlainTextEdit.LineWrapMode.NoWrap)
+        mono = QFont("Consolas")
+        mono.setStyleHint(QFont.StyleHint.Monospace)
+        self.editor.setFont(mono)
         layout.addWidget(self.editor, 3)
 
         self.preview_caption = QLabel("Grammar preview (ordering preserved):")
@@ -202,6 +206,7 @@ class GrammarEditor(QWidget):
         self.preview.setLineWrapMode(QPlainTextEdit.LineWrapMode.NoWrap)
         self.preview.setMaximumHeight(110)
         self.preview.setPlaceholderText("The grammar actually analysed appears here.")
+        self.preview.setFont(mono)
         layout.addWidget(self.preview, 1)
 
         self.status_label = QLabel("Ready")

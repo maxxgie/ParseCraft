@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import List
 
+from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import (
     QComboBox,
     QHBoxLayout,
@@ -46,6 +47,9 @@ class ClosureStepsView(QWidget):
         self.text = QPlainTextEdit()
         self.text.setReadOnly(True)
         self.text.setLineWrapMode(QPlainTextEdit.LineWrapMode.NoWrap)
+        mono = QFont("Consolas")
+        mono.setStyleHint(QFont.StyleHint.Monospace)
+        self.text.setFont(mono)
         layout.addWidget(self.text, 1)
 
         self._analysis = None
