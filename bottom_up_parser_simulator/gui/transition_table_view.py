@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from PyQt6.QtWidgets import (
+    QHBoxLayout,
     QHeaderView,
     QLabel,
     QTableWidget,
@@ -13,6 +14,7 @@ from PyQt6.QtWidgets import (
 
 from core.automaton import transition_rows
 from core.logging_config import get_logger
+from gui.grammar_reference import GrammarReferencePane
 
 logger = get_logger(__name__)
 
@@ -31,7 +33,12 @@ class TransitionTableView(QWidget):
         self.header = QLabel("Generate a grammar to see the transition table.")
         self.header.setStyleSheet("color: #555;")
         self.header.setWordWrap(True)
-        layout.addWidget(self.header)
+
+        self.grammar = GrammarReferencePane()
+        top_row = QHBoxLayout()
+        top_row.addWidget(self.header, 1)
+        top_row.addWidget(self.grammar, 0)
+        layout.addLayout(top_row)
 
         self.table = QTableWidget(0, len(COLUMNS))
         self.table.setHorizontalHeaderLabels(COLUMNS)
@@ -45,12 +52,14 @@ class TransitionTableView(QWidget):
     def clear(self) -> None:
         """Reset the table."""
         self.table.setRowCount(0)
+        self.grammar.clear()
         self.header.setText("Generate a grammar to see the transition table.")
         self.header.setStyleSheet("color: #555;")
 
     def update_from(self, analysis) -> None:
         """Fill the table from an analysis result."""
         automaton = analysis.automaton
+        self.grammar.set_grammar(analysis.grammar_text)
         rows = transition_rows(automaton)
         self.table.setRowCount(len(rows))
         for row_index, (state, configuration, consume, target) in enumerate(rows):

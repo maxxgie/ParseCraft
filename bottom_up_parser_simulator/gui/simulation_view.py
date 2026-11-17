@@ -22,6 +22,7 @@ from PyQt6.QtWidgets import (
 from core.error_recovery import RECOVERY_MODES, recover_input
 from core.logging_config import get_logger
 from core.parser_simulator import SimulationResult, simulate
+from gui.grammar_reference import GrammarReferencePane
 from models.parse_tree import ParseTreeNode
 
 logger = get_logger(__name__)
@@ -83,6 +84,8 @@ class SimulationView(QWidget):
             self.recovery_combo.addItem(mode, mode)
         recovery_row.addWidget(self.recovery_combo)
         recovery_row.addStretch(1)
+        self.grammar = GrammarReferencePane()
+        recovery_row.addWidget(self.grammar, 0)
         layout.addLayout(recovery_row)
 
         self.recovery_label = QLabel("")
@@ -128,12 +131,14 @@ class SimulationView(QWidget):
         self.steps_table.setRowCount(0)
         if analysis is None:
             self.config_label.setText("Generate a grammar first.")
+            self.grammar.clear()
             self._set_controls_enabled(False)
         else:
             self.config_label.setText(
                 f"Ready to simulate with {analysis.parser_type}. "
                 "Enter an input string and press Run."
             )
+            self.grammar.set_grammar(analysis.grammar_text)
             self._set_controls_enabled(True)
 
     def clear(self) -> None:

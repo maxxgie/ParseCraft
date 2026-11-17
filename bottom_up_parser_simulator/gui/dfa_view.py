@@ -4,9 +4,10 @@ from __future__ import annotations
 
 from typing import Dict, List
 
-from PyQt6.QtWidgets import QLabel, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QWidget
 
 from core.logging_config import get_logger
+from gui.grammar_reference import GrammarReferencePane
 from gui.graph_canvas import GraphCanvas, GraphEdge, GraphNode
 
 logger = get_logger(__name__)
@@ -27,7 +28,12 @@ class DFAView(QWidget):
 
         self.header = QLabel("Generate a grammar to see the DFA.")
         self.header.setStyleSheet("color: #555;")
-        layout.addWidget(self.header)
+
+        self.grammar = GrammarReferencePane()
+        top_row = QHBoxLayout()
+        top_row.addWidget(self.header, 1)
+        top_row.addWidget(self.grammar, 0)
+        layout.addLayout(top_row)
 
         self.canvas = GraphCanvas()
         layout.addWidget(self.canvas, 1)
@@ -35,6 +41,7 @@ class DFAView(QWidget):
     def clear(self) -> None:
         """Reset the view."""
         self.canvas.render([], [])
+        self.grammar.clear()
         self.header.setText("Generate a grammar to see the DFA.")
         self.header.setStyleSheet("color: #555;")
 
@@ -43,6 +50,7 @@ class DFAView(QWidget):
         automaton = analysis.automaton
         states = automaton.states
         start = automaton.start_state
+        self.grammar.set_grammar(analysis.grammar_text)
         augmented_start = getattr(
             getattr(automaton, "augmented_grammar", None),
             "start_symbol",

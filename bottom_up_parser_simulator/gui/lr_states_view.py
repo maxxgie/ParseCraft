@@ -2,11 +2,13 @@
 
 from __future__ import annotations
 
+from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import (
     QHBoxLayout,
     QLabel,
     QListWidget,
     QListWidgetItem,
+    QPlainTextEdit,
     QSplitter,
     QTextEdit,
     QVBoxLayout,
@@ -30,7 +32,25 @@ class LRStatesView(QWidget):
 
         self.header = QLabel("Generate a grammar to see LR states.")
         self.header.setStyleSheet("color: #555;")
-        layout.addWidget(self.header)
+
+        # Top row: status on the left, the grammar actually analysed on the
+        # far right for quick reference while inspecting states.
+        top_row = QHBoxLayout()
+        top_row.addWidget(self.header, 1)
+        self.grammar_caption = QLabel("Used grammar:")
+        self.grammar_caption.setStyleSheet("color: #444;")
+        top_row.addWidget(self.grammar_caption, 0)
+        self.grammar_view = QPlainTextEdit()
+        self.grammar_view.setReadOnly(True)
+        self.grammar_view.setLineWrapMode(QPlainTextEdit.LineWrapMode.NoWrap)
+        self.grammar_view.setMaximumHeight(110)
+        self.grammar_view.setMinimumWidth(280)
+        self.grammar_view.setPlaceholderText("The grammar used appears here.")
+        mono = QFont("Consolas")
+        mono.setStyleHint(QFont.StyleHint.Monospace)
+        self.grammar_view.setFont(mono)
+        top_row.addWidget(self.grammar_view, 0)
+        layout.addLayout(top_row)
 
         splitter = QSplitter(Qt.Orientation.Horizontal)
 
@@ -54,6 +74,7 @@ class LRStatesView(QWidget):
         self._analysis = None
         self.state_list.clear()
         self.detail.clear()
+        self.grammar_view.clear()
         self.header.setText("Generate a grammar to see LR states.")
         self.header.setStyleSheet("color: #555;")
 
@@ -61,6 +82,7 @@ class LRStatesView(QWidget):
         """Populate the list of states from an analysis result."""
         self._analysis = analysis
         automaton = analysis.automaton
+        self.grammar_view.setPlainText(analysis.grammar_text)
         self.state_list.blockSignals(True)
         self.state_list.clear()
         for state in automaton.states:

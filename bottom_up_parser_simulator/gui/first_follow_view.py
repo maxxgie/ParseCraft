@@ -6,6 +6,7 @@ from typing import Set
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import (
+    QHBoxLayout,
     QHeaderView,
     QLabel,
     QTableWidget,
@@ -15,6 +16,7 @@ from PyQt6.QtWidgets import (
 )
 
 from core.logging_config import get_logger
+from gui.grammar_reference import GrammarReferencePane
 from gui.settings import EPSILON
 
 logger = get_logger(__name__)
@@ -50,11 +52,19 @@ class FirstFollowView(QWidget):
         header.setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)
         header.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
         header.setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
-        layout.addWidget(self.table, 1)
+
+        # Side column with the grammar that produced these sets. It has no
+        # maximum height so it fills the table height for longer grammars.
+        self.grammar = GrammarReferencePane(max_height=None)
+        body = QHBoxLayout()
+        body.addWidget(self.table, 1)
+        body.addWidget(self.grammar, 0)
+        layout.addLayout(body, 1)
 
     def clear(self) -> None:
         """Reset the view to its empty state."""
         self.table.setRowCount(0)
+        self.grammar.clear()
         self.summary.setText("Generate a grammar to see FIRST/FOLLOW sets.")
         self.summary.setStyleSheet("color: #555;")
 
@@ -64,6 +74,7 @@ class FirstFollowView(QWidget):
         follow = analysis.follow
         non_terminals = sorted(analysis.grammar.non_terminals)
         terminals = sorted(analysis.grammar.terminals)
+        self.grammar.set_grammar(analysis.grammar_text)
 
         rows = []
         for nt in non_terminals:

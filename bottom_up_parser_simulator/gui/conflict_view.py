@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import (
+    QHBoxLayout,
     QHeaderView,
     QLabel,
     QTableWidget,
@@ -13,6 +14,7 @@ from PyQt6.QtWidgets import (
 )
 
 from core.logging_config import get_logger
+from gui.grammar_reference import GrammarReferencePane
 from gui.palette import (
     RESOLVED_BG,
     RESOLVED_FG,
@@ -48,7 +50,12 @@ class ConflictView(QWidget):
         self.header = QLabel("Generate a grammar to see conflicts.")
         self.header.setWordWrap(True)
         self.header.setStyleSheet("color: #555;")
-        layout.addWidget(self.header)
+
+        self.grammar = GrammarReferencePane()
+        top_row = QHBoxLayout()
+        top_row.addWidget(self.header, 1)
+        top_row.addWidget(self.grammar, 0)
+        layout.addLayout(top_row)
 
         self.table = QTableWidget(0, len(_HEADERS))
         self.table.setHorizontalHeaderLabels(_HEADERS)
@@ -67,6 +74,7 @@ class ConflictView(QWidget):
     def clear(self) -> None:
         """Reset the view."""
         self.table.setRowCount(0)
+        self.grammar.clear()
         self.header.setText("Generate a grammar to see conflicts.")
         self.header.setStyleSheet("color: #555;")
 
@@ -74,6 +82,7 @@ class ConflictView(QWidget):
         """Populate the table from an analysis result."""
         conflicts = analysis.conflicts
         resolutions = {(r.state, r.terminal): r for r in analysis.resolutions}
+        self.grammar.set_grammar(analysis.grammar_text)
 
         self.table.setRowCount(len(conflicts))
         for row, conflict in enumerate(conflicts):

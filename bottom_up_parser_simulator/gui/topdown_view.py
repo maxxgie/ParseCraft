@@ -20,6 +20,7 @@ from PyQt6.QtWidgets import (
 from core.ast import AstNode, parse_tree_to_ast
 from core.logging_config import get_logger
 from core.topdown import TopDownResult, simulate_topdown
+from gui.grammar_reference import GrammarReferencePane
 
 logger = get_logger(__name__)
 
@@ -67,7 +68,12 @@ class TopDownView(QWidget):
         self.method_label = QLabel("No top-down analysis yet.")
         self.method_label.setWordWrap(True)
         self.method_label.setStyleSheet("color: #333;")
-        layout.addWidget(self.method_label)
+
+        self.grammar = GrammarReferencePane()
+        top_row = QHBoxLayout()
+        top_row.addWidget(self.method_label, 1)
+        top_row.addWidget(self.grammar, 0)
+        layout.addLayout(top_row)
 
         input_row = QHBoxLayout()
         input_row.addWidget(QLabel("Input:"))
@@ -122,6 +128,7 @@ class TopDownView(QWidget):
         self.steps_table.setRowCount(0)
         if result is None:
             self.method_label.setText("No top-down analysis yet.")
+            self.grammar.clear()
             self._set_controls_enabled(False)
             return
 
@@ -137,6 +144,7 @@ class TopDownView(QWidget):
             f"{result.method} for grammar '{result.grammar.start_symbol}'{note}. "
             "Enter an input string and press Run."
         )
+        self.grammar.set_grammar(result.grammar_text)
         self._set_controls_enabled(True)
 
     def clear(self) -> None:

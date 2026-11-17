@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import (
+    QHBoxLayout,
     QHeaderView,
     QLabel,
     QTabWidget,
@@ -15,6 +16,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt
 
 from core.logging_config import get_logger
+from gui.grammar_reference import GrammarReferencePane
 from gui.palette import (
     BLANK_BG,
     BLANK_FG,
@@ -56,7 +58,12 @@ class TableView(QWidget):
         self.header = QLabel("Generate a grammar to see ACTION/GOTO tables.")
         self.header.setWordWrap(True)
         self.header.setStyleSheet("color: #555;")
-        layout.addWidget(self.header)
+
+        self.grammar = GrammarReferencePane()
+        top_row = QHBoxLayout()
+        top_row.addWidget(self.header, 1)
+        top_row.addWidget(self.grammar, 0)
+        layout.addLayout(top_row)
 
         self._show_errors = False
 
@@ -84,6 +91,7 @@ class TableView(QWidget):
         self.goto_table.clear()
         self.goto_table.setRowCount(0)
         self.goto_table.setColumnCount(0)
+        self.grammar.clear()
         self.header.setText("Generate a grammar to see ACTION/GOTO tables.")
         self.header.setStyleSheet("color: #555;")
 
@@ -97,6 +105,7 @@ class TableView(QWidget):
         """
         self._show_errors = show_errors
         table = analysis.table
+        self.grammar.set_grammar(analysis.grammar_text)
         self._fill_action(table)
         self._fill_goto(table)
 
