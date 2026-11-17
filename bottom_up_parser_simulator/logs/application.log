@@ -17743,3 +17743,32 @@
 2026-11-17 23:47:44 [DEBUG] core.closure: Closure computed with trace: 7 items
 2026-11-17 23:47:44 [DEBUG] core.closure: Closure computed with trace: 2 items
 2026-11-17 23:47:44 [INFO] core.codegen: Generated LR parser code (132 lines)
+2026-11-17 23:51:09 [INFO] core.database: Database connection closed
+2026-11-17 23:51:09 [INFO] __main__: Application shutdown complete
+2026-11-17 23:51:12 [INFO] __main__: Starting Bottom-Up Parser Simulator
+2026-11-17 23:51:12 [INFO] core.database: Connected to database: C:\Users\maxwe\Downloads\projo\ttom-up_parsing\bottom_up_parser_simulator\data\parser_simulator.db
+2026-11-17 23:51:12 [INFO] core.database: Database schema initialized
+2026-11-17 23:51:12 [INFO] __main__: Database initialized
+2026-11-17 23:51:12 [DEBUG] gui.grammar_editor: GrammarEditor initialized
+2026-11-17 23:51:13 [DEBUG] gui.main_window: Applied 12 tabs for parser SLR(1)
+2026-11-17 23:51:13 [INFO] gui.main_window: Main window initialized
+2026-11-17 23:52:48 [INFO] core.database: Database connection closed
+2026-11-17 23:52:48 [INFO] __main__: Application shutdown complete
+2026-11-17 23:52:52 [INFO] __main__: Starting Bottom-Up Parser Simulator
+2026-11-17 23:52:52 [INFO] core.database: Connected to database: C:\Users\maxwe\Downloads\projo\ttom-up_parsing\bottom_up_parser_simulator\data\parser_simulator.db
+2026-11-17 23:52:52 [INFO] core.database: Database schema initialized
+2026-11-17 23:52:52 [INFO] __main__: Database initialized
+2026-11-17 23:52:52 [DEBUG] gui.grammar_editor: GrammarEditor initialized
+2026-11-17 23:52:53 [DEBUG] gui.main_window: Applied 12 tabs for parser SLR(1)
+2026-11-17 23:52:53 [INFO] gui.main_window: Main window initialized
+2026-11-17 23:54:38 [INFO] core.database: Database connection closed
+2026-11-17 23:54:38 [INFO] __main__: Application shutdown complete
+2026-11-17 23:55:05 [INFO] __main__: Starting Bottom-Up Parser Simulator
+2026-11-17 23:55:05 [INFO] core.database: Connected to database: C:\Users\maxwe\Downloads\projo\ttom-up_parsing\bottom_up_parser_simulator\data\parser_simulator.db
+2026-11-17 23:55:05 [INFO] core.database: Database schema initialized
+2026-11-17 23:55:06 [INFO] __main__: Database initialized
+2026-11-17 23:55:06 [DEBUG] gui.grammar_editor: GrammarEditor initialized
+2026-11-17 23:55:08 [DEBUG] gui.main_window: Applied 12 tabs for parser SLR(1)
+2026-11-17 23:55:08 [INFO] gui.main_window: Main window initialized
+2026-11-17 23:56:24 [INFO] core.database: Database connection closed
+2026-11-17 23:56:24 [INFO] __main__: Application shutdown complete

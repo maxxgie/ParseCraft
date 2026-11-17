@@ -94,13 +94,13 @@ _LR_TABS = [
     TAB_LR_ITEMS,
     TAB_CLOSURE,
     TAB_STATES,
-    TAB_VALIDATION,
-    TAB_DFA,
     TAB_TABLE,
-    TAB_CONFLICTS,
     TAB_SIMULATION,
     TAB_PARSE_TREE,
     TAB_CODE,
+    TAB_CONFLICTS,
+    TAB_DFA,
+    TAB_VALIDATION,
 ]
 _LR_TABS_WITH_FIRST = [
     TAB_GRAMMAR,
@@ -108,13 +108,13 @@ _LR_TABS_WITH_FIRST = [
     TAB_LR_ITEMS,
     TAB_CLOSURE,
     TAB_STATES,
-    TAB_VALIDATION,
-    TAB_DFA,
     TAB_TABLE,
-    TAB_CONFLICTS,
     TAB_SIMULATION,
     TAB_PARSE_TREE,
     TAB_CODE,
+    TAB_CONFLICTS,
+    TAB_DFA,
+    TAB_VALIDATION,
 ]
 # Top-down (LL / recursive descent) tabs.
 _TOPDOWN_TABS = [
@@ -212,9 +212,9 @@ class MainWindow(QMainWindow):
 
         self._tab_titles = {
             TAB_GRAMMAR: "Grammar",
-            TAB_FIRST_FOLLOW: "FIRST/FOLLOW",
-            TAB_LR_ITEMS: "LR Items & Transitions",
-            TAB_CLOSURE: "Closure & GOTO Steps",
+            TAB_FIRST_FOLLOW: "FIRS/FOLLOW",
+            TAB_LR_ITEMS: "LR Items/Transitions",
+            TAB_CLOSURE: "Closure/GOTO Steps",
             TAB_STATES: "Canonical Collection",
             TAB_VALIDATION: "State Validation",
             TAB_DFA: "DFA",
