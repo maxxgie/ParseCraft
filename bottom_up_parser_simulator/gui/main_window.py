@@ -223,7 +223,7 @@ class MainWindow(QMainWindow):
         self.first_follow_view = FirstFollowView()
         self.lr_items_view = LRItemsTransitionsView()
         self.closure_view = ClosureStepsView()
-self.goto_view = GotoStepsView()
+        self.goto_view = GotoStepsView()
         self.lr_states_view = LRStatesView()
         self.validation_view = ValidationView()
         self.dfa_view = DFAView()
