@@ -8,6 +8,7 @@ toolbar actions, a status bar, and a dockable application log.
 from __future__ import annotations
 
 import logging
+import os
 from typing import Optional
 
 from PyQt6.QtCore import QSize, Qt, QTimer
@@ -418,6 +419,10 @@ self.goto_view = GotoStepsView()
         updates_action = QAction("Check for &Updates", self)
         updates_action.triggered.connect(self._on_check_updates)
         help_menu.addAction(updates_action)
+
+        git_updates_action = QAction("Check &Git Updates", self)
+        git_updates_action.triggered.connect(self._on_check_git_updates)
+        help_menu.addAction(git_updates_action)
 
         update_history_action = QAction("Update &History", self)
         update_history_action.triggered.connect(self._on_show_update_history)
@@ -925,7 +930,45 @@ self.goto_view = GotoStepsView()
             self._settings_dialog.accept()
         self._on_show_update_history()
 
-    def _on_check_updates(self) -> None:
+    def _on_check_git_updates(self) -> None:
+        try:
+            from core.git_updater import GitUpdater
+            gu = GitUpdater(os.getcwd())
+            st = gu.status()
+            if not st.available:
+                from PyQt6.QtWidgets import QMessageBox
+                QMessageBox.information(self, "Git Updates", "Git not installed.")
+                return
+            if not st.repo:
+                from PyQt6.QtWidgets import QMessageBox
+                QMessageBox.information(self, "Git Updates", "Not a git repository.")
+                return
+            if st.error:
+                from PyQt6.QtWidgets import QMessageBox
+                QMessageBox.warning(self, "Git Updates", st.error)
+                return
+            if st.dirty:
+                from PyQt6.QtWidgets import QMessageBox
+                QMessageBox.warning(self, "Git Updates", "Local changes detected.\nCommit or stash before updating.")
+                return
+            if not st.update_available:
+                from PyQt6.QtWidgets import QMessageBox
+                QMessageBox.information(self, "Git Updates", "Already up to date.")
+                return
+            from PyQt6.QtWidgets import QMessageBox
+            reply = QMessageBox.question(
+                self, "Update Available",
+                f"Current commit: {st.local_commit}\nLatest commit: {st.remote_commit}\n\nUpdate now?",
+            )
+            if reply == QMessageBox.StandardButton.Yes:
+                ok, msg = gu.pull(st.branch or "main")
+                if ok:
+                    QMessageBox.information(self, "Git Updates", "Updated. Restart application.")
+                else:
+                    QMessageBox.warning(self, "Git Updates", msg)
+        except Exception as exc:  # noqa: BLE001
+            from PyQt6.QtWidgets import QMessageBox
+            QMessageBox.warning(self, "Git Updates", str(exc))
         """Handle the "Check for Updates" action (manual, user-visible)."""
         self._start_check(silent=False)
 
