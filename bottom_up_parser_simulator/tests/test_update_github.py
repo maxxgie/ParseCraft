@@ -12,6 +12,7 @@ from core.update.checker import CheckError, fetch_manifest
 from core.update.downloader import DownloadError, download
 from core.update.manifest import ReleaseManifest
 from core.update.urls import is_secure_url, scheme_of
+from core.version import Version as _Version
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
@@ -51,7 +52,16 @@ def test_repo_manifest_json_parses():
     assert manifest_file.exists()
     manifest = ReleaseManifest.from_json(manifest_file.read_text(encoding="utf-8"))
     assert manifest.app_name == v.APP_NAME
-    assert manifest.version == v.APP_VERSION
+    # The repo manifest advertises the *latest available* version, which the
+    # auto-release workflow bumps ahead of the installed APP_VERSION. It must
+    # therefore be at least as new as the installed version, not equal.
+    latest = _Version.parse(manifest.version)
+    installed = _Version.parse(v.APP_VERSION)
+    assert (latest.major, latest.minor, latest.patch) >= (
+        installed.major,
+        installed.minor,
+        installed.patch,
+    )
     assert isinstance(manifest.release_notes, str) and manifest.release_notes
 
 
