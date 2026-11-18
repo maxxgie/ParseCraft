@@ -10,6 +10,7 @@ import pytest
 
 pytest.importorskip("PyQt6.QtWidgets")
 
+from PyQt6.QtGui import QPixmap, QTextCursor
 from PyQt6.QtWidgets import QApplication
 
 from core.parse_tree import make_internal, make_leaf
@@ -174,3 +175,58 @@ def test_graph_double_click_folds(view):
         view.canvas.viewport(), Qt.MouseButton.LeftButton, pos=root_viewport_point()
     )
     assert len(view._visible_keys) == full
+
+
+# ----------------------------------------------------------------------
+# Additional coverage: initial state, messages, header, text cursor, fold
+# edge cases, and a render smoke test.
+# ----------------------------------------------------------------------
+def test_initial_state(app):
+    v = ParseTreeView()
+    assert "Run a simulation" in v.header.text()
+    assert v.text_view.toPlainText() == ""
+    v.deleteLater()
+
+
+def test_show_message_sets_error_state(app):
+    v = ParseTreeView()
+    v.show_tree(_sample_tree())
+    v.show_message("Parse error at token 3")
+    assert v.text_view.toPlainText() == "Parse error at token 3"
+    assert v.header.text() == "Parse error at token 3"
+    assert len(v.canvas._items_by_id) == 0
+    v.deleteLater()
+
+
+def test_header_reports_node_count_and_depth(view):
+    from core.parse_tree import count_nodes
+
+    n = count_nodes(view._root)
+    assert f"{n} nodes" in view.header.text()
+    assert "depth" in view.header.text()
+
+
+def test_text_cursor_selects_row(app, view):
+    cursor = view.text_view.textCursor()
+    cursor.movePosition(QTextCursor.MoveOperation.Start)
+    cursor.movePosition(QTextCursor.MoveOperation.Down)
+    view.text_view.setTextCursor(cursor)
+    app.processEvents()
+    assert view._current_key == id(view._root.children[0])
+
+
+def test_graph_signal_selects_node(view):
+    key = id(view._root)
+    view.canvas.node_selected.emit(key)
+    assert view._current_key == key
+
+
+def test_fold_leaf_is_rejected(view):
+    leaf = view._root.children[0].children[0]  # 'a' leaf under A
+    assert view._toggle_fold(id(leaf)) is False
+
+
+def test_renders_without_error(app, view):
+    pixmap = QPixmap(view.size())
+    view.render(pixmap)
+    assert not pixmap.isNull()

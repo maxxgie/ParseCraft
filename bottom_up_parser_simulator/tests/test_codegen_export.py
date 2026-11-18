@@ -70,6 +70,63 @@ def test_generated_parser_custom_class_name(analysis):
 
 
 # ----------------------------------------------------------------------
+# Code formatting
+# ----------------------------------------------------------------------
+def test_generated_code_is_valid_python(analysis):
+    import ast
+
+    code = generate_lr_parser(analysis)
+    ast.parse(code)
+
+
+def test_generated_code_docstring_has_metadata(analysis):
+    code = generate_lr_parser(analysis)
+    assert code.startswith('"""Auto-generated LR parser.')
+    assert "Grammar summary" in code
+    assert "SLR(1)" in code
+    assert "States:" in code
+    assert "Start symbol:" in code
+
+
+def test_generated_code_has_all_and_main(analysis):
+    code = generate_lr_parser(analysis)
+    assert '__all__ = ["PRODUCTIONS", "ACTION", "GOTO", "tokenize", "LRParser", "main"]' in code
+    assert "def main(tokens=None):" in code
+    assert 'if __name__ == "__main__":' in code
+
+
+def test_generated_code_has_section_banners(analysis):
+    code = generate_lr_parser(analysis)
+    assert "# PRODUCTIONS" in code
+    assert "# ACTION TABLE" in code
+    assert "# GOTO TABLE" in code
+    assert "# TABLE-DRIVEN LR PARSER" in code
+    assert "# DEMO" in code
+
+
+def test_generated_main_parses_sample(analysis):
+    code = generate_lr_parser(analysis, sample_input=["id", "+", "id", "*", "id"])
+    namespace = {"__name__": "generated_module"}
+    exec(compile(code, "<generated>", "exec"), namespace)
+    assert namespace["main"](["id", "+", "id", "*", "id"]) is True
+    assert namespace["main"](["id", "+"]) is False
+
+
+def test_generated_module_runs_as_script(analysis, tmp_path):
+    import subprocess
+    import sys
+
+    code = generate_lr_parser(analysis, sample_input=["id", "+", "id"])
+    script = tmp_path / "generated_parser.py"
+    script.write_text(code, encoding="utf-8")
+    out = subprocess.run(
+        [sys.executable, str(script)], capture_output=True, text=True, timeout=30
+    )
+    assert out.returncode == 0, out.stderr
+    assert "ACCEPT" in out.stdout
+
+
+# ----------------------------------------------------------------------
 # Export
 # ----------------------------------------------------------------------
 def test_csv_has_header_and_rows(analysis):
