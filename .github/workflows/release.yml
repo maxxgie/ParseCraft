@@ -3,6 +3,9 @@ name: Auto Release
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - "bottom_up_parser_simulator/manifest.json"
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -17,6 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          persist-credentials: false
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/setup-python@v5
@@ -52,7 +56,6 @@ jobs:
           "INSTALLER_NAME=$($installer.Name)" | Out-File -Append $env:GITHUB_ENV
           "INSTALLER_SHA256=$hash" | Out-File -Append $env:GITHUB_ENV
           "INSTALLER_PATH=$($installer.FullName)" | Out-File -Append $env:GITHUB_ENV
-          # update manifest download_url + sha256
           $m = Get-Content manifest.json | ConvertFrom-Json
           $m.download_url = "https://github.com/maxxgie/ParseCraft/releases/download/v$env:VERSION/$env:INSTALLER_NAME"
           $m.sha256 = $hash
@@ -65,11 +68,13 @@ jobs:
           git config user.email "actions@github.com"
           git add manifest.json
           git commit -m "Bump version to $env:VERSION" || echo "no changes"
-          git push
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/maxxgie/ParseCraft.git main
 
       - name: Create release
         shell: pwsh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create "v$env:VERSION" $env:INSTALLER_PATH --title "ParseCraft $env:VERSION" --notes "Automated release"
+          $tag = "v$env:VERSION"
+          gh release delete $tag -y 2>$null
+          gh release create $tag $env:INSTALLER_PATH --title "ParseCraft $env:VERSION" --notes "Automated release"
