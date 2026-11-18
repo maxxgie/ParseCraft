@@ -13,11 +13,13 @@ import urllib.error
 import urllib.request
 from typing import Optional
 
+import json
+
 from core.logging_config import get_logger
 from core.update.downloader import validate_download_url
 from core.update.manifest import ManifestError, ReleaseManifest
 from core.update.urls import is_secure_url
-from core.version import DEFAULT_MANIFEST_URL
+from core.version import DEFAULT_MANIFEST_URL, GITHUB_REPO
 
 
 logger = get_logger(__name__)
@@ -88,9 +90,39 @@ def fetch_manifest(
         raise CheckError(f"Invalid update manifest: {exc}") from exc
     try:
         validate_download_url(manifest.download_url)
-    except ValueError as exc:
-        raise CheckError(f"Manifest download_url is invalid: {exc}") from exc
+    except ValueError:
+        # The manifest's download_url may be a bare release directory (the
+        # auto-release workflow sometimes fails to persist the asset name).
+        # Repair it from the manifest version so the updater still works.
+        repaired = _repair_download_url(manifest)
+        if repaired:
+            logger.warning(
+                "Manifest download_url was invalid; repaired to %s", repaired
+            )
+            manifest = ReleaseManifest.from_json(
+                json.dumps({**json.loads(body), "download_url": repaired})
+            )
+        else:
+            raise CheckError(
+                "Manifest download_url is invalid and could not be repaired"
+            )
     return manifest
+
+
+def _repair_download_url(manifest: ReleaseManifest) -> str:
+    """Return a concrete download URL for ``manifest`` or an empty string.
+
+    GitHub release assets are named ``ParseCraft-<version>-Setup.exe``. When the
+    manifest only carries a directory URL, we reconstruct the asset URL from
+    the manifest version and the configured repository.
+    """
+    version = str(manifest.version).strip()
+    if not version:
+        return ""
+    return (
+        f"https://github.com/{GITHUB_REPO}/releases/download/"
+        f"v{version}/ParseCraft-{version}-Setup.exe"
+    )
 
 
 def check_for_update(
