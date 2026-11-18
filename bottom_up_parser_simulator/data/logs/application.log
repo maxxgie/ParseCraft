@@ -388,3 +388,36 @@
 2026-11-18 17:28:22 [INFO] core.update.checker: Checking for updates at https://raw.githubusercontent.com/maxxgie/ParseCraft/main/bottom_up_parser_simulator/manifest.json
 2026-11-18 17:28:22 [INFO] core.update.checker: No newer version available (installed=1.0.0, latest=1.0.0)
 2026-11-18 17:28:44 [DEBUG] gui.main_window: Applied 11 tabs for parser LR(0)
+2026-11-18 17:51:16 [INFO] __main__: Starting ParseCraft
+2026-11-18 17:51:17 [INFO] core.database: Connected to database: C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\data\parser_simulator.db
+2026-11-18 17:51:17 [INFO] core.database: Database schema initialized
+2026-11-18 17:51:17 [INFO] __main__: Database initialized
+2026-11-18 17:51:17 [DEBUG] gui.grammar_editor: GrammarEditor initialized
+2026-11-18 17:51:19 [DEBUG] gui.main_window: Applied 12 tabs for parser SLR(1)
+2026-11-18 17:51:19 [INFO] gui.main_window: Main window initialized
+2026-11-18 17:51:19 [INFO] core.update.checker: Checking for updates at https://raw.githubusercontent.com/maxxgie/ParseCraft/main/bottom_up_parser_simulator/manifest.json
+2026-11-18 17:51:20 [INFO] core.update.checker: No newer version available (installed=1.0.0, latest=1.0.0)
+2026-11-18 17:51:53 [INFO] core.database: Database connection closed
+2026-11-18 17:51:53 [INFO] __main__: Application shutdown complete
+2026-11-18 17:51:56 [INFO] __main__: Starting ParseCraft
+2026-11-18 17:51:56 [INFO] core.database: Connected to database: C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\data\parser_simulator.db
+2026-11-18 17:51:56 [INFO] core.database: Database schema initialized
+2026-11-18 17:51:56 [INFO] __main__: Database initialized
+2026-11-18 17:51:56 [DEBUG] gui.grammar_editor: GrammarEditor initialized
+2026-11-18 17:51:57 [DEBUG] gui.main_window: Applied 12 tabs for parser SLR(1)
+2026-11-18 17:51:57 [INFO] gui.main_window: Main window initialized
+2026-11-18 17:51:57 [INFO] core.update.checker: Checking for updates at https://raw.githubusercontent.com/maxxgie/ParseCraft/main/bottom_up_parser_simulator/manifest.json
+2026-11-18 17:51:57 [INFO] core.update.checker: No newer version available (installed=1.0.0, latest=1.0.0)
+2026-11-18 17:52:02 [INFO] core.database: Database connection closed
+2026-11-18 17:52:02 [INFO] __main__: Application shutdown complete
+2026-11-18 17:53:43 [INFO] __main__: Starting ParseCraft
+2026-11-18 17:53:43 [INFO] core.database: Connected to database: C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\data\parser_simulator.db
+2026-11-18 17:53:43 [INFO] core.database: Database schema initialized
+2026-11-18 17:53:43 [INFO] __main__: Database initialized
+2026-11-18 17:53:44 [DEBUG] gui.grammar_editor: GrammarEditor initialized
+2026-11-18 17:53:46 [DEBUG] gui.main_window: Applied 12 tabs for parser SLR(1)
+2026-11-18 17:53:46 [INFO] gui.main_window: Main window initialized
+2026-11-18 17:53:46 [INFO] core.update.checker: Checking for updates at https://raw.githubusercontent.com/maxxgie/ParseCraft/main/bottom_up_parser_simulator/manifest.json
+2026-11-18 17:53:47 [INFO] core.update.checker: No newer version available (installed=1.0.0, latest=1.0.0)
+2026-11-18 17:57:35 [INFO] core.database: Database connection closed
+2026-11-18 17:57:35 [INFO] __main__: Application shutdown complete
