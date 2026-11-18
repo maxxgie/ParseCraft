@@ -142,7 +142,7 @@ class LL1TableView(QWidget):
             self.clear()
             return
 
-        self.grammar.set_grammar(result.grammar_text)
+        self.grammar.set_from_analysis(result)
         table = getattr(result, "ll1_table", None)
         if table is None:
             self.table.clear()

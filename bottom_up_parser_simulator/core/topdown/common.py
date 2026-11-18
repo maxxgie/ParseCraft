@@ -82,6 +82,10 @@ class TopDownResult:
     decision_points: List[Tuple[str, int]] = field(default_factory=list)
     transforms: List[str] = field(default_factory=list)
     stages: Dict[str, str] = field(default_factory=dict)
+    #: The original grammar exactly as entered by the user (never overwritten).
+    #: ``grammar`` is the transformed grammar actually parsed by the top-down
+    #: parser (identical to ``original`` when no transforms were applied).
+    original: Optional[object] = None
 
     @property
     def is_ll1(self) -> bool:

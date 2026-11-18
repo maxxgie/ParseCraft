@@ -118,7 +118,7 @@ class GotoStepsView(QWidget):
     def update_from(self, analysis) -> None:
         """Populate the state selector and show the first transition."""
         self._analysis = analysis
-        self.grammar.set_grammar(analysis.grammar_text)
+        self.grammar.set_from_analysis(analysis)
         self._updating = True
         self.state_combo.blockSignals(True)
         self.state_combo.clear()

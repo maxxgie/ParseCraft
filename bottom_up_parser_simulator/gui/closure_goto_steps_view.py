@@ -84,4 +84,4 @@ class ClosureGotoStepsView(QWidget):
         """Populate both step views and the shared grammar reference."""
         self.closure.update_from(analysis)
         self.goto.update_from(analysis)
-        self.grammar.set_grammar(analysis.grammar_text)
+        self.grammar.set_from_analysis(analysis)

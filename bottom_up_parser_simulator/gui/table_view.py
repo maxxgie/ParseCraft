@@ -182,7 +182,7 @@ class CombinedTableView(QWidget):
         """
         self._analysis = analysis
         table = analysis.table
-        self.grammar.set_grammar(analysis.grammar_text)
+        self.grammar.set_from_analysis(analysis)
 
         terminals = list(table.terminals)
         non_terminals = list(table.non_terminals)

@@ -50,7 +50,7 @@ class DFAView(QWidget):
         automaton = analysis.automaton
         states = automaton.states
         start = automaton.start_state
-        self.grammar.set_grammar(analysis.grammar_text)
+        self.grammar.set_from_analysis(analysis)
         augmented_start = getattr(
             getattr(automaton, "augmented_grammar", None),
             "start_symbol",

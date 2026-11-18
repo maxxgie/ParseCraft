@@ -144,5 +144,29 @@ class Grammar:
             lines.append(f"{lhs} -> {' | '.join(alternatives)}")
         return "\n".join(lines)
 
+    def to_expanded_text(self) -> str:
+        """Return the grammar in expanded, textbook form.
+
+        Every production alternative is written on its own line (``A -> α``);
+        the ``|`` shorthand is never used.  The ``->`` arrow is aligned across
+        all productions and a blank line separates the alternatives of
+        different non-terminals.  An empty right-hand side is rendered as
+        ``ε``.
+
+        Returns:
+            A multi-line string, one production per line.
+        """
+        if not self.productions:
+            return ""
+        width = max(len(lhs) for lhs in self.productions)
+        blocks: List[str] = []
+        for lhs, rhs_list in self.productions.items():
+            pad = lhs.ljust(width)
+            lines = [
+                f"{pad} -> {' '.join(rhs) if rhs else 'ε'}" for rhs in rhs_list
+            ]
+            blocks.append("\n".join(lines))
+        return "\n\n".join(blocks)
+
     def __str__(self) -> str:
         return self.to_text()

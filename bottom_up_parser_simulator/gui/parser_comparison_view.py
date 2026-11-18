@@ -98,7 +98,7 @@ class ParserComparisonView(QWidget):
             self.clear()
             return
 
-        self.grammar.set_grammar(report.grammar_text)
+        self.grammar.set_from_grammar(report.grammar, caption="Original Grammar")
         stats = report.parser_stats
         self.table.setRowCount(len(stats))
         for row, s in enumerate(stats):

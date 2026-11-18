@@ -114,7 +114,7 @@ class ConflictView(QWidget):
         self._conflicts = list(conflicts)
         resolutions = {(r.state, r.terminal): r for r in analysis.resolutions}
         self.detail.clear()
-        self.grammar.set_grammar(analysis.grammar_text)
+        self.grammar.set_from_analysis(analysis)
 
         self.table.setRowCount(len(conflicts))
         for row, conflict in enumerate(conflicts):

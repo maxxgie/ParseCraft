@@ -111,7 +111,7 @@ class ClosureStepsView(QWidget):
         """Populate the state selector and show the first state's closure."""
         self._analysis = analysis
         automaton = analysis.automaton
-        self.grammar.set_grammar(analysis.grammar_text)
+        self.grammar.set_from_analysis(analysis)
         self.state_combo.blockSignals(True)
         self.state_combo.clear()
         for state in automaton.states:

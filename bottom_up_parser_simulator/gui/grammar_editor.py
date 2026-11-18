@@ -28,10 +28,25 @@ from core.conflict_resolution import (
     ResolutionConfig,
 )
 from core.engine import ALL_PARSER_TYPES
+from core.grammar_parser import parse_grammar
 from core.logging_config import get_logger
 from core.topdown import TOPDOWN_METHODS
 
 logger = get_logger(__name__)
+
+
+def _expanded_text(text: str) -> str:
+    """Return ``text`` reformatted in expanded, textbook form.
+
+    Falls back to the original text when it cannot be parsed (e.g. an empty
+    or partially entered grammar), so the preview never breaks.
+    """
+    if not text or not text.strip():
+        return text
+    try:
+        return parse_grammar(text).to_expanded_text()
+    except Exception:  # pragma: no cover - defensive
+        return text
 
 EXAMPLE_GRAMMAR = "E -> E + T | T\nT -> T * F | F\nF -> ( E ) | id"
 
@@ -279,26 +294,27 @@ class GrammarEditor(QWidget):
         self.feature_label.setText(note)
 
     def set_transform_preview(self, text: str) -> None:
-        """Show the grammar that was actually analysed."""
+        """Show the grammar that was actually analysed (expanded form)."""
+        expanded = _expanded_text(text)
         if "Used (after transforms)" in self._variants:
-            self._variants["Used (after transforms)"] = text
+            self._variants["Used (after transforms)"] = expanded
         else:
-            self._variants = {"Used (after transforms)": text}
+            self._variants = {"Used (after transforms)": expanded}
             self.variant_combo.blockSignals(True)
             self.variant_combo.clear()
             self.variant_combo.addItem("Used (after transforms)")
             self.variant_combo.blockSignals(False)
-        self.preview.setPlainText(text)
+        self.preview.setPlainText(expanded)
 
     def set_grammar_variants(self, variants: dict[str, str]) -> None:
-        """Populate the grammar-variant selector.
+        """Populate the grammar-variant selector (expanded display).
 
         Args:
             variants: Ordered mapping of label to BNF text, typically
                 ``Original``, ``Left-recursion removed``, ``Left-factored`` and
                 ``Used (after transforms)``.
         """
-        self._variants = dict(variants)
+        self._variants = {label: _expanded_text(text) for label, text in variants.items()}
         preferred = "Used (after transforms)"
         target = preferred if preferred in self._variants else next(
             iter(self._variants), ""

@@ -142,7 +142,7 @@ class SimulationView(QWidget):
                 f"Ready to simulate with {analysis.parser_type}. "
                 "Enter an input string and press Run."
             )
-            self.grammar.set_grammar(analysis.grammar_text)
+            self.grammar.set_from_analysis(analysis)
             self._set_controls_enabled(True)
 
     def clear(self) -> None:

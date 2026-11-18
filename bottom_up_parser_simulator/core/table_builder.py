@@ -37,6 +37,11 @@ MODES: Dict[str, str] = {
     "LALR(1)": "lalr1",
 }
 
+#: The LR-family parser types (every key of :data:`MODES`).  LR parsers operate
+#: on the augmented grammar, so grammar-reference panes show ``S' -> S`` for
+#: these types.
+LR_PARSER_TYPES = frozenset(MODES)
+
 
 def _is_named_terminal(symbol: str) -> bool:
     """Return ``True`` for identifier-like terminals such as ``id`` or ``num``.

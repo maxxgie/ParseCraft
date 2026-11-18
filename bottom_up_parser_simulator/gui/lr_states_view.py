@@ -28,7 +28,6 @@ from PyQt6.QtGui import (
 from PyQt6.QtWidgets import (
     QHBoxLayout,
     QLabel,
-    QPlainTextEdit,
     QSplitter,
     QStyle,
     QStyledItemDelegate,
@@ -42,6 +41,7 @@ from PyQt6.QtWidgets import (
 
 from core.logging_config import get_logger
 from core.table_builder import AUGMENTED_START, assign_production_numbers
+from gui.grammar_reference import GrammarReferencePane
 
 logger = get_logger(__name__)
 
@@ -159,17 +159,8 @@ class LRStatesView(QWidget):
 
         top_row = QHBoxLayout()
         top_row.addWidget(self.header, 1)
-        self.grammar_caption = QLabel("Used grammar:")
-        self.grammar_caption.setStyleSheet("color: #444;")
-        top_row.addWidget(self.grammar_caption, 0)
-        self.grammar_view = QPlainTextEdit()
-        self.grammar_view.setReadOnly(True)
-        self.grammar_view.setLineWrapMode(QPlainTextEdit.LineWrapMode.NoWrap)
-        self.grammar_view.setMaximumHeight(110)
-        self.grammar_view.setMinimumWidth(280)
-        self.grammar_view.setPlaceholderText("The grammar used appears here.")
-        self.grammar_view.setFont(_mono_font())
-        top_row.addWidget(self.grammar_view, 0)
+        self.grammar = GrammarReferencePane()
+        top_row.addWidget(self.grammar, 0)
         layout.addLayout(top_row)
 
         splitter = QSplitter(Qt.Orientation.Horizontal)
@@ -236,7 +227,7 @@ class LRStatesView(QWidget):
         self.table.clearContents()
         self.table.setRowCount(0)
         self.detail.clear()
-        self.grammar_view.clear()
+        self.grammar.clear()
         self.header.setText("Generate a grammar to see LR states.")
         self.header.setStyleSheet("color: #555;")
 
@@ -249,7 +240,7 @@ class LRStatesView(QWidget):
             automaton.grammar, aug.start_symbol
         )
 
-        self.grammar_view.setPlainText(analysis.grammar_text)
+        self.grammar.set_from_analysis(analysis)
         self._suppress = True
         self.table.clearContents()
         self.table.setRowCount(0)

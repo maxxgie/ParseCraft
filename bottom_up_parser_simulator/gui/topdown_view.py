@@ -144,7 +144,7 @@ class TopDownView(QWidget):
             f"{result.method} for grammar '{result.grammar.start_symbol}'{note}. "
             "Enter an input string and press Run."
         )
-        self.grammar.set_grammar(result.grammar_text)
+        self.grammar.set_from_analysis(result)
         self._set_controls_enabled(True)
 
     def clear(self) -> None:

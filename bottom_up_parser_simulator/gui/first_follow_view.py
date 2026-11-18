@@ -192,7 +192,11 @@ class FirstFollowView(QWidget):
         follow = analysis.follow
         non_terminals = sorted(analysis.grammar.non_terminals)
         terminals = sorted(analysis.grammar.terminals)
-        self.grammar.set_grammar(analysis.grammar_text)
+        # FIRST/FOLLOW sets are computed on the original (or transformed)
+        # grammar, so show that grammar — not the augmented one.
+        transforms = getattr(analysis, "transforms", None) or []
+        caption = "Transformed Grammar" if transforms else "Grammar Used by Parser"
+        self.grammar.set_from_grammar(analysis.grammar, caption=caption)
 
         rows: list[tuple[str, bool]] = []
         for nt in non_terminals:

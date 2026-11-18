@@ -119,6 +119,7 @@ def analyze_topdown(
         conflicts=conflicts,
         transforms=transforms,
         stages=build_grammar_stages(original, grammar),
+        original=original,
     )
     logger.info(
         "Top-down analysis (%s): left_recursion=%s, left_factoring=%s, conflicts=%d%s",

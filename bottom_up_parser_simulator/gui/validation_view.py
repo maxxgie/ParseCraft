@@ -95,7 +95,7 @@ class ValidationView(QWidget):
 
     def update_from(self, analysis) -> None:
         """Fill the table from an analysis result."""
-        self.grammar.set_grammar(analysis.grammar_text)
+        self.grammar.set_from_analysis(analysis)
         issues = validate_automaton(analysis.automaton) + validate_parsing_table(
             analysis
         )

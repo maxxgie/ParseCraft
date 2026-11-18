@@ -64,7 +64,7 @@ class LRItemsView(QWidget):
     def update_from(self, analysis) -> None:
         """Fill the table from an analysis result."""
         automaton = analysis.automaton
-        self.grammar.set_grammar(analysis.grammar_text)
+        self.grammar.set_from_analysis(analysis)
 
         rows = []
         for state in automaton.states:

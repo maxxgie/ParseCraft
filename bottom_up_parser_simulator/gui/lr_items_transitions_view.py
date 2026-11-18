@@ -85,4 +85,4 @@ class LRItemsTransitionsView(QWidget):
         """Populate both tables and the shared grammar reference."""
         self.lr_items.update_from(analysis)
         self.transitions.update_from(analysis)
-        self.grammar.set_grammar(analysis.grammar_text)
+        self.grammar.set_from_analysis(analysis)

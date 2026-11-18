@@ -56,6 +56,10 @@ class AnalysisResult:
     resolutions: List[Resolution] = field(default_factory=list)
     resolution_config: ResolutionConfig = field(default_factory=ResolutionConfig)
     stages: Dict[str, str] = field(default_factory=dict)
+    #: The original grammar exactly as entered by the user (never overwritten).
+    #: ``grammar`` is the grammar actually used for construction (identical to
+    #: ``original`` for LR parsers, which analyze the grammar as provided).
+    original: Optional[Grammar] = None
 
     @property
     def is_conflict_free(self) -> bool:
@@ -222,6 +226,7 @@ def analyze(
         resolutions=resolutions,
         resolution_config=resolution,
         stages=build_grammar_stages(original, grammar),
+        original=original,
     )
     logger.info(
         "Analysis complete: %s, %d states, %d conflicts, %d resolved, %d warnings%s",

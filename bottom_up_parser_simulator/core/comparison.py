@@ -180,11 +180,13 @@ class ComparisonReport:
         parser_stats: Per-parser statistics, in :data:`PARSER_ORDER`.
         suggested: The recommended parser, when one is compatible.
         grammar_text: The grammar the comparison was computed for.
+        grammar: The parsed grammar object (used for expanded display).
     """
 
     parser_stats: List[ParserStats] = field(default_factory=list)
     suggested: Optional[str] = None
     grammar_text: str = ""
+    grammar: Optional[Grammar] = None
 
     def summary(self) -> str:
         """Return a short human-readable summary."""
@@ -351,6 +353,7 @@ def compare_parsers(text: str) -> ComparisonReport:
         parser_stats=stats,
         suggested=suggested,
         grammar_text=grammar.to_text(),
+        grammar=grammar,
     )
     logger.info("Parser compatibility complete: %s", report.summary())
     return report
