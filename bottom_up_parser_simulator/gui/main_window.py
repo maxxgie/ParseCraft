@@ -466,7 +466,7 @@ class MainWindow(QMainWindow):
     def _setup_status_bar(self) -> None:
         self._status_bar = QStatusBar()
         self.setStatusBar(self._status_bar)
-        self._status_bar.showMessage("Ready")
+        self._status_bar.showMessage("Ready — test marker 2026-11-18-1450")
 
     def _setup_logs_dock(self) -> None:
         self._logs_view = QTextEdit()
