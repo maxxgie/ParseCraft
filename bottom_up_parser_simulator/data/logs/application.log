@@ -366,3 +366,25 @@
 2026-11-18 11:00:35 [INFO] core.codegen: Generated LR parser code (192 lines)
 2026-11-18 11:26:40 [INFO] core.database: Database connection closed
 2026-11-18 11:26:40 [INFO] __main__: Application shutdown complete
+2026-11-18 17:25:07 [INFO] __main__: Starting ParseCraft
+2026-11-18 17:25:07 [INFO] core.database: Connected to database: C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\data\parser_simulator.db
+2026-11-18 17:25:07 [INFO] core.database: Database schema initialized
+2026-11-18 17:25:07 [INFO] __main__: Database initialized
+2026-11-18 17:25:07 [DEBUG] gui.grammar_editor: GrammarEditor initialized
+2026-11-18 17:25:09 [DEBUG] gui.main_window: Applied 12 tabs for parser SLR(1)
+2026-11-18 17:26:06 [INFO] __main__: Starting ParseCraft
+2026-11-18 17:26:06 [INFO] core.database: Connected to database: C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\data\parser_simulator.db
+2026-11-18 17:26:06 [INFO] core.database: Database schema initialized
+2026-11-18 17:26:06 [INFO] __main__: Database initialized
+2026-11-18 17:26:06 [DEBUG] gui.grammar_editor: GrammarEditor initialized
+2026-11-18 17:26:07 [DEBUG] gui.main_window: Applied 12 tabs for parser SLR(1)
+2026-11-18 17:28:19 [INFO] __main__: Starting ParseCraft
+2026-11-18 17:28:19 [INFO] core.database: Connected to database: C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\data\parser_simulator.db
+2026-11-18 17:28:19 [INFO] core.database: Database schema initialized
+2026-11-18 17:28:19 [INFO] __main__: Database initialized
+2026-11-18 17:28:19 [DEBUG] gui.grammar_editor: GrammarEditor initialized
+2026-11-18 17:28:21 [DEBUG] gui.main_window: Applied 12 tabs for parser SLR(1)
+2026-11-18 17:28:21 [INFO] gui.main_window: Main window initialized
+2026-11-18 17:28:22 [INFO] core.update.checker: Checking for updates at https://raw.githubusercontent.com/maxxgie/ParseCraft/main/bottom_up_parser_simulator/manifest.json
+2026-11-18 17:28:22 [INFO] core.update.checker: No newer version available (installed=1.0.0, latest=1.0.0)
+2026-11-18 17:28:44 [DEBUG] gui.main_window: Applied 11 tabs for parser LR(0)
