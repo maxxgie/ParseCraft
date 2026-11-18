@@ -1,12 +1,13 @@
-"""Logging configuration for the bottom-up parser simulator application."""
+"""Logging configuration for the ParseCraft application."""
 
 import logging
 import logging.handlers
 import sys
-from pathlib import Path
+
+from core.paths import get_logs_dir
 
 
-LOG_DIR = Path(__file__).resolve().parent.parent / "logs"
+LOG_DIR = get_logs_dir()
 LOG_FILE = LOG_DIR / "application.log"
 
 LOG_FORMAT = "%(asctime)s [%(levelname)s] %(name)s: %(message)s"

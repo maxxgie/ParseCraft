@@ -1,0 +1,62 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# The application lives in the bottom_up_parser_simulator/ subdirectory of this
+# repository (maxxgie/ParseCraft), so all build commands run there.
+defaults:
+  run:
+    working-directory: bottom_up_parser_simulator
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r requirements-build.txt
+
+      - name: Install Inno Setup
+        run: choco install innosetup --yes --no-progress
+
+      - name: Build application and installer
+        shell: pwsh
+        run: ./packaging/build.ps1
+
+      - name: Compute installer SHA-256
+        shell: pwsh
+        run: |
+          $installer = Get-ChildItem dist/installer/*.exe | Select-Object -First 1
+          $hash = (Get-FileHash $installer.FullName -Algorithm SHA256).Hash.ToLower()
+          Write-Host "Installer: $($installer.Name)"
+          Write-Host "SHA256: $hash"
+          "INSTALLER_NAME=$($installer.Name)" | Out-File -Append $env:GITHUB_ENV
+          "INSTALLER_SHA256=$hash" | Out-File -Append $env:GITHUB_ENV
+          "INSTALLER_PATH=$($installer.FullName)" | Out-File -Append $env:GITHUB_ENV
+
+      - name: Create GitHub Release and upload installer
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $tag = $env:GITHUB_REF_NAME
+          gh release create $tag $env:INSTALLER_PATH `
+            --title "ParseCraft $tag" `
+            --notes "Automated release $tag. Installer SHA-256: $env:INSTALLER_SHA256"

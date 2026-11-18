@@ -60,7 +60,9 @@ class Database:
                 ``data/parser_simulator.db`` relative to the project root.
         """
         if db_path is None:
-            db_path = Path(__file__).resolve().parent.parent / "data" / "parser_simulator.db"
+            from core.paths import get_app_data_dir
+
+            db_path = get_app_data_dir() / "parser_simulator.db"
         self.db_path = Path(db_path)
         self.db_path.parent.mkdir(parents=True, exist_ok=True)
         self.connection: Optional[sqlite3.Connection] = None

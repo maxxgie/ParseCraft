@@ -1,0 +1,3 @@
+# Build-time dependencies for packaging the Windows installer.
+# Runtime dependencies live in requirements.txt.
+pyinstaller>=6.0.0

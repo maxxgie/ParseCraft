@@ -10,7 +10,7 @@ from __future__ import annotations
 import logging
 from typing import Optional
 
-from PyQt6.QtCore import QSize, Qt
+from PyQt6.QtCore import QSize, Qt, QTimer
 from PyQt6.QtGui import QAction, QIcon, QKeySequence
 from PyQt6.QtWidgets import (
     QDockWidget,
@@ -39,6 +39,7 @@ from core.grammar_analyzer import analyze_grammar
 from core.grammar_parser import GrammarParseError, parse_grammar
 from core.logging_config import get_logger
 from core.topdown import TOPDOWN_METHODS, analyze_topdown
+from core.update.manager import UpdateManager
 from gui.ast_view import AstView
 from gui.code_view import CodeView
 from gui.conflict_view import ConflictView
@@ -53,9 +54,18 @@ from gui.lr_states_view import LRStatesView
 from gui.parse_tree_view import ParseTreeView
 from gui.parser_comparison_view import ParserComparisonView
 from gui.settings import APP_NAME, APP_ORGANIZATION, APP_VERSION
+from gui.settings_dialog import SettingsDialog
 from gui.simulation_view import SimulationView
 from gui.table_view import CombinedTableView
 from gui.topdown_view import TopDownView
+from gui.update_dialog import (
+    INSTALL_NOW,
+    INSTALL_ON_RESTART,
+    UpdateDialog,
+    UpdateHistoryDialog,
+    UpdateProgressDialog,
+)
+from gui.update_worker import CheckWorker, DownloadWorker
 from gui.validation_view import ValidationView
 
 logger = get_logger(__name__)
@@ -168,7 +178,7 @@ class _GUILogHandler(logging.Handler):
 
 
 class MainWindow(QMainWindow):
-    """Main window for the Bottom-Up Parser Simulator."""
+    """Main window for ParseCraft."""
 
     def __init__(self) -> None:
         super().__init__()
@@ -180,11 +190,26 @@ class MainWindow(QMainWindow):
         self._logs_view: Optional[QTextEdit] = None
         self._logs_dock: Optional[QDockWidget] = None
 
+        # Update system state.
+        self.update_manager = UpdateManager()
+        self._check_worker: Optional[CheckWorker] = None
+        self._download_worker: Optional[DownloadWorker] = None
+        self._progress_dialog: Optional[UpdateProgressDialog] = None
+        self._settings_dialog: Optional[SettingsDialog] = None
+        self._pending_manifest = None
+        self._downloaded_package: Optional[str] = None
+        self._downloaded_version: str = ""
+        self._download_intent: str = ""
+        self._silent_check: bool = False
+
         self._build_central_tabs()
         self._setup_menu_bar()
         self._setup_toolbar()
         self._setup_status_bar()
         self._setup_logs_dock()
+
+        # Run the (non-blocking) update check once the event loop is running.
+        QTimer.singleShot(0, self._maybe_check_for_updates)
 
         logger.info("Main window initialized")
 
@@ -350,6 +375,10 @@ class MainWindow(QMainWindow):
 
         file_menu.addSeparator()
 
+        settings_action = QAction("&Settings...", self)
+        settings_action.triggered.connect(self._on_open_settings)
+        file_menu.addAction(settings_action)
+
         exit_action = QAction("E&xit", self)
         exit_action.setShortcut(QKeySequence.StandardKey.Quit)
         exit_action.triggered.connect(self.close)
@@ -381,6 +410,16 @@ class MainWindow(QMainWindow):
         tools_menu.addAction(simulate_action)
 
         help_menu = menu_bar.addMenu("&Help")
+
+        updates_action = QAction("Check for &Updates", self)
+        updates_action.triggered.connect(self._on_check_updates)
+        help_menu.addAction(updates_action)
+
+        update_history_action = QAction("Update &History", self)
+        update_history_action.triggered.connect(self._on_show_update_history)
+        help_menu.addAction(update_history_action)
+
+        help_menu.addSeparator()
 
         about_action = QAction("&About", self)
         about_action.triggered.connect(self._show_about)
@@ -856,6 +895,262 @@ class MainWindow(QMainWindow):
             "Includes grammar analysis, AST generation, parser comparison, "
             "error recovery, and export.",
         )
+
+    # ------------------------------------------------------------------
+    # Update system
+    # ------------------------------------------------------------------
+    def _on_open_settings(self) -> None:
+        """Open the settings dialog."""
+        self._settings_dialog = SettingsDialog(self.update_manager, self)
+        self._settings_dialog.check_requested.connect(self._on_settings_check_requested)
+        self._settings_dialog.history_requested.connect(self._on_settings_history_requested)
+        self._settings_dialog.exec()
+
+    def _on_settings_check_requested(self) -> None:
+        """Persist settings and start a manual update check."""
+        if self._settings_dialog is not None:
+            self._settings_dialog.accept()
+        self._on_check_updates()
+
+    def _on_settings_history_requested(self) -> None:
+        """Persist settings and show update history."""
+        if self._settings_dialog is not None:
+            self._settings_dialog.accept()
+        self._on_show_update_history()
+
+    def _on_check_updates(self) -> None:
+        """Handle the "Check for Updates" action (manual, user-visible)."""
+        self._start_check(silent=False)
+
+    def _maybe_check_for_updates(self) -> None:
+        """Run the automatic update check at startup when enabled."""
+        try:
+            if self.update_manager.should_check():
+                self._start_check(silent=True)
+        except Exception:  # pragma: no cover - defensive
+            logger.exception("Failed to start automatic update check")
+
+    def _start_check(self, *, silent: bool) -> None:
+        """Launch a background update check.
+
+        Args:
+            silent: Whether the check runs silently (no "up to date" popup).
+        """
+        self._silent_check = silent
+        worker = CheckWorker(self.update_manager)
+        worker.check_finished.connect(self._on_check_finished)
+        self._check_worker = worker
+        if not silent:
+            self._set_status("Checking for updates...", timeout=0)
+        worker.start()
+
+    def _on_check_finished(self, manifest, error: str) -> None:
+        """Handle the result of a background update check.
+
+        Args:
+            manifest: The available manifest, or ``None`` if up to date.
+            error: Error message, or an empty string on success.
+        """
+        if not self._silent_check:
+            self._set_status("Ready", timeout=3000)
+        if error:
+            logger.warning("Update check failed: %s", error)
+            if not self._silent_check:
+                QMessageBox.warning(
+                    self,
+                    "Update Check Failed",
+                    f"Could not check for updates.\n\n{error}",
+                )
+            return
+        if manifest is None:
+            if not self._silent_check:
+                QMessageBox.information(
+                    self, "No Updates", "You are running the latest version."
+                )
+            return
+        self._present_update(manifest)
+
+    def _present_update(self, manifest) -> None:
+        """Decide how to present an available update.
+
+        Args:
+            manifest: The available update manifest.
+        """
+        self._pending_manifest = manifest
+        self._downloaded_package = None
+        self._downloaded_version = ""
+        settings = self.update_manager.get_settings()
+        if settings.get("auto_download") and not settings.get("notify_only"):
+            intent = INSTALL_NOW if settings.get("auto_install") else "ask"
+            self._start_download(intent)
+        else:
+            self._show_update_prompt()
+
+    def _show_update_prompt(self) -> None:
+        """Show the update dialog and act on the user's choice."""
+        manifest = self._pending_manifest
+        if manifest is None:
+            return
+        dialog = UpdateDialog(manifest, self.update_manager.current_version, self)
+        dialog.exec()
+        choice = dialog.choice
+        if choice == INSTALL_NOW:
+            self._ensure_and_install(INSTALL_NOW)
+        elif choice == INSTALL_ON_RESTART:
+            self._ensure_and_install(INSTALL_ON_RESTART)
+        # REMIND_LATER (or closed) -> do nothing.
+
+    def _ensure_and_install(self, intent: str) -> None:
+        """Install using an already-downloaded package, or download first.
+
+        Args:
+            intent: ``INSTALL_NOW`` or ``INSTALL_ON_RESTART``.
+        """
+        manifest = self._pending_manifest
+        if manifest is None:
+            return
+        if (
+            self._downloaded_package
+            and self._downloaded_version == manifest.version
+        ):
+            self._apply_downloaded(self._downloaded_package, intent)
+        else:
+            self._start_download(intent)
+
+    def _start_download(self, intent: str) -> None:
+        """Download the pending update, showing progress.
+
+        Args:
+            intent: One of ``INSTALL_NOW``, ``INSTALL_ON_RESTART``, ``"ask"``.
+        """
+        manifest = self._pending_manifest
+        if manifest is None:
+            return
+        self._download_intent = intent
+        self._progress_dialog = UpdateProgressDialog("Downloading Update", self)
+        self._progress_dialog.cancelled.connect(self._cancel_download)
+
+        worker = DownloadWorker(self.update_manager, manifest)
+        worker.download_progress.connect(self._on_download_progress)
+        worker.download_finished.connect(self._on_download_finished)
+        worker.download_cancelled.connect(self._on_download_cancelled)
+        self._download_worker = worker
+        self._progress_dialog.show()
+        worker.start()
+
+    def _on_download_progress(self, downloaded: int, total: int) -> None:
+        """Update the progress dialog.
+
+        Args:
+            downloaded: Bytes downloaded so far.
+            total: Total bytes (0 if unknown).
+        """
+        if self._progress_dialog is not None:
+            self._progress_dialog.set_progress(downloaded, total)
+
+    def _on_download_finished(self, path, error: str) -> None:
+        """Handle completion of the download.
+
+        Args:
+            path: Path to the downloaded package, or ``None`` on failure.
+            error: Error message, or an empty string on success.
+        """
+        intent = self._download_intent
+        manifest = self._pending_manifest
+        if error:
+            if self._progress_dialog is not None:
+                self._progress_dialog.set_error(error)
+                self._progress_dialog.close()
+            QMessageBox.critical(
+                self, "Update Failed", f"Could not download the update.\n\n{error}"
+            )
+            return
+        self._downloaded_package = str(path)
+        self._downloaded_version = manifest.version if manifest else ""
+        if self._progress_dialog is not None:
+            self._progress_dialog.set_complete()
+        if intent == "ask":
+            if self._progress_dialog is not None:
+                self._progress_dialog.close()
+            self._show_update_prompt()
+        elif intent == INSTALL_NOW:
+            self._apply_downloaded(str(path), INSTALL_NOW)
+        elif intent == INSTALL_ON_RESTART:
+            self._apply_downloaded(str(path), INSTALL_ON_RESTART)
+
+    def _on_download_cancelled(self) -> None:
+        """Handle a cancelled download."""
+        if self._progress_dialog is not None:
+            self._progress_dialog.close()
+        self._set_status("Update download cancelled", timeout=5000)
+
+    def _cancel_download(self) -> None:
+        """Request cancellation from the progress dialog."""
+        if self._download_worker is not None:
+            self._download_worker.cancel()
+
+    def _apply_downloaded(self, package_path: str, intent: str) -> None:
+        """Install a downloaded package immediately or on next restart.
+
+        Args:
+            package_path: Path to the verified package.
+            intent: ``INSTALL_NOW`` or ``INSTALL_ON_RESTART``.
+        """
+        manifest = self._pending_manifest
+        if manifest is None:
+            return
+        if intent == INSTALL_ON_RESTART:
+            self.update_manager.schedule_for_restart(package_path, manifest)
+            if self._progress_dialog is not None:
+                self._progress_dialog.close()
+            QMessageBox.information(
+                self,
+                "Update Scheduled",
+                "The update will be installed the next time you start the "
+                "application. Your data and settings are preserved.",
+            )
+            return
+
+        # Install now.
+        result = self.update_manager.install_now(package_path, manifest)
+        if result.success:
+            if self._progress_dialog is not None:
+                self._progress_dialog.close()
+            QMessageBox.information(
+                self,
+                "Update Installed",
+                "The update was installed successfully. The application will "
+                "now restart.",
+            )
+            from core.update.installer import relaunch_application
+            from PyQt6.QtWidgets import QApplication
+
+            relaunch_application()
+            QApplication.instance().quit()
+        else:
+            if self._progress_dialog is not None:
+                self._progress_dialog.close()
+            QMessageBox.critical(
+                self,
+                "Update Failed",
+                "The update could not be applied and the previous version was "
+                f"restored.\n\n{result.error or ''}",
+            )
+
+    def _on_show_update_history(self) -> None:
+        """Show the update history dialog."""
+        dialog = UpdateHistoryDialog(self.update_manager.get_history(), self)
+        dialog.exec()
+
+    def _set_status(self, message: str, timeout: int = 3000) -> None:
+        """Show a message in the status bar.
+
+        Args:
+            message: Message text.
+            timeout: Display timeout in milliseconds (0 = until changed).
+        """
+        if self._status_bar is not None:
+            self._status_bar.showMessage(message, timeout)
 
     # ------------------------------------------------------------------
     # Qt overrides

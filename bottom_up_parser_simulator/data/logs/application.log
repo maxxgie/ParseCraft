@@ -1,0 +1,20 @@
+2026-11-18 10:45:18 [INFO] __main__: Starting ParseCraft
+2026-11-18 10:45:18 [INFO] core.database: Connected to database: C:\Users\maxwe\Downloads\projo\ttom-up_parsing\bottom_up_parser_simulator\data\parser_simulator.db
+2026-11-18 10:45:18 [INFO] core.database: Database schema initialized
+2026-11-18 10:45:18 [INFO] __main__: Database initialized
+2026-11-18 10:45:18 [DEBUG] gui.grammar_editor: GrammarEditor initialized
+2026-11-18 10:45:19 [DEBUG] gui.main_window: Applied 12 tabs for parser SLR(1)
+2026-11-18 10:45:19 [INFO] gui.main_window: Main window initialized
+2026-11-18 10:45:19 [INFO] core.update.checker: Checking for updates at https://raw.githubusercontent.com/maxxgie/ParseCraft/main/bottom_up_parser_simulator/manifest.json
+2026-11-18 10:45:19 [WARNING] gui.update_worker: Update check failed: Failed to reach update server: HTTP Error 404: Not Found
+2026-11-18 10:45:19 [WARNING] gui.main_window: Update check failed: Failed to reach update server: HTTP Error 404: Not Found
+2026-11-18 10:59:11 [INFO] __main__: Starting ParseCraft
+2026-11-18 10:59:11 [INFO] core.database: Connected to database: C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\data\parser_simulator.db
+2026-11-18 10:59:11 [INFO] core.database: Database schema initialized
+2026-11-18 10:59:11 [INFO] __main__: Database initialized
+2026-11-18 10:59:11 [DEBUG] gui.grammar_editor: GrammarEditor initialized
+2026-11-18 10:59:12 [DEBUG] gui.main_window: Applied 12 tabs for parser SLR(1)
+2026-11-18 10:59:12 [INFO] gui.main_window: Main window initialized
+2026-11-18 10:59:12 [INFO] core.update.checker: Checking for updates at https://raw.githubusercontent.com/maxxgie/ParseCraft/main/bottom_up_parser_simulator/manifest.json
+2026-11-18 10:59:13 [WARNING] gui.update_worker: Update check failed: Failed to reach update server: HTTP Error 404: Not Found
+2026-11-18 10:59:13 [WARNING] gui.main_window: Update check failed: Failed to reach update server: HTTP Error 404: Not Found

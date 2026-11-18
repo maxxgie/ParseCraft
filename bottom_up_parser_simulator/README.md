@@ -1,4 +1,4 @@
-# Compiler Construction Parser Simulator
+# ParseCraft
 
 A desktop application for visualizing top-down and bottom-up parsing techniques used in compiler construction.
 
