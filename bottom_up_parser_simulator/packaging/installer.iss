@@ -13,7 +13,9 @@
 ;   * never touches per-user data (stored in %APPDATA%\ParseCraft).
 
 #define MyAppName "ParseCraft"
+#ifndef MyAppVersion
 #define MyAppVersion "1.0.0"
+#endif
 #define MyAppPublisher "Compiler Construction"
 #define MyAppExeName "ParseCraft.exe"
 ; A stable AppId is required so that new versions upgrade the existing install.

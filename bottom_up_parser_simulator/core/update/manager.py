@@ -29,6 +29,7 @@ from core.update.downloader import (
     DownloadError,
     download_to_cache,
     filename_from_url,
+    validate_download_url,
 )
 from core.update.history import UpdateHistoryStore
 from core.update.installer import (
@@ -196,6 +197,7 @@ class UpdateManager:
             manifest.download_url,
             fallback=f"update-{manifest.version}.zip",
         )
+        validate_download_url(manifest.download_url)
         package_path = download_to_cache(
             manifest.download_url,
             filename,

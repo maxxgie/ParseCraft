@@ -143,6 +143,34 @@ def _safe_remove(path: Path) -> None:
         pass
 
 
+def validate_download_url(url: str) -> None:
+    """Raise ``ValueError`` if ``url`` does not point to a concrete file.
+
+    A GitHub release directory URL (e.g. ``.../releases/download/v1.0.1/``)
+    returns 404 because no asset name is appended. This guard rejects such
+    URLs before any network request is made. ``file://`` URLs used for tests
+    and offline scenarios are accepted as long as they name a file.
+    """
+    if not url:
+        raise ValueError("Download URL is empty")
+    parsed = urllib.parse.urlparse(url)
+    if not parsed.scheme:
+        raise ValueError(f"Invalid download URL: {url!r}")
+    if parsed.scheme == "file":
+        return
+    if not parsed.netloc:
+        raise ValueError(f"Invalid download URL: {url!r}")
+    path = parsed.path.rstrip("/")
+    if not path or path.endswith("/"):
+        raise ValueError(
+            f"Download URL points to a directory, not a file: {url!r}"
+        )
+    if "." not in os.path.basename(path):
+        raise ValueError(
+            f"Download URL has no filename: {url!r}"
+        )
+
+
 def download_to_cache(
     url: str,
     filename: str,
@@ -167,6 +195,7 @@ def download_to_cache(
     Returns:
         Path to the downloaded file in the cache directory.
     """
+    validate_download_url(url)
     cache_path = Path(cache_dir)
     cache_path.mkdir(parents=True, exist_ok=True)
     return download(

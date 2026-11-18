@@ -14,6 +14,7 @@ import urllib.request
 from typing import Optional
 
 from core.logging_config import get_logger
+from core.update.downloader import validate_download_url
 from core.update.manifest import ManifestError, ReleaseManifest
 from core.update.urls import is_secure_url
 from core.version import DEFAULT_MANIFEST_URL
@@ -82,9 +83,14 @@ def fetch_manifest(
         raise CheckError(f"Failed to read update manifest: {exc}") from exc
 
     try:
-        return ReleaseManifest.from_json(body)
+        manifest = ReleaseManifest.from_json(body)
     except ManifestError as exc:
         raise CheckError(f"Invalid update manifest: {exc}") from exc
+    try:
+        validate_download_url(manifest.download_url)
+    except ValueError as exc:
+        raise CheckError(f"Manifest download_url is invalid: {exc}") from exc
+    return manifest
 
 
 def check_for_update(

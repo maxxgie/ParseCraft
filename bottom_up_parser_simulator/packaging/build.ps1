@@ -101,18 +101,19 @@ $Iscc = Get-Command iscc -ErrorAction SilentlyContinue
         $found = Get-ChildItem -Path "${env:ProgramFiles(x86)}\Inno Setup*" -Recurse -Filter "ISCC.exe" -ErrorAction SilentlyContinue | Select-Object -First 1
         if ($found) { $Iscc = $found.FullName }
     }
-    if (-not $Iscc) {
+if (-not $Iscc) {
         throw "ISCC.exe (Inno Setup) not found. Install Inno Setup 6+ and retry."
     }
-$IsccPath = if ($Iscc -is [System.Management.Automation.ApplicationInfo]) { $Iscc.Source } else { $Iscc }
-& $IsccPath (Join-Path $Root "packaging\installer.iss")
-if ($LASTEXITCODE -ne 0) { throw "Inno Setup compilation failed with code $LASTEXITCODE" }
+    $IsccPath = if ($Iscc -is [System.Management.Automation.ApplicationInfo]) { $Iscc.Source } else { $Iscc }
+    $versionFromManifest = (Get-Content (Join-Path $Root "manifest.json") | ConvertFrom-Json).latest_version
+    & $IsccPath (Join-Path $Root "packaging\installer.iss") /DMyAppVersion=$versionFromManifest
+    if ($LASTEXITCODE -ne 0) { throw "Inno Setup compilation failed with code $LASTEXITCODE" }
 
-$Installer = Get-ChildItem -Path (Join-Path $Root "packaging\dist\installer") -Filter "*.exe" | Select-Object -First 1
-if (-not $Installer) { throw "Installer not found after build." }
-Sign-Binary $Installer.FullName
-Verify-Signature (Join-Path $AppDir "ParseCraft.exe")
-Verify-Signature $Installer.FullName
+    $Installer = Get-ChildItem -Path (Join-Path $Root "packaging\dist\installer") -Filter "*.exe" | Select-Object -First 1
+    if (-not $Installer) { throw "Installer not found after build." }
+    Sign-Binary $Installer.FullName
+    Verify-Signature (Join-Path $AppDir "ParseCraft.exe")
+    Verify-Signature $Installer.FullName
 
 if (-not $SigningEnabled) {
     Write-Host "Build completed without code signing." -ForegroundColor Yellow
