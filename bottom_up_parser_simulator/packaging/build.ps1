@@ -84,20 +84,26 @@ Sign-Binary (Join-Path $AppDir "ParseCraft.exe")
 
 Write-Host "== Compiling installer with Inno Setup ==" -ForegroundColor Cyan
 $Iscc = Get-Command iscc -ErrorAction SilentlyContinue
-if (-not $Iscc) {
-    $Candidates = @(
-        "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe",
-        "${env:ProgramFiles(x86)}\Inno Setup 7\ISCC.exe",
-        "${env:ProgramFiles}\Inno Setup 6\ISCC.exe",
-        "${env:ProgramFiles}\Inno Setup 7\ISCC.exe"
-    )
-    foreach ($candidate in $Candidates) {
-        if (Test-Path -LiteralPath $candidate) { $Iscc = $candidate; break }
+    if (-not $Iscc) {
+        $Candidates = @(
+            "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe",
+            "${env:ProgramFiles(x86)}\Inno Setup 7\ISCC.exe",
+            "${env:ProgramFiles}\Inno Setup 6\ISCC.exe",
+            "${env:ProgramFiles}\Inno Setup 7\ISCC.exe",
+            "$env:USERPROFILE\.chocolatey\innosetup\ISCC.exe",
+            "C:\ProgramData\chocolatey\innosetup\ISCC.exe"
+        )
+        foreach ($candidate in $Candidates) {
+            if (Test-Path -LiteralPath $candidate) { $Iscc = $candidate; break }
+        }
     }
-}
-if (-not $Iscc) {
-    throw "ISCC.exe (Inno Setup) not found. Install Inno Setup 6+ and retry."
-}
+    if (-not $Iscc) {
+        $found = Get-ChildItem -Path "${env:ProgramFiles(x86)}\Inno Setup*" -Recurse -Filter "ISCC.exe" -ErrorAction SilentlyContinue | Select-Object -First 1
+        if ($found) { $Iscc = $found.FullName }
+    }
+    if (-not $Iscc) {
+        throw "ISCC.exe (Inno Setup) not found. Install Inno Setup 6+ and retry."
+    }
 $IsccPath = if ($Iscc -is [System.Management.Automation.ApplicationInfo]) { $Iscc.Source } else { $Iscc }
 & $IsccPath (Join-Path $Root "packaging\installer.iss")
 if ($LASTEXITCODE -ne 0) { throw "Inno Setup compilation failed with code $LASTEXITCODE" }

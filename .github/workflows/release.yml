@@ -51,9 +51,22 @@ jobs:
       - name: Compute installer hash
         shell: pwsh
         run: |
-          $installer = Get-ChildItem packaging/dist/installer/*.exe | Select-Object -First 1
-          if (-not $installer) { throw "Installer not found" }
+          $candidates = @(
+            "packaging/dist/installer/*.exe",
+            "dist/installer/*.exe"
+          )
+          $installer = $null
+          foreach ($pat in $candidates) {
+            $found = Get-ChildItem $pat -ErrorAction SilentlyContinue | Select-Object -First 1
+            if ($found) { $installer = $found; break }
+          }
+          if (-not $installer) {
+            Write-Host "Searching for any installer exe under workspace:"
+            Get-ChildItem -Path . -Recurse -Filter "*.exe" -ErrorAction SilentlyContinue | ForEach-Object { Write-Host "  $($_.FullName)" }
+            throw "Installer not found"
+          }
           $hash = (Get-FileHash $installer.FullName -Algorithm SHA256).Hash.ToLower()
+          Write-Host "Installer: $($installer.FullName)"
           "INSTALLER_NAME=$($installer.Name)" | Out-File -Append $env:GITHUB_ENV
           "INSTALLER_SHA256=$hash" | Out-File -Append $env:GITHUB_ENV
           "INSTALLER_PATH=$($installer.FullName)" | Out-File -Append $env:GITHUB_ENV
