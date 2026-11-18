@@ -46,8 +46,7 @@ from gui.code_view import CodeView
 from gui.conflict_view import ConflictView
 from gui.dfa_view import DFAView
 from gui.first_follow_view import FirstFollowView
-from gui.closure_steps_view import ClosureStepsView
-from gui.goto_steps_view import GotoStepsView
+from gui.closure_goto_steps_view import ClosureGotoStepsView
 from gui.grammar_analyzer_view import GrammarAnalyzerView
 from gui.grammar_editor import GenerateOptions, GrammarEditor
 from gui.ll1_table_view import LL1TableView
@@ -222,8 +221,7 @@ class MainWindow(QMainWindow):
         self.grammar_editor = GrammarEditor()
         self.first_follow_view = FirstFollowView()
         self.lr_items_view = LRItemsTransitionsView()
-        self.closure_view = ClosureStepsView()
-        self.goto_view = GotoStepsView()
+        self.closure_view = ClosureGotoStepsView()
         self.lr_states_view = LRStatesView()
         self.validation_view = ValidationView()
         self.dfa_view = DFAView()
@@ -242,8 +240,7 @@ class MainWindow(QMainWindow):
             TAB_GRAMMAR: "Grammar",
             TAB_FIRST_FOLLOW: "FIRS/FOLLOW",
             TAB_LR_ITEMS: "LR Items/Transitions",
-            TAB_CLOSURE: "Closure Steps",
-            TAB_GOTO: "GOTO Steps",
+            TAB_CLOSURE: "Closure/GOTO Steps",
             TAB_STATES: "Canonical Collection",
             TAB_VALIDATION: "State Validation",
             TAB_DFA: "DFA",
@@ -263,7 +260,6 @@ class MainWindow(QMainWindow):
             TAB_FIRST_FOLLOW: self.first_follow_view,
             TAB_LR_ITEMS: self.lr_items_view,
             TAB_CLOSURE: self.closure_view,
-            TAB_GOTO: self.goto_view,
             TAB_STATES: self.lr_states_view,
             TAB_VALIDATION: self.validation_view,
             TAB_DFA: self.dfa_view,
@@ -563,7 +559,6 @@ class MainWindow(QMainWindow):
         # Clear bottom-up-only views.
         self.lr_items_view.clear()
         self.closure_view.clear()
-        self.goto_view.clear()
         self.lr_states_view.clear()
         self.validation_view.clear()
         self.dfa_view.clear()
@@ -627,7 +622,6 @@ class MainWindow(QMainWindow):
         self.first_follow_view.update_from(analysis)
         self.lr_items_view.update_from(analysis)
         self.closure_view.update_from(analysis)
-        self.goto_view.update_from(analysis)
         self.lr_states_view.update_from(analysis)
         self.validation_view.update_from(analysis)
         self.dfa_view.update_from(analysis)
@@ -780,7 +774,6 @@ class MainWindow(QMainWindow):
         self.first_follow_view.clear()
         self.lr_items_view.clear()
         self.closure_view.clear()
-        self.goto_view.clear()
         self.lr_states_view.clear()
         self.validation_view.clear()
         self.dfa_view.clear()
@@ -930,6 +923,10 @@ class MainWindow(QMainWindow):
             self._settings_dialog.accept()
         self._on_show_update_history()
 
+    def _on_check_updates(self) -> None:
+        """Handle the "Check for Updates" action (manual, user-visible)."""
+        self._start_check(silent=False)
+
     def _on_check_git_updates(self) -> None:
         try:
             from core.git_updater import GitUpdater
@@ -969,8 +966,6 @@ class MainWindow(QMainWindow):
         except Exception as exc:  # noqa: BLE001
             from PyQt6.QtWidgets import QMessageBox
             QMessageBox.warning(self, "Git Updates", str(exc))
-        """Handle the "Check for Updates" action (manual, user-visible)."""
-        self._start_check(silent=False)
 
     def _maybe_check_for_updates(self) -> None:
         """Run the automatic update check at startup when enabled."""
