@@ -51,7 +51,8 @@ jobs:
       - name: Compute installer hash
         shell: pwsh
         run: |
-          $installer = Get-ChildItem dist/installer/*.exe | Select-Object -First 1
+          $installer = Get-ChildItem packaging/dist/installer/*.exe | Select-Object -First 1
+          if (-not $installer) { throw "Installer not found" }
           $hash = (Get-FileHash $installer.FullName -Algorithm SHA256).Hash.ToLower()
           "INSTALLER_NAME=$($installer.Name)" | Out-File -Append $env:GITHUB_ENV
           "INSTALLER_SHA256=$hash" | Out-File -Append $env:GITHUB_ENV
