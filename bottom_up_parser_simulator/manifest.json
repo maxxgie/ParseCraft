@@ -1,10 +1,10 @@
 {
   "app_name": "ParseCraft",
-  "latest_version": "1.0.3",
-  "build": "100111",
+  "latest_version": "1.0.4",
+  "build": "1001111",
   "release_date": "2026-11-18",
-  "download_url": "https://github.com/maxxgie/ParseCraft/releases/download/v1.0.3/ParseCraft-1.0.0-Setup.exe",
-  "sha256": "25d4d6bfcd793358aad3b5af3785bd0778e645137171d0779554da9095590cad",
+  "download_url": "https://github.com/maxxgie/ParseCraft/releases/download/v1.0.4/",
+  "sha256": "0e350ff8d92fefd23dfba4f0f518182fba6a2dbba2d736b1c40bec2c4b8db02a",
   "min_version": "1.0.0",
   "package_type": "installer",
   "release_notes": [
