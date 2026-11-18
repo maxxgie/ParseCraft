@@ -1,79 +1,75 @@
-name: Release
+name: Auto Release
 
 on:
   push:
-    tags:
-      - "v*"
-  workflow_dispatch:
+    branches: [main]
 
 permissions:
   contents: write
 
-# The application lives in the bottom_up_parser_simulator/ subdirectory of this
-# repository (maxxgie/ParseCraft), so all build commands run there.
 defaults:
   run:
     working-directory: bottom_up_parser_simulator
 
 jobs:
-  build-windows:
+  build-and-release:
     runs-on: windows-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Install dependencies
-        run: |
+      - run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install -r requirements-build.txt
 
-      - name: Install Inno Setup
-        run: choco install innosetup --yes --no-progress
+      - run: choco install innosetup --yes --no-progress
 
-      - name: Decode signing certificate
-        if: ${{ secrets.SIGNING_CERTIFICATE != '' }}
+      - name: Bump manifest version
         shell: pwsh
         run: |
-          $bytes = [Convert]::FromBase64String("${{ secrets.SIGNING_CERTIFICATE }}")
-          $path = Join-Path $PWD "packaging\cert.pfx"
-          [IO.File]::WriteAllBytes($path, $bytes)
-          "PFX_CERTIFICATE_PATH=$path" | Out-File -Append $env:GITHUB_ENV
-          "PFX_CERTIFICATE_PASSWORD=${{ secrets.SIGNING_PASSWORD }}" | Out-File -Append $env:GITHUB_ENV
-          "SIGNING_ENABLED=true" | Out-File -Append $env:GITHUB_ENV
-          "TIMESTAMP_SERVER=http://timestamp.digicert.com" | Out-File -Append $env:GITHUB_ENV
+          $m = Get-Content manifest.json | ConvertFrom-Json
+          $parts = $m.latest_version.Split('.')
+          $parts[2] = [int]$parts[2] + 1
+          $m.latest_version = $parts -join '.'
+          $m.build = "$($m.build + 1)"
+          $m.release_date = (Get-Date -Format "yyyy-MM-dd")
+          $m | ConvertTo-Json -Depth 5 | Set-Content manifest.json
+          "VERSION=$($m.latest_version)" | Out-File -Append $env:GITHUB_ENV
 
-      - name: Build application and installer
-        shell: pwsh
-        env:
-          SIGNING_ENABLED: ${{ env.SIGNING_ENABLED }}
-          PFX_CERTIFICATE_PATH: ${{ env.PFX_CERTIFICATE_PATH }}
-          PFX_CERTIFICATE_PASSWORD: ${{ env.PFX_CERTIFICATE_PASSWORD }}
-          TIMESTAMP_SERVER: ${{ env.TIMESTAMP_SERVER }}
-        run: ./packaging/build.ps1
+      - run: ./packaging/build.ps1
 
-      - name: Compute installer SHA-256
+      - name: Compute installer hash
         shell: pwsh
         run: |
           $installer = Get-ChildItem dist/installer/*.exe | Select-Object -First 1
           $hash = (Get-FileHash $installer.FullName -Algorithm SHA256).Hash.ToLower()
-          Write-Host "Installer: $($installer.Name)"
-          Write-Host "SHA256: $hash"
           "INSTALLER_NAME=$($installer.Name)" | Out-File -Append $env:GITHUB_ENV
           "INSTALLER_SHA256=$hash" | Out-File -Append $env:GITHUB_ENV
           "INSTALLER_PATH=$($installer.FullName)" | Out-File -Append $env:GITHUB_ENV
+          # update manifest download_url + sha256
+          $m = Get-Content manifest.json | ConvertFrom-Json
+          $m.download_url = "https://github.com/maxxgie/ParseCraft/releases/download/v$env:VERSION/$env:INSTALLER_NAME"
+          $m.sha256 = $hash
+          $m | ConvertTo-Json -Depth 5 | Set-Content manifest.json
 
-      - name: Create GitHub Release and upload installer
+      - name: Commit manifest
+        shell: pwsh
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add manifest.json
+          git commit -m "Bump version to $env:VERSION" || echo "no changes"
+          git push
+
+      - name: Create release
         shell: pwsh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          $tag = $env:GITHUB_REF_NAME
-          gh release create $tag $env:INSTALLER_PATH `
-            --title "ParseCraft $tag" `
-            --notes "Automated release $tag. Installer SHA-256: $env:INSTALLER_SHA256"
+          gh release create "v$env:VERSION" $env:INSTALLER_PATH --title "ParseCraft $env:VERSION" --notes "Automated release"
