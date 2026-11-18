@@ -35,8 +35,6 @@ a = Analysis(
     hooksconfig={},
     runtime_hooks=[],
     excludes=["tkinter", "pytest"],
-    win_no_prefer_redirects=True,
-    win_private_assemblies=False,
     cipher=block_cipher,
     noarchive=False,
 )

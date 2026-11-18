@@ -36,8 +36,25 @@ jobs:
       - name: Install Inno Setup
         run: choco install innosetup --yes --no-progress
 
+      - name: Decode signing certificate
+        if: ${{ secrets.SIGNING_CERTIFICATE != '' }}
+        shell: pwsh
+        run: |
+          $bytes = [Convert]::FromBase64String("${{ secrets.SIGNING_CERTIFICATE }}")
+          $path = Join-Path $PWD "packaging\cert.pfx"
+          [IO.File]::WriteAllBytes($path, $bytes)
+          "PFX_CERTIFICATE_PATH=$path" | Out-File -Append $env:GITHUB_ENV
+          "PFX_CERTIFICATE_PASSWORD=${{ secrets.SIGNING_PASSWORD }}" | Out-File -Append $env:GITHUB_ENV
+          "SIGNING_ENABLED=true" | Out-File -Append $env:GITHUB_ENV
+          "TIMESTAMP_SERVER=http://timestamp.digicert.com" | Out-File -Append $env:GITHUB_ENV
+
       - name: Build application and installer
         shell: pwsh
+        env:
+          SIGNING_ENABLED: ${{ env.SIGNING_ENABLED }}
+          PFX_CERTIFICATE_PATH: ${{ env.PFX_CERTIFICATE_PATH }}
+          PFX_CERTIFICATE_PASSWORD: ${{ env.PFX_CERTIFICATE_PASSWORD }}
+          TIMESTAMP_SERVER: ${{ env.TIMESTAMP_SERVER }}
         run: ./packaging/build.ps1
 
       - name: Compute installer SHA-256

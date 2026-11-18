@@ -1,0 +1,13 @@
+# Certificates
+*.pfx
+*.p12
+cert.pfx
+
+# Build artifacts
+dist/
+build/
+__pycache__/
+*.pyc
+data/*.db
+logs/*.log
+.pytest_cache/
