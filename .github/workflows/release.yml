@@ -3,8 +3,6 @@ name: Auto Release
 on:
   push:
     branches: [main]
-    paths-ignore:
-      - "bottom_up_parser_simulator/manifest.json"
   workflow_dispatch:
 
 permissions:
@@ -20,7 +18,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          persist-credentials: false
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/setup-python@v5
@@ -41,10 +38,12 @@ jobs:
           $parts = $m.latest_version.Split('.')
           $parts[2] = [int]$parts[2] + 1
           $m.latest_version = $parts -join '.'
+          $version = $m.latest_version
           $m.build = "$($m.build + 1)"
           $m.release_date = (Get-Date -Format "yyyy-MM-dd")
+          $m.download_url = "https://github.com/maxxgie/ParseCraft/releases/download/v$version/ParseCraft-$version-Setup.exe"
           $m | ConvertTo-Json -Depth 5 | Set-Content manifest.json
-          "VERSION=$($m.latest_version)" | Out-File -Append $env:GITHUB_ENV
+          "VERSION=$version" | Out-File -Append $env:GITHUB_ENV
 
       - run: ./packaging/build.ps1
 
