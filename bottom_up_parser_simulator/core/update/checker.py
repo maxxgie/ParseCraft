@@ -88,16 +88,20 @@ def fetch_manifest(
         manifest = ReleaseManifest.from_json(body)
     except ManifestError as exc:
         raise CheckError(f"Invalid update manifest: {exc}") from exc
-    try:
-        validate_download_url(manifest.download_url)
-    except ValueError:
-        # The manifest's download_url may be a bare release directory (the
-        # auto-release workflow sometimes fails to persist the asset name).
-        # Repair it from the manifest version so the updater still works.
+    # The auto-release workflow sometimes leaves download_url as a bare
+    # release directory (e.g. .../releases/download/v1.0.10/). Such a URL
+    # passes a generic "is it a file?" check because the last path segment
+    # looks like a version number, so we repair it explicitly whenever it does
+    # not already point at the installer asset.
+    import os as _os
+
+    _ext = _os.path.splitext(manifest.download_url)[1].lower()
+    if not manifest.download_url or not _ext:
         repaired = _repair_download_url(manifest)
         if repaired:
             logger.warning(
-                "Manifest download_url was invalid; repaired to %s", repaired
+                "Manifest download_url was not a file URL; repaired to %s",
+                repaired,
             )
             manifest = ReleaseManifest.from_json(
                 json.dumps({**json.loads(body), "download_url": repaired})

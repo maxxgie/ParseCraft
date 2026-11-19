@@ -2714,3 +2714,14 @@ TypeError: 'NoneType' object is not iterable
 2026-11-19 11:07:58 [INFO] core.codegen: Generated LR parser code (192 lines)
 2026-11-19 11:09:10 [INFO] core.database: Database connection closed
 2026-11-19 11:09:10 [INFO] __main__: Application shutdown complete
+2026-11-19 21:05:15 [INFO] __main__: Starting ParseCraft
+2026-11-19 21:05:15 [INFO] core.database: Connected to database: C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\data\parser_simulator.db
+2026-11-19 21:05:15 [INFO] core.database: Database schema initialized
+2026-11-19 21:05:15 [INFO] __main__: Database initialized
+2026-11-19 21:05:22 [DEBUG] gui.grammar_editor: GrammarEditor initialized
+2026-11-19 21:05:23 [DEBUG] gui.main_window: Applied 12 tabs for parser SLR(1)
+2026-11-19 21:05:23 [INFO] gui.main_window: Main window initialized
+2026-11-19 21:05:24 [INFO] core.update.checker: Checking for updates at https://raw.githubusercontent.com/maxxgie/ParseCraft/main/bottom_up_parser_simulator/manifest.json
+2026-11-19 21:05:27 [WARNING] gui.update_worker: Update download failed: Failed to download https://github.com/maxxgie/ParseCraft/releases/download/v1.0.10/: HTTP Error 404: Not Found
+2026-11-19 21:18:36 [INFO] core.database: Database connection closed
+2026-11-19 21:18:36 [INFO] __main__: Application shutdown complete
