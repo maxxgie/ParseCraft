@@ -421,3 +421,2296 @@
 2026-11-18 17:53:47 [INFO] core.update.checker: No newer version available (installed=1.0.0, latest=1.0.0)
 2026-11-18 17:57:35 [INFO] core.database: Database connection closed
 2026-11-18 17:57:35 [INFO] __main__: Application shutdown complete
+2026-11-19 09:42:18 [INFO] __main__: Starting ParseCraft
+2026-11-19 09:42:18 [INFO] core.database: Connected to database: C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\data\parser_simulator.db
+2026-11-19 09:42:18 [INFO] core.database: Database schema initialized
+2026-11-19 09:42:18 [INFO] __main__: Database initialized
+2026-11-19 09:42:19 [DEBUG] gui.grammar_editor: GrammarEditor initialized
+2026-11-19 09:42:20 [DEBUG] gui.main_window: Applied 12 tabs for parser SLR(1)
+2026-11-19 09:42:20 [INFO] gui.main_window: Main window initialized
+2026-11-19 09:42:20 [INFO] core.update.checker: Checking for updates at https://raw.githubusercontent.com/maxxgie/ParseCraft/main/bottom_up_parser_simulator/manifest.json
+2026-11-19 09:42:24 [WARNING] gui.update_worker: Update download failed: Failed to download https://github.com/maxxgie/ParseCraft/releases/download/v1.0.9/: HTTP Error 404: Not Found
+2026-11-19 09:49:30 [DEBUG] gui.main_window: Applied 11 tabs for parser LR(0)
+2026-11-19 09:49:55 [INFO] core.grammar_parser: Grammar parsed successfully: 2 non-terminals
+2026-11-19 09:49:55 [INFO] core.grammar_parser: Grammar parsed successfully: 2 non-terminals
+2026-11-19 09:49:55 [INFO] core.first_follow: FIRST sets computed for 6 symbols
+2026-11-19 09:49:55 [INFO] core.first_follow: FOLLOW sets computed for 2 non-terminals
+2026-11-19 09:49:55 [INFO] core.topdown.ll1: LL(1) table built: 2 rows, 4 columns, 0 conflict(s)
+2026-11-19 09:49:55 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 09:49:55 [DEBUG] core.closure: Closure computed: 4 items
+2026-11-19 09:49:55 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:49:55 [DEBUG] core.goto: GOTO on 'S′' computed: 1 items
+2026-11-19 09:49:55 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:49:55 [DEBUG] core.goto: GOTO on 'S' computed: 1 items
+2026-11-19 09:49:55 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-19 09:49:55 [DEBUG] core.goto: GOTO on '(' computed: 3 items
+2026-11-19 09:49:55 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:49:55 [DEBUG] core.goto: GOTO on 'a' computed: 1 items
+2026-11-19 09:49:55 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:49:55 [DEBUG] core.goto: GOTO on 'S' computed: 1 items
+2026-11-19 09:49:55 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-19 09:49:55 [DEBUG] core.goto: GOTO on '(' computed: 3 items
+2026-11-19 09:49:55 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:49:55 [DEBUG] core.goto: GOTO on 'a' computed: 1 items
+2026-11-19 09:49:55 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:49:55 [DEBUG] core.goto: GOTO on ')' computed: 1 items
+2026-11-19 09:49:55 [INFO] core.automaton: LR automaton built: 7 states
+2026-11-19 09:49:55 [INFO] core.table_builder: lr0 table generated: 7 states
+2026-11-19 09:49:55 [INFO] core.grammar_analyzer: Grammar analysis complete: 0 error(s), 0 warning(s), 0 note(s)
+2026-11-19 09:49:55 [INFO] core.grammar_parser: Grammar parsed successfully: 2 non-terminals
+2026-11-19 09:49:55 [INFO] core.grammar_parser: Grammar parsed successfully: 2 non-terminals
+2026-11-19 09:49:55 [INFO] core.first_follow: FIRST sets computed for 6 symbols
+2026-11-19 09:49:55 [INFO] core.first_follow: FOLLOW sets computed for 2 non-terminals
+2026-11-19 09:49:55 [INFO] core.topdown.ll1: LL(1) table built: 2 rows, 4 columns, 0 conflict(s)
+2026-11-19 09:49:56 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 09:49:56 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 09:49:56 [INFO] core.topdown.engine: Top-down analysis (LL(1)): left_recursion=False, left_factoring=False, conflicts=0
+2026-11-19 09:49:56 [INFO] core.grammar_parser: Grammar parsed successfully: 2 non-terminals
+2026-11-19 09:49:56 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 09:49:56 [INFO] core.first_follow: FIRST sets computed for 6 symbols
+2026-11-19 09:49:56 [INFO] core.first_follow: FOLLOW sets computed for 2 non-terminals
+2026-11-19 09:49:56 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 09:49:56 [DEBUG] core.closure: Closure computed: 4 items
+2026-11-19 09:49:56 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.goto: GOTO on 'S′' computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.goto: GOTO on 'S' computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-19 09:49:56 [DEBUG] core.goto: GOTO on '(' computed: 3 items
+2026-11-19 09:49:56 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.goto: GOTO on 'a' computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.goto: GOTO on 'S' computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-19 09:49:56 [DEBUG] core.goto: GOTO on '(' computed: 3 items
+2026-11-19 09:49:56 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.goto: GOTO on 'a' computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.goto: GOTO on ')' computed: 1 items
+2026-11-19 09:49:56 [INFO] core.automaton: LR automaton built: 7 states
+2026-11-19 09:49:56 [INFO] core.table_builder: lr0 table generated: 7 states
+2026-11-19 09:49:56 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 09:49:56 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 09:49:56 [INFO] core.engine: Analysis complete: LR(0), 7 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-19 09:49:56 [INFO] core.grammar_parser: Grammar parsed successfully: 2 non-terminals
+2026-11-19 09:49:56 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 09:49:56 [INFO] core.first_follow: FIRST sets computed for 6 symbols
+2026-11-19 09:49:56 [INFO] core.first_follow: FOLLOW sets computed for 2 non-terminals
+2026-11-19 09:49:56 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 09:49:56 [DEBUG] core.closure: Closure computed: 4 items
+2026-11-19 09:49:56 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.goto: GOTO on 'S′' computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.goto: GOTO on 'S' computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-19 09:49:56 [DEBUG] core.goto: GOTO on '(' computed: 3 items
+2026-11-19 09:49:56 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.goto: GOTO on 'a' computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.goto: GOTO on 'S' computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-19 09:49:56 [DEBUG] core.goto: GOTO on '(' computed: 3 items
+2026-11-19 09:49:56 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.goto: GOTO on 'a' computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.goto: GOTO on ')' computed: 1 items
+2026-11-19 09:49:56 [INFO] core.automaton: LR automaton built: 7 states
+2026-11-19 09:49:56 [INFO] core.table_builder: slr1 table generated: 7 states
+2026-11-19 09:49:56 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 09:49:56 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 09:49:56 [INFO] core.engine: Analysis complete: SLR(1), 7 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-19 09:49:56 [INFO] core.grammar_parser: Grammar parsed successfully: 2 non-terminals
+2026-11-19 09:49:56 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 09:49:56 [INFO] core.first_follow: FIRST sets computed for 6 symbols
+2026-11-19 09:49:56 [INFO] core.first_follow: FOLLOW sets computed for 2 non-terminals
+2026-11-19 09:49:56 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 09:49:56 [INFO] core.first_follow: FIRST sets computed for 7 symbols
+2026-11-19 09:49:56 [DEBUG] core.lr1_automaton: LR(1) closure computed: 4 items
+2026-11-19 09:49:56 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 09:49:56 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 09:49:56 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 09:49:56 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:49:56 [INFO] core.lr1_automaton: Canonical LR(1) automaton built: 11 states
+2026-11-19 09:49:56 [INFO] core.table_builder: clr1 table generated: 11 states
+2026-11-19 09:49:56 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 09:49:56 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 09:49:56 [INFO] core.engine: Analysis complete: CLR(1), 11 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-19 09:49:56 [INFO] core.grammar_parser: Grammar parsed successfully: 2 non-terminals
+2026-11-19 09:49:56 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 09:49:56 [INFO] core.first_follow: FIRST sets computed for 6 symbols
+2026-11-19 09:49:56 [INFO] core.first_follow: FOLLOW sets computed for 2 non-terminals
+2026-11-19 09:49:56 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 09:49:56 [INFO] core.first_follow: FIRST sets computed for 7 symbols
+2026-11-19 09:49:56 [DEBUG] core.lr1_automaton: LR(1) closure computed: 4 items
+2026-11-19 09:49:56 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 09:49:56 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 09:49:56 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 09:49:56 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:49:56 [INFO] core.lr1_automaton: LALR(1) automaton built: 7 states (merged from 11 canonical states)
+2026-11-19 09:49:56 [INFO] core.table_builder: lalr1 table generated: 7 states
+2026-11-19 09:49:56 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 09:49:56 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 09:49:56 [INFO] core.engine: Analysis complete: LALR(1), 7 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-19 09:49:56 [INFO] core.comparison: Parser compatibility complete: Compatible: LL(1), LR(0), SLR(1), CLR(1), LALR(1). Conflict-free: LL(1), LR(0), SLR(1), CLR(1), LALR(1). Recommended: LALR(1).
+2026-11-19 09:49:56 [INFO] core.grammar_parser: Grammar parsed successfully: 2 non-terminals
+2026-11-19 09:49:56 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 09:49:56 [INFO] core.first_follow: FIRST sets computed for 6 symbols
+2026-11-19 09:49:56 [INFO] core.first_follow: FOLLOW sets computed for 2 non-terminals
+2026-11-19 09:49:56 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 09:49:56 [DEBUG] core.closure: Closure computed: 4 items
+2026-11-19 09:49:56 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.goto: GOTO on 'S′' computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.goto: GOTO on 'S' computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-19 09:49:56 [DEBUG] core.goto: GOTO on '(' computed: 3 items
+2026-11-19 09:49:56 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.goto: GOTO on 'a' computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.goto: GOTO on 'S' computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-19 09:49:56 [DEBUG] core.goto: GOTO on '(' computed: 3 items
+2026-11-19 09:49:56 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.goto: GOTO on 'a' computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:49:56 [DEBUG] core.goto: GOTO on ')' computed: 1 items
+2026-11-19 09:49:56 [INFO] core.automaton: LR automaton built: 7 states
+2026-11-19 09:49:56 [INFO] core.table_builder: lr0 table generated: 7 states
+2026-11-19 09:49:56 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 09:49:56 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 09:49:56 [INFO] core.engine: Analysis complete: LR(0), 7 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-19 09:50:01 [DEBUG] core.closure: Closure computed with trace: 4 items
+2026-11-19 09:50:01 [DEBUG] core.closure: Closure computed with trace: 1 items
+2026-11-19 09:50:01 [INFO] core.grammar_parser: Grammar parsed successfully: 2 non-terminals
+2026-11-19 09:50:01 [INFO] core.grammar_parser: Grammar parsed successfully: 2 non-terminals
+2026-11-19 09:50:01 [INFO] core.grammar_parser: Grammar parsed successfully: 2 non-terminals
+2026-11-19 09:50:01 [INFO] core.grammar_parser: Grammar parsed successfully: 2 non-terminals
+2026-11-19 09:50:01 [INFO] core.codegen: Generated LR parser code (165 lines)
+2026-11-19 09:51:50 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 09:51:50 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 09:51:50 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 09:51:50 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 09:51:50 [INFO] core.topdown.ll1: LL(1) table built: 1 rows, 4 columns, 0 conflict(s)
+2026-11-19 09:51:50 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.goto: GOTO on 'S' computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-19 09:51:50 [DEBUG] core.goto: GOTO on '(' computed: 3 items
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.goto: GOTO on 'a' computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.goto: GOTO on 'S' computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-19 09:51:50 [DEBUG] core.goto: GOTO on '(' computed: 3 items
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.goto: GOTO on 'a' computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.goto: GOTO on ')' computed: 1 items
+2026-11-19 09:51:50 [INFO] core.automaton: LR automaton built: 6 states
+2026-11-19 09:51:50 [INFO] core.table_builder: lr0 table generated: 6 states
+2026-11-19 09:51:50 [INFO] core.grammar_analyzer: Grammar analysis complete: 0 error(s), 0 warning(s), 0 note(s)
+2026-11-19 09:51:50 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 09:51:50 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 09:51:50 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 09:51:50 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 09:51:50 [INFO] core.topdown.ll1: LL(1) table built: 1 rows, 4 columns, 0 conflict(s)
+2026-11-19 09:51:50 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 09:51:50 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 09:51:50 [INFO] core.topdown.engine: Top-down analysis (LL(1)): left_recursion=False, left_factoring=False, conflicts=0
+2026-11-19 09:51:50 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 09:51:50 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 09:51:50 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 09:51:50 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 09:51:50 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.goto: GOTO on 'S' computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-19 09:51:50 [DEBUG] core.goto: GOTO on '(' computed: 3 items
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.goto: GOTO on 'a' computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.goto: GOTO on 'S' computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-19 09:51:50 [DEBUG] core.goto: GOTO on '(' computed: 3 items
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.goto: GOTO on 'a' computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.goto: GOTO on ')' computed: 1 items
+2026-11-19 09:51:50 [INFO] core.automaton: LR automaton built: 6 states
+2026-11-19 09:51:50 [INFO] core.table_builder: lr0 table generated: 6 states
+2026-11-19 09:51:50 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 09:51:50 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 09:51:50 [INFO] core.engine: Analysis complete: LR(0), 6 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-19 09:51:50 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 09:51:50 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 09:51:50 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 09:51:50 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 09:51:50 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.goto: GOTO on 'S' computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-19 09:51:50 [DEBUG] core.goto: GOTO on '(' computed: 3 items
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.goto: GOTO on 'a' computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.goto: GOTO on 'S' computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-19 09:51:50 [DEBUG] core.goto: GOTO on '(' computed: 3 items
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.goto: GOTO on 'a' computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.goto: GOTO on ')' computed: 1 items
+2026-11-19 09:51:50 [INFO] core.automaton: LR automaton built: 6 states
+2026-11-19 09:51:50 [INFO] core.table_builder: slr1 table generated: 6 states
+2026-11-19 09:51:50 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 09:51:50 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 09:51:50 [INFO] core.engine: Analysis complete: SLR(1), 6 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-19 09:51:50 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 09:51:50 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 09:51:50 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 09:51:50 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 09:51:50 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 09:51:50 [INFO] core.first_follow: FIRST sets computed for 6 symbols
+2026-11-19 09:51:50 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 09:51:50 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 09:51:50 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 09:51:50 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 09:51:50 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:51:50 [INFO] core.lr1_automaton: Canonical LR(1) automaton built: 10 states
+2026-11-19 09:51:50 [INFO] core.table_builder: clr1 table generated: 10 states
+2026-11-19 09:51:50 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 09:51:50 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 09:51:50 [INFO] core.engine: Analysis complete: CLR(1), 10 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-19 09:51:50 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 09:51:50 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 09:51:50 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 09:51:50 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 09:51:50 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 09:51:50 [INFO] core.first_follow: FIRST sets computed for 6 symbols
+2026-11-19 09:51:50 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 09:51:50 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 09:51:50 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 09:51:50 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 09:51:50 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 09:51:50 [INFO] core.lr1_automaton: LALR(1) automaton built: 6 states (merged from 10 canonical states)
+2026-11-19 09:51:50 [INFO] core.table_builder: lalr1 table generated: 6 states
+2026-11-19 09:51:50 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 09:51:50 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 09:51:50 [INFO] core.engine: Analysis complete: LALR(1), 6 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-19 09:51:50 [INFO] core.comparison: Parser compatibility complete: Compatible: LL(1), LR(0), SLR(1), CLR(1), LALR(1). Conflict-free: LL(1), LR(0), SLR(1), CLR(1), LALR(1). Recommended: LALR(1).
+2026-11-19 09:51:50 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 09:51:50 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 09:51:50 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 09:51:50 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 09:51:50 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.goto: GOTO on 'S' computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-19 09:51:50 [DEBUG] core.goto: GOTO on '(' computed: 3 items
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.goto: GOTO on 'a' computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.goto: GOTO on 'S' computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-19 09:51:50 [DEBUG] core.goto: GOTO on '(' computed: 3 items
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.goto: GOTO on 'a' computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 09:51:50 [DEBUG] core.goto: GOTO on ')' computed: 1 items
+2026-11-19 09:51:50 [INFO] core.automaton: LR automaton built: 6 states
+2026-11-19 09:51:50 [INFO] core.table_builder: lr0 table generated: 6 states
+2026-11-19 09:51:50 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 09:51:50 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 09:51:50 [INFO] core.engine: Analysis complete: LR(0), 6 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed with trace: 3 items
+2026-11-19 09:51:50 [DEBUG] core.closure: Closure computed with trace: 1 items
+2026-11-19 09:51:50 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 09:51:50 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 09:51:50 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 09:51:50 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 09:51:50 [INFO] core.codegen: Generated LR parser code (159 lines)
+2026-11-19 09:55:06 [INFO] core.parser_simulator: Parse accepted in 4 steps
+2026-11-19 09:55:50 [INFO] core.parser_simulator: Parse accepted in 10 steps
+2026-11-19 10:56:22 [INFO] core.database: Database connection closed
+2026-11-19 10:56:22 [INFO] __main__: Application shutdown complete
+2026-11-19 10:58:43 [INFO] __main__: Starting ParseCraft
+2026-11-19 10:58:43 [INFO] core.database: Connected to database: C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\data\parser_simulator.db
+2026-11-19 10:58:43 [INFO] core.database: Database schema initialized
+2026-11-19 10:58:43 [INFO] __main__: Database initialized
+2026-11-19 10:58:44 [DEBUG] gui.grammar_editor: GrammarEditor initialized
+2026-11-19 10:58:45 [DEBUG] gui.main_window: Applied 12 tabs for parser SLR(1)
+2026-11-19 10:58:45 [INFO] gui.main_window: Main window initialized
+2026-11-19 10:58:45 [INFO] core.update.checker: Checking for updates at https://raw.githubusercontent.com/maxxgie/ParseCraft/main/bottom_up_parser_simulator/manifest.json
+2026-11-19 11:00:45 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:00:45 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:00:45 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:00:45 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:00:45 [INFO] core.topdown.ll1: LL(1) table built: 1 rows, 4 columns, 0 conflict(s)
+2026-11-19 11:00:45 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:00:45 [ERROR] core.grammar_analyzer: Ambiguity analysis failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\grammar_analyzer.py", line 420, in analyze_grammar
+    lr0 = LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 162, in _build_automaton
+    initial_items = closure({start_item}, self.augmented_grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 56, in closure
+    result, _ = _closure_impl(item, grammar, record=False)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 28, in _closure_impl
+    if next_sym is None or next_sym not in grammar.none_terminals:
+                                           ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Grammar' object has no attribute 'none_terminals'. Did you mean: 'non_terminals'?
+2026-11-19 11:00:45 [INFO] core.grammar_analyzer: Grammar analysis complete: 0 error(s), 0 warning(s), 0 note(s)
+2026-11-19 11:00:45 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:00:45 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:00:45 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:00:45 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:00:45 [INFO] core.topdown.ll1: LL(1) table built: 1 rows, 4 columns, 0 conflict(s)
+2026-11-19 11:00:45 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:00:45 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:00:45 [INFO] core.topdown.engine: Top-down analysis (LL(1)): left_recursion=False, left_factoring=False, conflicts=0
+2026-11-19 11:00:45 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:00:45 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:00:45 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:00:45 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:00:45 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:00:45 [ERROR] core.comparison: LR(0) comparison failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\comparison.py", line 313, in compare_parsers
+    result = analyze(text, parser_type)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 202, in analyze
+    automaton = build_automaton(grammar, mode)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 121, in build_automaton
+    return LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 162, in _build_automaton
+    initial_items = closure({start_item}, self.augmented_grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 56, in closure
+    result, _ = _closure_impl(item, grammar, record=False)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 28, in _closure_impl
+    if next_sym is None or next_sym not in grammar.none_terminals:
+                                           ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Grammar' object has no attribute 'none_terminals'. Did you mean: 'non_terminals'?
+2026-11-19 11:00:45 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:00:45 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:00:45 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:00:45 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:00:45 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:00:45 [ERROR] core.comparison: SLR(1) comparison failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\comparison.py", line 313, in compare_parsers
+    result = analyze(text, parser_type)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 202, in analyze
+    automaton = build_automaton(grammar, mode)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 121, in build_automaton
+    return LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 162, in _build_automaton
+    initial_items = closure({start_item}, self.augmented_grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 56, in closure
+    result, _ = _closure_impl(item, grammar, record=False)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 28, in _closure_impl
+    if next_sym is None or next_sym not in grammar.none_terminals:
+                                           ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Grammar' object has no attribute 'none_terminals'. Did you mean: 'non_terminals'?
+2026-11-19 11:00:45 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:00:45 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:00:45 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:00:45 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:00:45 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:00:45 [INFO] core.first_follow: FIRST sets computed for 6 symbols
+2026-11-19 11:00:45 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:00:45 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:00:45 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:00:45 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:00:45 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:00:45 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:00:45 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:00:45 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:00:45 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:00:45 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:00:45 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:00:45 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:00:45 [INFO] core.lr1_automaton: Canonical LR(1) automaton built: 10 states
+2026-11-19 11:00:45 [INFO] core.table_builder: clr1 table generated: 10 states
+2026-11-19 11:00:45 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:00:45 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:00:45 [INFO] core.engine: Analysis complete: CLR(1), 10 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-19 11:00:45 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:00:45 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:00:45 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:00:45 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:00:46 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:00:46 [INFO] core.first_follow: FIRST sets computed for 6 symbols
+2026-11-19 11:00:46 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:00:46 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:00:46 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:00:46 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:00:46 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:00:46 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:00:46 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:00:46 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:00:46 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:00:46 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:00:46 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:00:46 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:00:46 [INFO] core.lr1_automaton: LALR(1) automaton built: 6 states (merged from 10 canonical states)
+2026-11-19 11:00:46 [INFO] core.table_builder: lalr1 table generated: 6 states
+2026-11-19 11:00:46 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:00:46 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:00:46 [INFO] core.engine: Analysis complete: LALR(1), 6 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-19 11:00:46 [INFO] core.comparison: Parser compatibility complete: Compatible: LL(1), CLR(1), LALR(1). Conflict-free: LL(1), CLR(1), LALR(1). Recommended: LALR(1).
+2026-11-19 11:00:46 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:00:46 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:00:46 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:00:46 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:00:46 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:00:46 [ERROR] gui.main_window: Analysis failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\gui\main_window.py", line 600, in _generate_bottomup
+    analysis = analyze(
+        text,
+    ...<6 lines>...
+        resolution=options.resolution,
+    )
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 202, in analyze
+    automaton = build_automaton(grammar, mode)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 121, in build_automaton
+    return LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 162, in _build_automaton
+    initial_items = closure({start_item}, self.augmented_grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 56, in closure
+    result, _ = _closure_impl(item, grammar, record=False)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 28, in _closure_impl
+    if next_sym is None or next_sym not in grammar.none_terminals:
+                                           ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Grammar' object has no attribute 'none_terminals'. Did you mean: 'non_terminals'?
+2026-11-19 11:01:04 [DEBUG] gui.main_window: Applied 11 tabs for parser LR(0)
+2026-11-19 11:01:05 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:01:05 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:01:05 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:01:05 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:01:05 [INFO] core.topdown.ll1: LL(1) table built: 1 rows, 4 columns, 0 conflict(s)
+2026-11-19 11:01:05 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:01:05 [ERROR] core.grammar_analyzer: Ambiguity analysis failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\grammar_analyzer.py", line 420, in analyze_grammar
+    lr0 = LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 162, in _build_automaton
+    initial_items = closure({start_item}, self.augmented_grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 56, in closure
+    result, _ = _closure_impl(item, grammar, record=False)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 28, in _closure_impl
+    if next_sym is None or next_sym not in grammar.none_terminals:
+                                           ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Grammar' object has no attribute 'none_terminals'. Did you mean: 'non_terminals'?
+2026-11-19 11:01:05 [INFO] core.grammar_analyzer: Grammar analysis complete: 0 error(s), 0 warning(s), 0 note(s)
+2026-11-19 11:01:05 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:01:05 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:01:05 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:01:05 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:01:05 [INFO] core.topdown.ll1: LL(1) table built: 1 rows, 4 columns, 0 conflict(s)
+2026-11-19 11:01:05 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:01:05 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:01:05 [INFO] core.topdown.engine: Top-down analysis (LL(1)): left_recursion=False, left_factoring=False, conflicts=0
+2026-11-19 11:01:05 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:01:05 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:01:05 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:01:05 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:01:05 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:01:05 [ERROR] core.comparison: LR(0) comparison failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\comparison.py", line 313, in compare_parsers
+    result = analyze(text, parser_type)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 202, in analyze
+    automaton = build_automaton(grammar, mode)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 121, in build_automaton
+    return LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 162, in _build_automaton
+    initial_items = closure({start_item}, self.augmented_grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 56, in closure
+    result, _ = _closure_impl(item, grammar, record=False)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 28, in _closure_impl
+    if next_sym is None or next_sym not in grammar.none_terminals:
+                                           ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Grammar' object has no attribute 'none_terminals'. Did you mean: 'non_terminals'?
+2026-11-19 11:01:05 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:01:05 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:01:05 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:01:05 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:01:05 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:01:05 [ERROR] core.comparison: SLR(1) comparison failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\comparison.py", line 313, in compare_parsers
+    result = analyze(text, parser_type)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 202, in analyze
+    automaton = build_automaton(grammar, mode)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 121, in build_automaton
+    return LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 162, in _build_automaton
+    initial_items = closure({start_item}, self.augmented_grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 56, in closure
+    result, _ = _closure_impl(item, grammar, record=False)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 28, in _closure_impl
+    if next_sym is None or next_sym not in grammar.none_terminals:
+                                           ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Grammar' object has no attribute 'none_terminals'. Did you mean: 'non_terminals'?
+2026-11-19 11:01:05 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:01:05 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:01:05 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:01:05 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:01:05 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:01:05 [INFO] core.first_follow: FIRST sets computed for 6 symbols
+2026-11-19 11:01:05 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:01:05 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:01:05 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:01:05 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:01:05 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:01:05 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:01:05 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:01:05 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:01:05 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:01:05 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:01:05 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:01:05 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:01:05 [INFO] core.lr1_automaton: Canonical LR(1) automaton built: 10 states
+2026-11-19 11:01:05 [INFO] core.table_builder: clr1 table generated: 10 states
+2026-11-19 11:01:05 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:01:05 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:01:05 [INFO] core.engine: Analysis complete: CLR(1), 10 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-19 11:01:05 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:01:05 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:01:05 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:01:05 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:01:05 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:01:05 [INFO] core.first_follow: FIRST sets computed for 6 symbols
+2026-11-19 11:01:05 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:01:05 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:01:05 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:01:05 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:01:05 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:01:05 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:01:05 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:01:05 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:01:05 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:01:05 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:01:05 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:01:05 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:01:05 [INFO] core.lr1_automaton: LALR(1) automaton built: 6 states (merged from 10 canonical states)
+2026-11-19 11:01:05 [INFO] core.table_builder: lalr1 table generated: 6 states
+2026-11-19 11:01:05 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:01:05 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:01:05 [INFO] core.engine: Analysis complete: LALR(1), 6 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-19 11:01:05 [INFO] core.comparison: Parser compatibility complete: Compatible: LL(1), CLR(1), LALR(1). Conflict-free: LL(1), CLR(1), LALR(1). Recommended: LALR(1).
+2026-11-19 11:01:05 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:01:05 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:01:05 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:01:05 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:01:05 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:01:05 [ERROR] gui.main_window: Analysis failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\gui\main_window.py", line 600, in _generate_bottomup
+    analysis = analyze(
+        text,
+    ...<6 lines>...
+        resolution=options.resolution,
+    )
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 202, in analyze
+    automaton = build_automaton(grammar, mode)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 121, in build_automaton
+    return LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 162, in _build_automaton
+    initial_items = closure({start_item}, self.augmented_grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 56, in closure
+    result, _ = _closure_impl(item, grammar, record=False)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 28, in _closure_impl
+    if next_sym is None or next_sym not in grammar.none_terminals:
+                                           ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Grammar' object has no attribute 'none_terminals'. Did you mean: 'non_terminals'?
+2026-11-19 11:01:47 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:01:47 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:01:47 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:01:47 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:01:47 [INFO] core.topdown.ll1: LL(1) table built: 1 rows, 4 columns, 0 conflict(s)
+2026-11-19 11:01:47 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:01:47 [ERROR] core.grammar_analyzer: Ambiguity analysis failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\grammar_analyzer.py", line 420, in analyze_grammar
+    lr0 = LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 162, in _build_automaton
+    initial_items = closure({start_item}, self.augmented_grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 56, in closure
+    result, _ = _closure_impl(item, grammar, record=False)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 28, in _closure_impl
+    if next_sym is None or next_sym not in grammar.none_terminals:
+                                           ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Grammar' object has no attribute 'none_terminals'. Did you mean: 'non_terminals'?
+2026-11-19 11:01:47 [INFO] core.grammar_analyzer: Grammar analysis complete: 0 error(s), 0 warning(s), 0 note(s)
+2026-11-19 11:01:47 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:01:47 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:01:47 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:01:47 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:01:47 [INFO] core.topdown.ll1: LL(1) table built: 1 rows, 4 columns, 0 conflict(s)
+2026-11-19 11:01:47 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:01:47 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:01:47 [INFO] core.topdown.engine: Top-down analysis (LL(1)): left_recursion=False, left_factoring=False, conflicts=0
+2026-11-19 11:01:47 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:01:47 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:01:47 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:01:47 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:01:47 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:01:47 [ERROR] core.comparison: LR(0) comparison failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\comparison.py", line 313, in compare_parsers
+    result = analyze(text, parser_type)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 202, in analyze
+    automaton = build_automaton(grammar, mode)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 121, in build_automaton
+    return LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 162, in _build_automaton
+    initial_items = closure({start_item}, self.augmented_grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 56, in closure
+    result, _ = _closure_impl(item, grammar, record=False)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 28, in _closure_impl
+    if next_sym is None or next_sym not in grammar.none_terminals:
+                                           ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Grammar' object has no attribute 'none_terminals'. Did you mean: 'non_terminals'?
+2026-11-19 11:01:47 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:01:47 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:01:47 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:01:47 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:01:47 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:01:47 [ERROR] core.comparison: SLR(1) comparison failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\comparison.py", line 313, in compare_parsers
+    result = analyze(text, parser_type)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 202, in analyze
+    automaton = build_automaton(grammar, mode)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 121, in build_automaton
+    return LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 162, in _build_automaton
+    initial_items = closure({start_item}, self.augmented_grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 56, in closure
+    result, _ = _closure_impl(item, grammar, record=False)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 28, in _closure_impl
+    if next_sym is None or next_sym not in grammar.none_terminals:
+                                           ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Grammar' object has no attribute 'none_terminals'. Did you mean: 'non_terminals'?
+2026-11-19 11:01:47 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:01:47 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:01:47 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:01:47 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:01:47 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:01:47 [INFO] core.first_follow: FIRST sets computed for 6 symbols
+2026-11-19 11:01:47 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:01:47 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:01:47 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:01:47 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:01:47 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:01:47 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:01:47 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:01:47 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:01:47 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:01:47 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:01:47 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:01:47 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:01:47 [INFO] core.lr1_automaton: Canonical LR(1) automaton built: 10 states
+2026-11-19 11:01:47 [INFO] core.table_builder: clr1 table generated: 10 states
+2026-11-19 11:01:47 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:01:47 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:01:47 [INFO] core.engine: Analysis complete: CLR(1), 10 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-19 11:01:47 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:01:47 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:01:47 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:01:47 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:01:47 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:01:47 [INFO] core.first_follow: FIRST sets computed for 6 symbols
+2026-11-19 11:01:47 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:01:47 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:01:47 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:01:47 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:01:47 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:01:47 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:01:47 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:01:47 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:01:47 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:01:47 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:01:47 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:01:47 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:01:47 [INFO] core.lr1_automaton: LALR(1) automaton built: 6 states (merged from 10 canonical states)
+2026-11-19 11:01:47 [INFO] core.table_builder: lalr1 table generated: 6 states
+2026-11-19 11:01:47 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:01:47 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:01:47 [INFO] core.engine: Analysis complete: LALR(1), 6 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-19 11:01:47 [INFO] core.comparison: Parser compatibility complete: Compatible: LL(1), CLR(1), LALR(1). Conflict-free: LL(1), CLR(1), LALR(1). Recommended: LALR(1).
+2026-11-19 11:01:47 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:01:47 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:01:47 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:01:47 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:01:47 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:01:47 [ERROR] gui.main_window: Analysis failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\gui\main_window.py", line 600, in _generate_bottomup
+    analysis = analyze(
+        text,
+    ...<6 lines>...
+        resolution=options.resolution,
+    )
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 202, in analyze
+    automaton = build_automaton(grammar, mode)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 121, in build_automaton
+    return LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 162, in _build_automaton
+    initial_items = closure({start_item}, self.augmented_grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 56, in closure
+    result, _ = _closure_impl(item, grammar, record=False)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 28, in _closure_impl
+    if next_sym is None or next_sym not in grammar.none_terminals:
+                                           ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Grammar' object has no attribute 'none_terminals'. Did you mean: 'non_terminals'?
+2026-11-19 11:02:08 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:02:08 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:02:08 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:02:08 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:02:08 [INFO] core.topdown.ll1: LL(1) table built: 1 rows, 4 columns, 0 conflict(s)
+2026-11-19 11:02:08 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:02:08 [ERROR] core.grammar_analyzer: Ambiguity analysis failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\grammar_analyzer.py", line 420, in analyze_grammar
+    lr0 = LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 162, in _build_automaton
+    initial_items = closure({start_item}, self.augmented_grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 56, in closure
+    result, _ = _closure_impl(item, grammar, record=False)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 28, in _closure_impl
+    if next_sym is None or next_sym not in grammar.none_terminals:
+                                           ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Grammar' object has no attribute 'none_terminals'. Did you mean: 'non_terminals'?
+2026-11-19 11:02:08 [INFO] core.grammar_analyzer: Grammar analysis complete: 0 error(s), 0 warning(s), 0 note(s)
+2026-11-19 11:02:08 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:02:08 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:02:08 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:02:08 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:02:08 [INFO] core.topdown.ll1: LL(1) table built: 1 rows, 4 columns, 0 conflict(s)
+2026-11-19 11:02:08 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:02:08 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:02:08 [INFO] core.topdown.engine: Top-down analysis (LL(1)): left_recursion=False, left_factoring=False, conflicts=0
+2026-11-19 11:02:08 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:02:08 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:02:08 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:02:08 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:02:08 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:02:08 [ERROR] core.comparison: LR(0) comparison failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\comparison.py", line 313, in compare_parsers
+    result = analyze(text, parser_type)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 202, in analyze
+    automaton = build_automaton(grammar, mode)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 121, in build_automaton
+    return LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 162, in _build_automaton
+    initial_items = closure({start_item}, self.augmented_grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 56, in closure
+    result, _ = _closure_impl(item, grammar, record=False)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 28, in _closure_impl
+    if next_sym is None or next_sym not in grammar.none_terminals:
+                                           ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Grammar' object has no attribute 'none_terminals'. Did you mean: 'non_terminals'?
+2026-11-19 11:02:08 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:02:08 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:02:08 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:02:08 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:02:08 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:02:08 [ERROR] core.comparison: SLR(1) comparison failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\comparison.py", line 313, in compare_parsers
+    result = analyze(text, parser_type)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 202, in analyze
+    automaton = build_automaton(grammar, mode)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 121, in build_automaton
+    return LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 162, in _build_automaton
+    initial_items = closure({start_item}, self.augmented_grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 56, in closure
+    result, _ = _closure_impl(item, grammar, record=False)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 28, in _closure_impl
+    if next_sym is None or next_sym not in grammar.none_terminals:
+                                           ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Grammar' object has no attribute 'none_terminals'. Did you mean: 'non_terminals'?
+2026-11-19 11:02:08 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:02:08 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:02:08 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:02:08 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:02:08 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:02:08 [INFO] core.first_follow: FIRST sets computed for 6 symbols
+2026-11-19 11:02:08 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:02:08 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:02:08 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:02:08 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:02:08 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:02:08 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:02:08 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:02:08 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:02:08 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:02:08 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:02:08 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:02:08 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:02:08 [INFO] core.lr1_automaton: Canonical LR(1) automaton built: 10 states
+2026-11-19 11:02:08 [INFO] core.table_builder: clr1 table generated: 10 states
+2026-11-19 11:02:08 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:02:08 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:02:08 [INFO] core.engine: Analysis complete: CLR(1), 10 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-19 11:02:08 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:02:08 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:02:08 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:02:08 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:02:08 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:02:08 [INFO] core.first_follow: FIRST sets computed for 6 symbols
+2026-11-19 11:02:08 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:02:08 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:02:08 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:02:08 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:02:08 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:02:08 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:02:08 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:02:08 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:02:08 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:02:08 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:02:08 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:02:08 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:02:08 [INFO] core.lr1_automaton: LALR(1) automaton built: 6 states (merged from 10 canonical states)
+2026-11-19 11:02:08 [INFO] core.table_builder: lalr1 table generated: 6 states
+2026-11-19 11:02:08 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:02:08 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:02:08 [INFO] core.engine: Analysis complete: LALR(1), 6 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-19 11:02:08 [INFO] core.comparison: Parser compatibility complete: Compatible: LL(1), CLR(1), LALR(1). Conflict-free: LL(1), CLR(1), LALR(1). Recommended: LALR(1).
+2026-11-19 11:02:08 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:02:08 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:02:08 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:02:08 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:02:08 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:02:08 [ERROR] gui.main_window: Analysis failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\gui\main_window.py", line 600, in _generate_bottomup
+    analysis = analyze(
+        text,
+    ...<6 lines>...
+        resolution=options.resolution,
+    )
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 202, in analyze
+    automaton = build_automaton(grammar, mode)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 121, in build_automaton
+    return LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 162, in _build_automaton
+    initial_items = closure({start_item}, self.augmented_grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 56, in closure
+    result, _ = _closure_impl(item, grammar, record=False)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 28, in _closure_impl
+    if next_sym is None or next_sym not in grammar.none_terminals:
+                                           ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Grammar' object has no attribute 'none_terminals'. Did you mean: 'non_terminals'?
+2026-11-19 11:02:11 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:02:11 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:02:11 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:02:11 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:02:11 [INFO] core.topdown.ll1: LL(1) table built: 1 rows, 4 columns, 0 conflict(s)
+2026-11-19 11:02:11 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:02:11 [ERROR] core.grammar_analyzer: Ambiguity analysis failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\grammar_analyzer.py", line 420, in analyze_grammar
+    lr0 = LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 162, in _build_automaton
+    initial_items = closure({start_item}, self.augmented_grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 56, in closure
+    result, _ = _closure_impl(item, grammar, record=False)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 28, in _closure_impl
+    if next_sym is None or next_sym not in grammar.none_terminals:
+                                           ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Grammar' object has no attribute 'none_terminals'. Did you mean: 'non_terminals'?
+2026-11-19 11:02:11 [INFO] core.grammar_analyzer: Grammar analysis complete: 0 error(s), 0 warning(s), 0 note(s)
+2026-11-19 11:02:11 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:02:11 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:02:11 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:02:11 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:02:11 [INFO] core.topdown.ll1: LL(1) table built: 1 rows, 4 columns, 0 conflict(s)
+2026-11-19 11:02:11 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:02:11 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:02:11 [INFO] core.topdown.engine: Top-down analysis (LL(1)): left_recursion=False, left_factoring=False, conflicts=0
+2026-11-19 11:02:11 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:02:11 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:02:11 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:02:11 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:02:11 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:02:11 [ERROR] core.comparison: LR(0) comparison failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\comparison.py", line 313, in compare_parsers
+    result = analyze(text, parser_type)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 202, in analyze
+    automaton = build_automaton(grammar, mode)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 121, in build_automaton
+    return LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 162, in _build_automaton
+    initial_items = closure({start_item}, self.augmented_grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 56, in closure
+    result, _ = _closure_impl(item, grammar, record=False)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 28, in _closure_impl
+    if next_sym is None or next_sym not in grammar.none_terminals:
+                                           ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Grammar' object has no attribute 'none_terminals'. Did you mean: 'non_terminals'?
+2026-11-19 11:02:11 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:02:11 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:02:11 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:02:11 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:02:11 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:02:11 [ERROR] core.comparison: SLR(1) comparison failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\comparison.py", line 313, in compare_parsers
+    result = analyze(text, parser_type)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 202, in analyze
+    automaton = build_automaton(grammar, mode)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 121, in build_automaton
+    return LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 162, in _build_automaton
+    initial_items = closure({start_item}, self.augmented_grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 56, in closure
+    result, _ = _closure_impl(item, grammar, record=False)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 28, in _closure_impl
+    if next_sym is None or next_sym not in grammar.none_terminals:
+                                           ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Grammar' object has no attribute 'none_terminals'. Did you mean: 'non_terminals'?
+2026-11-19 11:02:11 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:02:11 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:02:11 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:02:11 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:02:11 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:02:11 [INFO] core.first_follow: FIRST sets computed for 6 symbols
+2026-11-19 11:02:11 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:02:11 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:02:11 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:02:11 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:02:11 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:02:11 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:02:11 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:02:11 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:02:11 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:02:11 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:02:11 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:02:11 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:02:11 [INFO] core.lr1_automaton: Canonical LR(1) automaton built: 10 states
+2026-11-19 11:02:11 [INFO] core.table_builder: clr1 table generated: 10 states
+2026-11-19 11:02:11 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:02:11 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:02:11 [INFO] core.engine: Analysis complete: CLR(1), 10 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-19 11:02:11 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:02:11 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:02:11 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:02:11 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:02:11 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:02:11 [INFO] core.first_follow: FIRST sets computed for 6 symbols
+2026-11-19 11:02:11 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:02:11 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:02:11 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:02:11 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:02:11 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:02:11 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:02:11 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:02:11 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:02:11 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:02:11 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:02:11 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:02:11 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:02:11 [INFO] core.lr1_automaton: LALR(1) automaton built: 6 states (merged from 10 canonical states)
+2026-11-19 11:02:11 [INFO] core.table_builder: lalr1 table generated: 6 states
+2026-11-19 11:02:11 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:02:11 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:02:11 [INFO] core.engine: Analysis complete: LALR(1), 6 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-19 11:02:11 [INFO] core.comparison: Parser compatibility complete: Compatible: LL(1), CLR(1), LALR(1). Conflict-free: LL(1), CLR(1), LALR(1). Recommended: LALR(1).
+2026-11-19 11:02:11 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:02:11 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:02:11 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:02:11 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:02:11 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:02:11 [ERROR] gui.main_window: Analysis failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\gui\main_window.py", line 600, in _generate_bottomup
+    analysis = analyze(
+        text,
+    ...<6 lines>...
+        resolution=options.resolution,
+    )
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 202, in analyze
+    automaton = build_automaton(grammar, mode)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 121, in build_automaton
+    return LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 162, in _build_automaton
+    initial_items = closure({start_item}, self.augmented_grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 56, in closure
+    result, _ = _closure_impl(item, grammar, record=False)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 28, in _closure_impl
+    if next_sym is None or next_sym not in grammar.none_terminals:
+                                           ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Grammar' object has no attribute 'none_terminals'. Did you mean: 'non_terminals'?
+2026-11-19 11:03:13 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:03:13 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:03:13 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:03:13 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:03:13 [INFO] core.topdown.ll1: LL(1) table built: 1 rows, 4 columns, 0 conflict(s)
+2026-11-19 11:03:13 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:03:13 [ERROR] core.grammar_analyzer: Ambiguity analysis failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\grammar_analyzer.py", line 420, in analyze_grammar
+    lr0 = LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 162, in _build_automaton
+    initial_items = closure({start_item}, self.augmented_grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 56, in closure
+    result, _ = _closure_impl(item, grammar, record=False)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 28, in _closure_impl
+    if next_sym is None or next_sym not in grammar.non_terminals:
+                                           ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Grammar' object has no attribute 'none_terminals'. Did you mean: 'non_terminals'?
+2026-11-19 11:03:13 [INFO] core.grammar_analyzer: Grammar analysis complete: 0 error(s), 0 warning(s), 0 note(s)
+2026-11-19 11:03:13 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:03:13 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:03:13 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:03:13 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:03:13 [INFO] core.topdown.ll1: LL(1) table built: 1 rows, 4 columns, 0 conflict(s)
+2026-11-19 11:03:13 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:03:13 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:03:13 [INFO] core.topdown.engine: Top-down analysis (LL(1)): left_recursion=False, left_factoring=False, conflicts=0
+2026-11-19 11:03:13 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:03:13 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:03:13 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:03:13 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:03:13 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:03:13 [ERROR] core.comparison: LR(0) comparison failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\comparison.py", line 313, in compare_parsers
+    result = analyze(text, parser_type)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 202, in analyze
+    automaton = build_automaton(grammar, mode)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 121, in build_automaton
+    return LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 162, in _build_automaton
+    initial_items = closure({start_item}, self.augmented_grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 56, in closure
+    result, _ = _closure_impl(item, grammar, record=False)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 28, in _closure_impl
+    if next_sym is None or next_sym not in grammar.non_terminals:
+                                           ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Grammar' object has no attribute 'none_terminals'. Did you mean: 'non_terminals'?
+2026-11-19 11:03:13 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:03:13 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:03:13 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:03:13 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:03:13 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:03:13 [ERROR] core.comparison: SLR(1) comparison failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\comparison.py", line 313, in compare_parsers
+    result = analyze(text, parser_type)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 202, in analyze
+    automaton = build_automaton(grammar, mode)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 121, in build_automaton
+    return LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 162, in _build_automaton
+    initial_items = closure({start_item}, self.augmented_grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 56, in closure
+    result, _ = _closure_impl(item, grammar, record=False)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 28, in _closure_impl
+    if next_sym is None or next_sym not in grammar.non_terminals:
+                                           ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Grammar' object has no attribute 'none_terminals'. Did you mean: 'non_terminals'?
+2026-11-19 11:03:13 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:03:13 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:03:13 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:03:13 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:03:13 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:03:13 [INFO] core.first_follow: FIRST sets computed for 6 symbols
+2026-11-19 11:03:13 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:13 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:03:13 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:13 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:03:13 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:03:13 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:13 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:03:13 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:03:13 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:03:13 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:13 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:03:13 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:03:13 [INFO] core.lr1_automaton: Canonical LR(1) automaton built: 10 states
+2026-11-19 11:03:13 [INFO] core.table_builder: clr1 table generated: 10 states
+2026-11-19 11:03:13 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:03:13 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:03:13 [INFO] core.engine: Analysis complete: CLR(1), 10 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-19 11:03:13 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:03:13 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:03:13 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:03:13 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:03:13 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:03:13 [INFO] core.first_follow: FIRST sets computed for 6 symbols
+2026-11-19 11:03:13 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:13 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:03:13 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:13 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:03:13 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:03:13 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:13 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:03:13 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:03:13 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:03:13 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:13 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:03:13 [DEBUG] core.lr1_automaton: LR(1) closure computed: 1 items
+2026-11-19 11:03:13 [INFO] core.lr1_automaton: LALR(1) automaton built: 6 states (merged from 10 canonical states)
+2026-11-19 11:03:13 [INFO] core.table_builder: lalr1 table generated: 6 states
+2026-11-19 11:03:13 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:03:13 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:03:13 [INFO] core.engine: Analysis complete: LALR(1), 6 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-19 11:03:13 [INFO] core.comparison: Parser compatibility complete: Compatible: LL(1), CLR(1), LALR(1). Conflict-free: LL(1), CLR(1), LALR(1). Recommended: LALR(1).
+2026-11-19 11:03:13 [INFO] core.grammar_parser: Grammar parsed successfully: 1 non-terminals
+2026-11-19 11:03:13 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:03:13 [INFO] core.first_follow: FIRST sets computed for 5 symbols
+2026-11-19 11:03:13 [INFO] core.first_follow: FOLLOW sets computed for 1 non-terminals
+2026-11-19 11:03:13 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:03:13 [ERROR] gui.main_window: Analysis failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\gui\main_window.py", line 600, in _generate_bottomup
+    analysis = analyze(
+        text,
+    ...<6 lines>...
+        resolution=options.resolution,
+    )
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 202, in analyze
+    automaton = build_automaton(grammar, mode)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 121, in build_automaton
+    return LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 162, in _build_automaton
+    initial_items = closure({start_item}, self.augmented_grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 56, in closure
+    result, _ = _closure_impl(item, grammar, record=False)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 28, in _closure_impl
+    if next_sym is None or next_sym not in grammar.non_terminals:
+                                           ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Grammar' object has no attribute 'none_terminals'. Did you mean: 'non_terminals'?
+2026-11-19 11:03:28 [INFO] core.database: Database connection closed
+2026-11-19 11:03:28 [INFO] __main__: Application shutdown complete
+2026-11-19 11:03:31 [INFO] __main__: Starting ParseCraft
+2026-11-19 11:03:31 [INFO] core.database: Connected to database: C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\data\parser_simulator.db
+2026-11-19 11:03:31 [INFO] core.database: Database schema initialized
+2026-11-19 11:03:31 [INFO] __main__: Database initialized
+2026-11-19 11:03:32 [DEBUG] gui.grammar_editor: GrammarEditor initialized
+2026-11-19 11:03:33 [DEBUG] gui.main_window: Applied 12 tabs for parser SLR(1)
+2026-11-19 11:03:33 [INFO] gui.main_window: Main window initialized
+2026-11-19 11:03:33 [INFO] core.update.checker: Checking for updates at https://raw.githubusercontent.com/maxxgie/ParseCraft/main/bottom_up_parser_simulator/manifest.json
+2026-11-19 11:03:40 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:03:40 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:03:40 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-19 11:03:40 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-19 11:03:40 [INFO] core.topdown.ll1: LL(1) table built: 3 rows, 6 columns, 4 conflict(s)
+2026-11-19 11:03:40 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:03:40 [ERROR] core.grammar_analyzer: Ambiguity analysis failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\grammar_analyzer.py", line 420, in analyze_grammar
+    lr0 = LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 162, in _build_automaton
+    initial_items = closure({start_item}, self.augmented_grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 56, in closure
+    result, _ = _closure_impl(item, grammar, record=False)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 32, in _closure_impl
+    for rhs in grammar.get_production_for(next_sym):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Grammar' object has no attribute 'get_production_for'. Did you mean: 'get_productions_for'?
+2026-11-19 11:03:40 [INFO] core.grammar_analyzer: Grammar analysis complete: 0 error(s), 5 warning(s), 0 note(s)
+2026-11-19 11:03:40 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:03:40 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:03:40 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-19 11:03:40 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-19 11:03:40 [INFO] core.topdown.ll1: LL(1) table built: 3 rows, 6 columns, 4 conflict(s)
+2026-11-19 11:03:40 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:03:40 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:03:40 [INFO] core.topdown.engine: Top-down analysis (LL(1)): left_recursion=True, left_factoring=False, conflicts=4
+2026-11-19 11:03:40 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:03:40 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:03:40 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-19 11:03:40 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-19 11:03:40 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:03:40 [ERROR] core.comparison: LR(0) comparison failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\comparison.py", line 313, in compare_parsers
+    result = analyze(text, parser_type)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 202, in analyze
+    automaton = build_automaton(grammar, mode)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 121, in build_automaton
+    return LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 162, in _build_automaton
+    initial_items = closure({start_item}, self.augmented_grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 56, in closure
+    result, _ = _closure_impl(item, grammar, record=False)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 32, in _closure_impl
+    for rhs in grammar.get_production_for(next_sym):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Grammar' object has no attribute 'get_production_for'. Did you mean: 'get_productions_for'?
+2026-11-19 11:03:40 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:03:40 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:03:40 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-19 11:03:40 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-19 11:03:40 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:03:40 [ERROR] core.comparison: SLR(1) comparison failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\comparison.py", line 313, in compare_parsers
+    result = analyze(text, parser_type)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 202, in analyze
+    automaton = build_automaton(grammar, mode)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 121, in build_automaton
+    return LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 162, in _build_automaton
+    initial_items = closure({start_item}, self.augmented_grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 56, in closure
+    result, _ = _closure_impl(item, grammar, record=False)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 32, in _closure_impl
+    for rhs in grammar.get_production_for(next_sym):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Grammar' object has no attribute 'get_production_for'. Did you mean: 'get_productions_for'?
+2026-11-19 11:03:40 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:03:40 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:03:40 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-19 11:03:40 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-19 11:03:40 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:03:40 [INFO] core.first_follow: FIRST sets computed for 10 symbols
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 17 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 14 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 14 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 14 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-19 11:03:40 [INFO] core.lr1_automaton: Canonical LR(1) automaton built: 22 states
+2026-11-19 11:03:40 [INFO] core.table_builder: clr1 table generated: 22 states
+2026-11-19 11:03:40 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:03:40 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:03:40 [INFO] core.engine: Analysis complete: CLR(1), 22 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-19 11:03:40 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:03:40 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:03:40 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-19 11:03:40 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-19 11:03:40 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:03:40 [INFO] core.first_follow: FIRST sets computed for 10 symbols
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 17 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 14 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 14 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 14 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:03:40 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-19 11:03:40 [INFO] core.lr1_automaton: LALR(1) automaton built: 12 states (merged from 22 canonical states)
+2026-11-19 11:03:40 [INFO] core.table_builder: lalr1 table generated: 12 states
+2026-11-19 11:03:40 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:03:40 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:03:40 [INFO] core.engine: Analysis complete: LALR(1), 12 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-19 11:03:40 [INFO] core.comparison: Parser compatibility complete: Compatible: CLR(1), LALR(1). Conflict-free: CLR(1), LALR(1). Recommended: LALR(1).
+2026-11-19 11:03:40 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:03:40 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:03:40 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-19 11:03:40 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-19 11:03:40 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:03:40 [ERROR] gui.main_window: Analysis failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\gui\main_window.py", line 600, in _generate_bottomup
+    analysis = analyze(
+        text,
+    ...<6 lines>...
+        resolution=options.resolution,
+    )
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 202, in analyze
+    automaton = build_automaton(grammar, mode)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 121, in build_automaton
+    return LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 162, in _build_automaton
+    initial_items = closure({start_item}, self.augmented_grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 56, in closure
+    result, _ = _closure_impl(item, grammar, record=False)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 32, in _closure_impl
+    for rhs in grammar.get_production_for(next_sym):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Grammar' object has no attribute 'get_production_for'. Did you mean: 'get_productions_for'?
+2026-11-19 11:04:09 [INFO] core.database: Database connection closed
+2026-11-19 11:04:09 [INFO] __main__: Application shutdown complete
+2026-11-19 11:04:12 [INFO] __main__: Starting ParseCraft
+2026-11-19 11:04:12 [INFO] core.database: Connected to database: C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\data\parser_simulator.db
+2026-11-19 11:04:12 [INFO] core.database: Database schema initialized
+2026-11-19 11:04:12 [INFO] __main__: Database initialized
+2026-11-19 11:04:12 [DEBUG] gui.grammar_editor: GrammarEditor initialized
+2026-11-19 11:04:13 [DEBUG] gui.main_window: Applied 12 tabs for parser SLR(1)
+2026-11-19 11:04:13 [INFO] gui.main_window: Main window initialized
+2026-11-19 11:04:13 [INFO] core.update.checker: Checking for updates at https://raw.githubusercontent.com/maxxgie/ParseCraft/main/bottom_up_parser_simulator/manifest.json
+2026-11-19 11:04:19 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:04:19 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:04:19 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-19 11:04:19 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-19 11:04:19 [INFO] core.topdown.ll1: LL(1) table built: 3 rows, 6 columns, 4 conflict(s)
+2026-11-19 11:04:19 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:04:19 [ERROR] core.grammar_analyzer: Ambiguity analysis failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\grammar_analyzer.py", line 420, in analyze_grammar
+    lr0 = LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 162, in _build_automaton
+    initial_items = closure({start_item}, self.augmented_grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 56, in closure
+    result, _ = _closure_impl(item, grammar, record=False)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 38, in _closure_impl
+    if new_item in result:
+                   ^^^^^^
+NameError: name 'result' is not defined. Did you mean: 'reuslt'?
+2026-11-19 11:04:19 [INFO] core.grammar_analyzer: Grammar analysis complete: 0 error(s), 5 warning(s), 0 note(s)
+2026-11-19 11:04:19 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:04:19 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:04:19 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-19 11:04:19 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-19 11:04:19 [INFO] core.topdown.ll1: LL(1) table built: 3 rows, 6 columns, 4 conflict(s)
+2026-11-19 11:04:19 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:04:19 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:04:19 [INFO] core.topdown.engine: Top-down analysis (LL(1)): left_recursion=True, left_factoring=False, conflicts=4
+2026-11-19 11:04:19 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:04:19 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:04:19 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-19 11:04:19 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-19 11:04:19 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:04:19 [ERROR] core.comparison: LR(0) comparison failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\comparison.py", line 313, in compare_parsers
+    result = analyze(text, parser_type)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 202, in analyze
+    automaton = build_automaton(grammar, mode)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 121, in build_automaton
+    return LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 162, in _build_automaton
+    initial_items = closure({start_item}, self.augmented_grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 56, in closure
+    result, _ = _closure_impl(item, grammar, record=False)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 38, in _closure_impl
+    if new_item in result:
+                   ^^^^^^
+NameError: name 'result' is not defined. Did you mean: 'reuslt'?
+2026-11-19 11:04:20 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:04:20 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:04:20 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-19 11:04:20 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-19 11:04:20 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:04:20 [ERROR] core.comparison: SLR(1) comparison failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\comparison.py", line 313, in compare_parsers
+    result = analyze(text, parser_type)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 202, in analyze
+    automaton = build_automaton(grammar, mode)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 121, in build_automaton
+    return LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 162, in _build_automaton
+    initial_items = closure({start_item}, self.augmented_grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 56, in closure
+    result, _ = _closure_impl(item, grammar, record=False)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 38, in _closure_impl
+    if new_item in result:
+                   ^^^^^^
+NameError: name 'result' is not defined. Did you mean: 'reuslt'?
+2026-11-19 11:04:20 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:04:20 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:04:20 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-19 11:04:20 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-19 11:04:20 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:04:20 [INFO] core.first_follow: FIRST sets computed for 10 symbols
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 17 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 14 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 14 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 14 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-19 11:04:20 [INFO] core.lr1_automaton: Canonical LR(1) automaton built: 22 states
+2026-11-19 11:04:20 [INFO] core.table_builder: clr1 table generated: 22 states
+2026-11-19 11:04:20 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:04:20 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:04:20 [INFO] core.engine: Analysis complete: CLR(1), 22 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-19 11:04:20 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:04:20 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:04:20 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-19 11:04:20 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-19 11:04:20 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:04:20 [INFO] core.first_follow: FIRST sets computed for 10 symbols
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 17 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 14 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 14 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 14 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:04:20 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-19 11:04:20 [INFO] core.lr1_automaton: LALR(1) automaton built: 12 states (merged from 22 canonical states)
+2026-11-19 11:04:20 [INFO] core.table_builder: lalr1 table generated: 12 states
+2026-11-19 11:04:20 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:04:20 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:04:20 [INFO] core.engine: Analysis complete: LALR(1), 12 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-19 11:04:20 [INFO] core.comparison: Parser compatibility complete: Compatible: CLR(1), LALR(1). Conflict-free: CLR(1), LALR(1). Recommended: LALR(1).
+2026-11-19 11:04:20 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:04:20 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:04:20 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-19 11:04:20 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-19 11:04:20 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:04:20 [ERROR] gui.main_window: Analysis failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\gui\main_window.py", line 600, in _generate_bottomup
+    analysis = analyze(
+        text,
+    ...<6 lines>...
+        resolution=options.resolution,
+    )
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 202, in analyze
+    automaton = build_automaton(grammar, mode)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 121, in build_automaton
+    return LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 162, in _build_automaton
+    initial_items = closure({start_item}, self.augmented_grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 56, in closure
+    result, _ = _closure_impl(item, grammar, record=False)
+                ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\closure.py", line 38, in _closure_impl
+    if new_item in result:
+                   ^^^^^^
+NameError: name 'result' is not defined. Did you mean: 'reuslt'?
+2026-11-19 11:06:12 [INFO] core.database: Database connection closed
+2026-11-19 11:06:12 [INFO] __main__: Application shutdown complete
+2026-11-19 11:06:28 [INFO] __main__: Starting ParseCraft
+2026-11-19 11:06:29 [INFO] core.database: Connected to database: C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\data\parser_simulator.db
+2026-11-19 11:06:29 [INFO] core.database: Database schema initialized
+2026-11-19 11:06:29 [INFO] __main__: Database initialized
+2026-11-19 11:06:29 [DEBUG] gui.grammar_editor: GrammarEditor initialized
+2026-11-19 11:06:32 [DEBUG] gui.main_window: Applied 12 tabs for parser SLR(1)
+2026-11-19 11:06:32 [INFO] gui.main_window: Main window initialized
+2026-11-19 11:06:32 [INFO] core.update.checker: Checking for updates at https://raw.githubusercontent.com/maxxgie/ParseCraft/main/bottom_up_parser_simulator/manifest.json
+2026-11-19 11:06:36 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:06:36 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:06:36 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-19 11:06:36 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-19 11:06:36 [INFO] core.topdown.ll1: LL(1) table built: 3 rows, 6 columns, 4 conflict(s)
+2026-11-19 11:06:36 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:06:36 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-19 11:06:36 [ERROR] core.grammar_analyzer: Ambiguity analysis failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\grammar_analyzer.py", line 420, in analyze_grammar
+    lr0 = LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 168, in _build_automaton
+    state_ids = {frozenset(item.key() for item in initial_items): 0}
+                                                  ^^^^^^^^^^^^^
+TypeError: 'NoneType' object is not iterable
+2026-11-19 11:06:36 [INFO] core.grammar_analyzer: Grammar analysis complete: 0 error(s), 5 warning(s), 0 note(s)
+2026-11-19 11:06:36 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:06:36 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:06:36 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-19 11:06:36 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-19 11:06:36 [INFO] core.topdown.ll1: LL(1) table built: 3 rows, 6 columns, 4 conflict(s)
+2026-11-19 11:06:36 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:06:36 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:06:36 [INFO] core.topdown.engine: Top-down analysis (LL(1)): left_recursion=True, left_factoring=False, conflicts=4
+2026-11-19 11:06:36 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:06:36 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:06:36 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-19 11:06:36 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-19 11:06:36 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:06:36 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-19 11:06:36 [ERROR] core.comparison: LR(0) comparison failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\comparison.py", line 313, in compare_parsers
+    result = analyze(text, parser_type)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 202, in analyze
+    automaton = build_automaton(grammar, mode)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 121, in build_automaton
+    return LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 168, in _build_automaton
+    state_ids = {frozenset(item.key() for item in initial_items): 0}
+                                                  ^^^^^^^^^^^^^
+TypeError: 'NoneType' object is not iterable
+2026-11-19 11:06:36 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:06:36 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:06:36 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-19 11:06:36 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-19 11:06:37 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:06:37 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-19 11:06:37 [ERROR] core.comparison: SLR(1) comparison failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\comparison.py", line 313, in compare_parsers
+    result = analyze(text, parser_type)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 202, in analyze
+    automaton = build_automaton(grammar, mode)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 121, in build_automaton
+    return LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 168, in _build_automaton
+    state_ids = {frozenset(item.key() for item in initial_items): 0}
+                                                  ^^^^^^^^^^^^^
+TypeError: 'NoneType' object is not iterable
+2026-11-19 11:06:37 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:06:37 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:06:37 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-19 11:06:37 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-19 11:06:37 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:06:37 [INFO] core.first_follow: FIRST sets computed for 10 symbols
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 17 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 14 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 14 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 14 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-19 11:06:37 [INFO] core.lr1_automaton: Canonical LR(1) automaton built: 22 states
+2026-11-19 11:06:37 [INFO] core.table_builder: clr1 table generated: 22 states
+2026-11-19 11:06:37 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:06:37 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:06:37 [INFO] core.engine: Analysis complete: CLR(1), 22 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-19 11:06:37 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:06:37 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:06:37 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-19 11:06:37 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-19 11:06:37 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:06:37 [INFO] core.first_follow: FIRST sets computed for 10 symbols
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 17 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 14 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 14 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 14 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:06:37 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-19 11:06:37 [INFO] core.lr1_automaton: LALR(1) automaton built: 12 states (merged from 22 canonical states)
+2026-11-19 11:06:37 [INFO] core.table_builder: lalr1 table generated: 12 states
+2026-11-19 11:06:37 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:06:37 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:06:37 [INFO] core.engine: Analysis complete: LALR(1), 12 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-19 11:06:37 [INFO] core.comparison: Parser compatibility complete: Compatible: CLR(1), LALR(1). Conflict-free: CLR(1), LALR(1). Recommended: LALR(1).
+2026-11-19 11:06:37 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:06:37 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:06:37 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-19 11:06:37 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-19 11:06:37 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:06:37 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-19 11:06:37 [ERROR] gui.main_window: Analysis failed
+Traceback (most recent call last):
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\gui\main_window.py", line 600, in _generate_bottomup
+    analysis = analyze(
+        text,
+    ...<6 lines>...
+        resolution=options.resolution,
+    )
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 202, in analyze
+    automaton = build_automaton(grammar, mode)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\engine.py", line 121, in build_automaton
+    return LRAutomaton(grammar)
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 139, in __init__
+    self._build_automaton()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\core\automaton.py", line 168, in _build_automaton
+    state_ids = {frozenset(item.key() for item in initial_items): 0}
+                                                  ^^^^^^^^^^^^^
+TypeError: 'NoneType' object is not iterable
+2026-11-19 11:07:42 [INFO] core.database: Database connection closed
+2026-11-19 11:07:42 [INFO] __main__: Application shutdown complete
+2026-11-19 11:07:46 [INFO] __main__: Starting ParseCraft
+2026-11-19 11:07:47 [INFO] core.database: Connected to database: C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\data\parser_simulator.db
+2026-11-19 11:07:47 [INFO] core.database: Database schema initialized
+2026-11-19 11:07:47 [INFO] __main__: Database initialized
+2026-11-19 11:07:47 [DEBUG] gui.grammar_editor: GrammarEditor initialized
+2026-11-19 11:07:49 [DEBUG] gui.main_window: Applied 12 tabs for parser SLR(1)
+2026-11-19 11:07:49 [INFO] gui.main_window: Main window initialized
+2026-11-19 11:07:49 [INFO] core.update.checker: Checking for updates at https://raw.githubusercontent.com/maxxgie/ParseCraft/main/bottom_up_parser_simulator/manifest.json
+2026-11-19 11:07:57 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:07:57 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:07:57 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-19 11:07:57 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-19 11:07:57 [INFO] core.topdown.ll1: LL(1) table built: 3 rows, 6 columns, 4 conflict(s)
+2026-11-19 11:07:57 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'E' computed: 2 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'T' computed: 2 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'F' computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on '(' computed: 7 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'id' computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 5 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on '+' computed: 5 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on '*' computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'E' computed: 2 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'T' computed: 2 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'F' computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on '(' computed: 7 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'id' computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'T' computed: 2 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'F' computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on '(' computed: 7 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'id' computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'F' computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on '(' computed: 7 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'id' computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 5 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on '+' computed: 5 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on ')' computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on '*' computed: 3 items
+2026-11-19 11:07:57 [INFO] core.automaton: LR automaton built: 12 states
+2026-11-19 11:07:57 [WARNING] core.table_builder: lr0 table: 2 conflict(s) detected
+2026-11-19 11:07:57 [INFO] core.table_builder: lr0 table generated: 12 states
+2026-11-19 11:07:57 [INFO] core.grammar_analyzer: Grammar analysis complete: 0 error(s), 5 warning(s), 0 note(s)
+2026-11-19 11:07:57 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:07:57 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:07:57 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-19 11:07:57 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-19 11:07:57 [INFO] core.topdown.ll1: LL(1) table built: 3 rows, 6 columns, 4 conflict(s)
+2026-11-19 11:07:57 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:07:57 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:07:57 [INFO] core.topdown.engine: Top-down analysis (LL(1)): left_recursion=True, left_factoring=False, conflicts=4
+2026-11-19 11:07:57 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:07:57 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:07:57 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-19 11:07:57 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-19 11:07:57 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'E' computed: 2 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'T' computed: 2 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'F' computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on '(' computed: 7 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'id' computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 5 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on '+' computed: 5 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on '*' computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'E' computed: 2 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'T' computed: 2 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'F' computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on '(' computed: 7 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'id' computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'T' computed: 2 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'F' computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on '(' computed: 7 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'id' computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'F' computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on '(' computed: 7 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'id' computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 5 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on '+' computed: 5 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on ')' computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on '*' computed: 3 items
+2026-11-19 11:07:57 [INFO] core.automaton: LR automaton built: 12 states
+2026-11-19 11:07:57 [WARNING] core.table_builder: lr0 table: 2 conflict(s) detected
+2026-11-19 11:07:57 [INFO] core.table_builder: lr0 table generated: 12 states
+2026-11-19 11:07:57 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:07:57 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:07:57 [INFO] core.engine: Analysis complete: LR(0), 12 states, 2 conflicts, 0 resolved, 0 warnings
+2026-11-19 11:07:57 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:07:57 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:07:57 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-19 11:07:57 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-19 11:07:57 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'E' computed: 2 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'T' computed: 2 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'F' computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on '(' computed: 7 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'id' computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 5 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on '+' computed: 5 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on '*' computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'E' computed: 2 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'T' computed: 2 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'F' computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on '(' computed: 7 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'id' computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'T' computed: 2 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'F' computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on '(' computed: 7 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'id' computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'F' computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on '(' computed: 7 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on 'id' computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 5 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on '+' computed: 5 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on ')' computed: 1 items
+2026-11-19 11:07:57 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.goto: GOTO on '*' computed: 3 items
+2026-11-19 11:07:57 [INFO] core.automaton: LR automaton built: 12 states
+2026-11-19 11:07:57 [INFO] core.table_builder: slr1 table generated: 12 states
+2026-11-19 11:07:57 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:07:57 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:07:57 [INFO] core.engine: Analysis complete: SLR(1), 12 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-19 11:07:57 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:07:57 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:07:57 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-19 11:07:57 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-19 11:07:57 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:07:57 [INFO] core.first_follow: FIRST sets computed for 10 symbols
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 17 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 14 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 14 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 14 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-19 11:07:57 [INFO] core.lr1_automaton: Canonical LR(1) automaton built: 22 states
+2026-11-19 11:07:57 [INFO] core.table_builder: clr1 table generated: 22 states
+2026-11-19 11:07:57 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:07:57 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:07:57 [INFO] core.engine: Analysis complete: CLR(1), 22 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-19 11:07:57 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:07:57 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:07:57 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-19 11:07:57 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-19 11:07:57 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:07:57 [INFO] core.first_follow: FIRST sets computed for 10 symbols
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 17 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 14 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 14 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 5 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 19 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 14 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 3 items
+2026-11-19 11:07:57 [DEBUG] core.lr1_automaton: LR(1) closure computed: 9 items
+2026-11-19 11:07:57 [INFO] core.lr1_automaton: LALR(1) automaton built: 12 states (merged from 22 canonical states)
+2026-11-19 11:07:57 [INFO] core.table_builder: lalr1 table generated: 12 states
+2026-11-19 11:07:57 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:07:57 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:07:57 [INFO] core.engine: Analysis complete: LALR(1), 12 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-19 11:07:57 [INFO] core.comparison: Parser compatibility complete: Compatible: SLR(1), CLR(1), LALR(1). Conflict-free: SLR(1), CLR(1), LALR(1). Recommended: LALR(1).
+2026-11-19 11:07:58 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:07:58 [DEBUG] core.precedence: Parsed 0 precedence declarations
+2026-11-19 11:07:58 [INFO] core.first_follow: FIRST sets computed for 9 symbols
+2026-11-19 11:07:58 [INFO] core.first_follow: FOLLOW sets computed for 3 non-terminals
+2026-11-19 11:07:58 [DEBUG] core.grammar_engine: Augmented grammar with start symbol 'S''
+2026-11-19 11:07:58 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-19 11:07:58 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-19 11:07:58 [DEBUG] core.goto: GOTO on 'E' computed: 2 items
+2026-11-19 11:07:58 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-19 11:07:58 [DEBUG] core.goto: GOTO on 'T' computed: 2 items
+2026-11-19 11:07:58 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:58 [DEBUG] core.goto: GOTO on 'F' computed: 1 items
+2026-11-19 11:07:58 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-19 11:07:58 [DEBUG] core.goto: GOTO on '(' computed: 7 items
+2026-11-19 11:07:58 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:58 [DEBUG] core.goto: GOTO on 'id' computed: 1 items
+2026-11-19 11:07:58 [DEBUG] core.closure: Closure computed: 5 items
+2026-11-19 11:07:58 [DEBUG] core.goto: GOTO on '+' computed: 5 items
+2026-11-19 11:07:58 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-19 11:07:58 [DEBUG] core.goto: GOTO on '*' computed: 3 items
+2026-11-19 11:07:58 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-19 11:07:58 [DEBUG] core.goto: GOTO on 'E' computed: 2 items
+2026-11-19 11:07:58 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-19 11:07:58 [DEBUG] core.goto: GOTO on 'T' computed: 2 items
+2026-11-19 11:07:58 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:58 [DEBUG] core.goto: GOTO on 'F' computed: 1 items
+2026-11-19 11:07:58 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-19 11:07:58 [DEBUG] core.goto: GOTO on '(' computed: 7 items
+2026-11-19 11:07:58 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:58 [DEBUG] core.goto: GOTO on 'id' computed: 1 items
+2026-11-19 11:07:58 [DEBUG] core.closure: Closure computed: 2 items
+2026-11-19 11:07:58 [DEBUG] core.goto: GOTO on 'T' computed: 2 items
+2026-11-19 11:07:58 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:58 [DEBUG] core.goto: GOTO on 'F' computed: 1 items
+2026-11-19 11:07:58 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-19 11:07:58 [DEBUG] core.goto: GOTO on '(' computed: 7 items
+2026-11-19 11:07:58 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:58 [DEBUG] core.goto: GOTO on 'id' computed: 1 items
+2026-11-19 11:07:58 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:58 [DEBUG] core.goto: GOTO on 'F' computed: 1 items
+2026-11-19 11:07:58 [DEBUG] core.closure: Closure computed: 7 items
+2026-11-19 11:07:58 [DEBUG] core.goto: GOTO on '(' computed: 7 items
+2026-11-19 11:07:58 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:58 [DEBUG] core.goto: GOTO on 'id' computed: 1 items
+2026-11-19 11:07:58 [DEBUG] core.closure: Closure computed: 5 items
+2026-11-19 11:07:58 [DEBUG] core.goto: GOTO on '+' computed: 5 items
+2026-11-19 11:07:58 [DEBUG] core.closure: Closure computed: 1 items
+2026-11-19 11:07:58 [DEBUG] core.goto: GOTO on ')' computed: 1 items
+2026-11-19 11:07:58 [DEBUG] core.closure: Closure computed: 3 items
+2026-11-19 11:07:58 [DEBUG] core.goto: GOTO on '*' computed: 3 items
+2026-11-19 11:07:58 [INFO] core.automaton: LR automaton built: 12 states
+2026-11-19 11:07:58 [INFO] core.table_builder: slr1 table generated: 12 states
+2026-11-19 11:07:58 [INFO] core.grammar_transform: Left recursion removed from grammar
+2026-11-19 11:07:58 [INFO] core.grammar_transform: Left factoring applied to grammar
+2026-11-19 11:07:58 [INFO] core.engine: Analysis complete: SLR(1), 12 states, 0 conflicts, 0 resolved, 0 warnings
+2026-11-19 11:07:58 [DEBUG] core.closure: Closure computed with trace: 7 items
+2026-11-19 11:07:58 [DEBUG] core.closure: Closure computed with trace: 2 items
+2026-11-19 11:07:58 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:07:58 [INFO] core.grammar_parser: Grammar parsed successfully: 5 non-terminals
+2026-11-19 11:07:58 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:07:58 [INFO] core.grammar_parser: Grammar parsed successfully: 3 non-terminals
+2026-11-19 11:07:58 [INFO] core.codegen: Generated LR parser code (192 lines)
+2026-11-19 11:09:10 [INFO] core.database: Database connection closed
+2026-11-19 11:09:10 [INFO] __main__: Application shutdown complete

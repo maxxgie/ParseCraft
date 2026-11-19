@@ -1,9 +1,14 @@
-"""Secure download of update packages with progress and cancellation.
+"""Secure download of update packages with progress, resume, and retry.
 
 Downloads stream to a temporary file and are only moved into place once the
 full body has been received, so a partial download can never be mistaken for a
 complete package. A :class:`threading.Event` can be used to cancel an in-flight
 download from the GUI thread.
+
+Resume is supported via the HTTP ``Range`` header: if a ``.part`` file already
+exists for the destination, the downloader asks the server for the remaining
+bytes and appends them. Retries with exponential backoff are applied on
+transient failures (timeouts, connection resets).
 
 The downloader uses only the standard library (:mod:`urllib`) and supports
 ``https://``, ``http://`` and ``file://`` URLs (the latter is convenient for
@@ -18,6 +23,7 @@ import threading
 import urllib.error
 import urllib.parse
 import urllib.request
+import time
 from pathlib import Path
 from typing import Callable, Optional, Union
 
@@ -31,6 +37,12 @@ ProgressCallback = Callable[[int, int], None]
 
 # Default network timeout in seconds.
 DEFAULT_TIMEOUT = 30.0
+
+# Maximum number of retries on transient failures.
+DEFAULT_MAX_RETRIES = 3
+
+# Base delay (seconds) between retries; grows exponentially.
+DEFAULT_RETRY_BASE_DELAY = 2.0
 
 
 class DownloadError(Exception):
