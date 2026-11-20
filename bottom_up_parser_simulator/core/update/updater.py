@@ -97,7 +97,7 @@ def run_update(
     """Apply an update package and optionally relaunch the application.
 
     Args:
-        package: Path to the update package (ZIP).
+        package: Path to the update package (ZIP or installer ``*.exe``).
         install_dir: Directory containing the application binaries.
         app_exe: Application executable to relaunch after a successful update.
         relaunch: Whether to relaunch the application after applying.
@@ -105,6 +105,26 @@ def run_update(
     Returns:
         ``0`` on success, ``1`` on failure.
     """
+    package = Path(package)
+    if package.suffix.lower() == ".exe":
+        # Installer package: run it silently and relaunch afterwards.
+        try:
+            subprocess.Popen(
+                [str(package), "/SILENT", "/SP-", "/NORESTART"],
+                close_fds=True,
+            )
+            logger.info("Launched installer: %s", package)
+        except OSError as exc:  # pragma: no cover - platform dependent
+            logger.error("Failed to launch installer: %s", exc)
+            return 1
+        if relaunch and app_exe:
+            try:
+                subprocess.Popen([str(app_exe)], close_fds=True)
+                logger.info("Relaunched application: %s", app_exe)
+            except OSError as exc:  # pragma: no cover - platform dependent
+                logger.error("Failed to relaunch application: %s", exc)
+        return 0
+
     result = apply_zip_update(package, install_dir)
     if not result.success:
         logger.error("Updater failed to apply update: %s", result.error)

@@ -242,11 +242,19 @@ class UpdateManager:
         """
         package_type = (manifest.package_type or "zip").lower()
         if package_type == "installer":
+            # Installer packages are always applied through the external
+            # Updater.exe so the running (locked) application is fully gone
+            # before Inno Setup tries to overwrite its files. This avoids the
+            # "DeleteFile failed; code 5. Access is denied" error.
             try:
-                launch_installer(package_path, silent=True)
+                launch_updater(
+                    package_path,
+                    install_dir=get_install_dir(),
+                    app_exe=_current_executable(),
+                )
                 result = ApplyResult(success=True, requires_restart=True)
-            except Exception as exc:  # pragma: no cover - platform dependent
-                logger.exception("Failed to launch installer")
+            except InstallError as exc:
+                logger.exception("Failed to launch updater")
                 result = ApplyResult(success=False, error=str(exc))
         elif is_frozen():
             # Packaged: hand off to the external updater process.
