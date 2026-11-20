@@ -43,6 +43,11 @@ ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 UninstallDisplayIcon={app}\{#MyAppExeName}
 UninstallDisplayName={#MyAppName} {#MyAppVersion}
+; Close any running ParseCraft instance before overwriting files. This is what
+; prevents "DeleteFile failed; code 5. Access is denied" when the running
+; executable is locked by the OS.
+CloseApplications=yes
+RestartApp=yes
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
