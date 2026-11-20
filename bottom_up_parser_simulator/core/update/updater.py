@@ -107,13 +107,21 @@ def run_update(
     """
     package = Path(package)
     if package.suffix.lower() == ".exe":
-        # Installer package: run it silently and relaunch afterwards.
+        # Installer package: run it silently, wait for it to finish, then
+        # relaunch. Popen returns immediately, so we must wait() before
+        # relaunching — otherwise the app would start while the installer is
+        # still overwriting its files.
         try:
-            subprocess.Popen(
+            proc = subprocess.Popen(
                 [str(package), "/SILENT", "/SP-", "/NORESTART"],
                 close_fds=True,
             )
             logger.info("Launched installer: %s", package)
+            rc = proc.wait()
+            if rc != 0:
+                logger.error("Installer exited with code %s", rc)
+                return 1
+            logger.info("Installer completed successfully")
         except OSError as exc:  # pragma: no cover - platform dependent
             logger.error("Failed to launch installer: %s", exc)
             return 1

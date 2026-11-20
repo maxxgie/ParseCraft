@@ -68,7 +68,11 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: de
 ; (none)
 
 [Run]
-Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#MyAppName}}"; Flags: nowait postinstall skipifsilent
+; Launch the application after installation. skipifsilent is intentionally
+; omitted so that auto-updates (which run the installer silently) still
+; relaunch the app. The external Updater.exe handles waiting for the app to
+; exit before invoking the installer, so this relaunch is the final step.
+Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#MyAppName}}"; Flags: nowait postinstall
 
 [UninstallDelete]
 ; Per-user data is intentionally NOT removed on uninstall.
