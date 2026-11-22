@@ -850,6 +850,31 @@ class MainWindow(QMainWindow):
             logger.exception("Failed to save grammar")
             QMessageBox.critical(self, "Save Grammar", "Failed to save the grammar.")
 
+    def _on_save_analysis(self) -> None:
+        if self._analysis is None:
+            QMessageBox.information(self, "Save Analysis", "Generate a grammar before saving.")
+            return
+        path, _ = QFileDialog.getSaveFileName(self, "Save Analysis", "analysis.json", "JSON Files (*.json)")
+        if not path:
+            return
+        try:
+            import json
+            a = self._analysis
+            data = {
+                "grammar": a.grammar.text if hasattr(a.grammar, "text") else str(a.grammar),
+                "first": {k: sorted(v) for k, v in a.first.items()},
+                "follow": {k: sorted(v) for k, v in a.follow.items()},
+                "action": {f"{k[0]},{k[1]}": str(v) for k, v in a.table.action.items()},
+                "goto": {f"{k[0]},{k[1]}": v for k, v in a.table.goto.items()},
+                "num_states": a.table.num_states,
+            }
+            with open(path, "w", encoding="utf-8") as f:
+                json.dump(data, f, indent=2)
+            self._status_bar.showMessage(f"Saved analysis to {path}", 4000)
+        except Exception as exc:
+            logger.exception("Failed to save analysis")
+            QMessageBox.critical(self, "Save Analysis", f"Failed to save: {exc}")
+
     # ------------------------------------------------------------------
     # Export handlers
     # ------------------------------------------------------------------
