@@ -10,7 +10,7 @@
 #
 # Output:
 #   dist\ParseCraft\   (onedir application)
-#   dist\Updater\Updater.exe        (standalone updater)
+#   dist\Updater.exe   (standalone updater, onefile)
 #   dist\installer\ParseCraft-<version>-Setup.exe
 
 $ErrorActionPreference = "Stop"
@@ -65,13 +65,25 @@ function Verify-Signature($file) {
 }
 
 Write-Host "== Generating version_info.txt ==" -ForegroundColor Cyan
-python packaging\make_version_info.py
+python packaging\make_version_info.py 2>&1
+if ($LASTEXITCODE -ne 0) { throw "make_version_info.py failed (exit $LASTEXITCODE)" }
 
 Write-Host "== Building application ==" -ForegroundColor Cyan
-python -m PyInstaller --noconfirm packaging\app.spec
+# PyInstaller writes progress to stderr; suppress the NativeCommandError that
+# $ErrorActionPreference="Stop" would otherwise raise on stderr output.
+$prev = $ErrorActionPreference
+$ErrorActionPreference = "Continue"
+python -m PyInstaller --noconfirm packaging\app.spec 2>&1
+$appExit = $LASTEXITCODE
+$ErrorActionPreference = $prev
+if ($appExit -ne 0) { throw "PyInstaller app build failed (exit $appExit)" }
 
 Write-Host "== Building updater ==" -ForegroundColor Cyan
-python -m PyInstaller --noconfirm packaging\updater.spec
+$ErrorActionPreference = "Continue"
+python -m PyInstaller --noconfirm packaging\updater.spec 2>&1
+$updaterExit = $LASTEXITCODE
+$ErrorActionPreference = $prev
+if ($updaterExit -ne 0) { throw "PyInstaller updater build failed (exit $updaterExit)" }
 
 Write-Host "== Copying Updater.exe next to the application ==" -ForegroundColor Cyan
 $UpdaterSrc = Join-Path $Root "dist\Updater.exe"
@@ -106,8 +118,11 @@ if (-not $Iscc) {
     }
     $IsccPath = if ($Iscc -is [System.Management.Automation.ApplicationInfo]) { $Iscc.Source } else { $Iscc }
     $versionFromManifest = (Get-Content (Join-Path $Root "manifest.json") | ConvertFrom-Json).latest_version
-    & $IsccPath (Join-Path $Root "packaging\installer.iss") /DMyAppVersion=$versionFromManifest
-    if ($LASTEXITCODE -ne 0) { throw "Inno Setup compilation failed with code $LASTEXITCODE" }
+    $ErrorActionPreference = "Continue"
+    & $IsccPath (Join-Path $Root "packaging\installer.iss") /DMyAppVersion=$versionFromManifest 2>&1
+    $isccExit = $LASTEXITCODE
+    $ErrorActionPreference = $prev
+    if ($isccExit -ne 0) { throw "Inno Setup compilation failed with code $isccExit" }
 
     $Installer = Get-ChildItem -Path (Join-Path $Root "packaging\dist\installer") -Filter "*.exe" | Select-Object -First 1
     if (-not $Installer) { throw "Installer not found after build." }

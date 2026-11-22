@@ -50,7 +50,6 @@ UninstallDisplayName={#MyAppName} {#MyAppVersion}
 ; installer is invoked, so CloseApplications is not needed and would only
 ; cause Inno Setup to wait for a process that has already exited.
 CloseApplications=no
-RestartApp=no
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"

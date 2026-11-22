@@ -5,8 +5,8 @@ Build from the project root:
 
     python -m PyInstaller --noconfirm packaging/updater.spec
 
-Produces ``dist/Updater/Updater.exe``. The build script copies this next to the
-main application executable so ``launch_updater`` can find it at runtime.
+Produces ``dist/Updater.exe`` (onefile). The build script copies this next to
+the main application executable so ``launch_updater`` can find it at runtime.
 """
 
 import os

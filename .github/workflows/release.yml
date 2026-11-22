@@ -88,6 +88,11 @@ jobs:
           git commit -m "Bump version to $env:VERSION"
           $remote = "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/maxxgie/ParseCraft.git"
           git remote set-url origin $remote
+          # Fetch latest and rebase to avoid "cannot lock ref" rejections.
+          git fetch origin main 2>&1
+          if ($LASTEXITCODE -ne 0) { throw "Fetch failed" }
+          git rebase origin/main 2>&1
+          if ($LASTEXITCODE -ne 0) { throw "Rebase failed" }
           git push origin main 2>&1
           if ($LASTEXITCODE -ne 0) { throw "Manifest push failed" }
 
