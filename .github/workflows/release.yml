@@ -88,7 +88,7 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add manifest.json version.json
+          git add manifest.json version.json packaging/version_info.txt
           if (git diff --cached --quiet) {
             Write-Host "No manifest changes to commit"
             exit 0
