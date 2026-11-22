@@ -67,11 +67,12 @@ jobs:
           }
           $hash = (Get-FileHash $installer.FullName -Algorithm SHA256).Hash.ToLower()
           Write-Host "Installer: $($installer.FullName)"
-          "INSTALLER_NAME=$($installer.Name)" | Out-File -Append $env:GITHUB_ENV
+          $installerName = $installer.Name
+          "INSTALLER_NAME=$installerName" | Out-File -Append $env:GITHUB_ENV
           "INSTALLER_SHA256=$hash" | Out-File -Append $env:GITHUB_ENV
           "INSTALLER_PATH=$($installer.FullName)" | Out-File -Append $env:GITHUB_ENV
           $m = Get-Content manifest.json | ConvertFrom-Json
-          $m.download_url = "https://github.com/maxxgie/ParseCraft/releases/download/v$env:VERSION/$env:INSTALLER_NAME"
+          $m.download_url = "https://github.com/maxxgie/ParseCraft/releases/download/v$env:VERSION/$installerName"
           $m.sha256 = $hash
           $m | ConvertTo-Json -Depth 5 | Set-Content manifest.json
 
