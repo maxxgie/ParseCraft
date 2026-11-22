@@ -5175,3 +5175,14 @@ TypeError: Grammar.__init__() got an unexpected keyword argument 'duplicates'
 2026-11-20 18:01:27 [INFO] __main__: Database initialized
 2026-11-20 19:34:05 [INFO] core.database: Database connection closed
 2026-11-20 19:34:05 [INFO] __main__: Application shutdown complete
+2026-11-22 13:29:09 [INFO] __main__: Starting ParseCraft
+2026-11-22 13:29:10 [INFO] core.database: Connected to database: C:\Users\maxwe\Downloads\projo\ParseCraft\bottom_up_parser_simulator\data\parser_simulator.db
+2026-11-22 13:29:10 [INFO] core.database: Database schema initialized
+2026-11-22 13:29:10 [INFO] __main__: Database initialized
+2026-11-22 13:29:23 [DEBUG] gui.grammar_editor: GrammarEditor initialized
+2026-11-22 13:29:23 [DEBUG] gui.main_window: Applied 12 tabs for parser SLR(1)
+2026-11-22 13:29:24 [INFO] gui.main_window: Main window initialized
+2026-11-22 13:29:24 [INFO] core.update.checker: Checking for updates at https://raw.githubusercontent.com/maxxgie/ParseCraft/main/bottom_up_parser_simulator/manifest.json
+2026-11-22 13:29:25 [WARNING] core.update.checker: Manifest download_url was not a file URL; repaired to https://github.com/maxxgie/ParseCraft/releases/download/v1.0.11/ParseCraft-1.0.11-Setup.exe
+2026-11-22 13:30:57 [INFO] core.database: Database connection closed
+2026-11-22 13:30:57 [INFO] __main__: Application shutdown complete
