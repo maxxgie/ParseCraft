@@ -44,6 +44,13 @@ jobs:
           $m.release_date = (Get-Date -Format "yyyy-MM-dd")
           $m.download_url = "https://github.com/maxxgie/ParseCraft/releases/download/v$version/ParseCraft-$version-Setup.exe"
           $m | ConvertTo-Json -Depth 5 | Set-Content manifest.json
+          # Keep version.json in sync so the built app reports the correct
+          # version and does not perpetually think an update is available.
+          $v = Get-Content version.json | ConvertFrom-Json
+          $v.version = $version
+          $v.build = $m.build
+          $v.release_date = $m.release_date
+          $v | ConvertTo-Json -Depth 5 | Set-Content version.json
           "VERSION=$version" | Out-File -Append $env:GITHUB_ENV
 
       - run: ./packaging/build.ps1
@@ -81,7 +88,7 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add manifest.json
+          git add manifest.json version.json
           if (git diff --cached --quiet) {
             Write-Host "No manifest changes to commit"
             exit 0
