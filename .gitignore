@@ -9,5 +9,7 @@ build/
 __pycache__/
 *.pyc
 data/*.db
+data/*.json
+data/downloads/
 logs/*.log
 .pytest_cache/

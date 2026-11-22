@@ -10,6 +10,9 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Dict, List, Set
 
+from models.grammar import Grammar
+from models.parsing_table import Conflict, ParseTable
+
 from core.automaton import LRAutomaton
 from core.conflict_resolution import (
     Resolution,
@@ -29,8 +32,6 @@ from core.lr1_automaton import LR1Automaton
 from core.parser_simulator import SimulationResult, simulate
 from core.precedence import PrecedenceInfo, parse_precedence
 from core.table_builder import MODES, assign_production_numbers, build_parsing_table
-from models.grammar import Grammar
-from models.parsing_table import Conflict, ParseTable
 
 logger = get_logger(__name__)
 

@@ -350,9 +350,12 @@ class MainWindow(QMainWindow):
         file_menu.addAction(open_action)
 
         save_action = QAction("&Save Grammar...", self)
+        save_analysis_action = QAction("Save &Analysis...", self)
+        save_analysis_action.triggered.connect(self._on_save_analysis)
         save_action.setShortcut(QKeySequence.StandardKey.Save)
         save_action.triggered.connect(self._on_save_grammar)
         file_menu.addAction(save_action)
+        file_menu.addAction(save_analysis_action)
 
         file_menu.addSeparator()
 
@@ -440,6 +443,7 @@ class MainWindow(QMainWindow):
         self.addToolBar(toolbar)
 
         for label, tooltip, slot in [
+            ("Home", "Return to Startup Dashboard", self._on_home),
             ("New", "New grammar", self._on_new_grammar),
             ("Open", "Open grammar from library", self._on_open_grammar),
             ("Save", "Save grammar to library", self._on_save_grammar),
@@ -898,6 +902,11 @@ class MainWindow(QMainWindow):
             logger.error("Export failed: %s", exc)
             QMessageBox.critical(self, "Export", f"Failed to export: {exc}")
 
+    def _on_home(self) -> None:
+        from app.dashboard import show_dashboard
+        show_dashboard()
+        self.hide()
+
     def _on_export_csv(self) -> None:
         self._export(table_to_csv, "tables.csv", "CSV Files (*.csv)")
 
@@ -1186,16 +1195,13 @@ class MainWindow(QMainWindow):
         if result.success:
             if self._progress_dialog is not None:
                 self._progress_dialog.close()
-            QMessageBox.information(
-                self,
-                "Update Installed",
-                "The update was installed successfully. The application will "
-                "now restart.",
-            )
-            from core.update.installer import relaunch_application
             from PyQt6.QtWidgets import QApplication
 
-            relaunch_application()
+            # The external Updater.exe takes over: it waits for this process to
+            # exit, applies the update (installer or ZIP overlay), and relaunches
+            # the application. We must therefore exit cleanly so the running
+            # binary is no longer locked by the OS.
+            logger.info("Update installed; exiting for updater to relaunch")
             QApplication.instance().quit()
         else:
             if self._progress_dialog is not None:

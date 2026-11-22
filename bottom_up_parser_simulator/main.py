@@ -15,7 +15,7 @@ from core.update.installer import (
     read_pending_update,
     relaunch_application,
 )
-from gui.main_window import MainWindow
+from app.dashboard import show_dashboard
 from gui.settings import APP_NAME
 from gui.theme import apply_theme
 
@@ -95,7 +95,7 @@ def main() -> int:
         logger.exception("Failed to initialize database: %s", exc)
         return 1
 
-    window = MainWindow()
+    window = show_dashboard()
     window.show()
 
     try:

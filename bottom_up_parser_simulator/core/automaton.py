@@ -3,14 +3,14 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Set, Optional, Tuple
 
-from core.logging_config import get_logger
+from models.grammar import Grammar
+from models.lr_item import LRItem
+
 from core.closure import closure, closure_with_trace
 from core.goto import goto, goto_with_trace
 from core.grammar_engine import ordered_symbols, production_order_map
-from models.lr_item import LRItem
-from models.grammar import Grammar
+from core.logging_config import get_logger
 
 logger = get_logger(__name__)
 
@@ -26,7 +26,7 @@ class ValidationIssue:
         detail: Additional explanation for failures.
     """
 
-    state: Optional[int]
+    state: int | None
     check: str
     ok: bool
     detail: str = ""
@@ -46,13 +46,13 @@ class LRState:
     """
 
     state_id: int
-    items: Set[LRItem] = field(default_factory=set)
-    transitions: Dict[str, int] = field(default_factory=dict)
-    production_order: Dict[Tuple[str, Tuple[str, ...]], int] = field(
+    items: set[LRItem] = field(default_factory=set)
+    transitions: dict[str, int] = field(default_factory=dict)
+    production_order: dict[tuple[str, tuple[str, ...]], int] = field(
         default_factory=dict
     )
 
-    def sorted_items(self) -> List[LRItem]:
+    def sorted_items(self) -> list[LRItem]:
         """Return the items in textbook order (production order, then dot).
 
         Items are grouped by the production that generated them, in the order
@@ -86,7 +86,7 @@ class LRState:
         width = max((len(item.lhs) for item in items), default=0)
         return "\n".join(item.to_string(lhs_width=width) for item in items)
 
-    def get_transition_rows(self) -> List[Tuple[int, str, str, int | None]]:
+    def get_transition_rows(self) -> list[tuple[int, str, str, int | None]]:
         """Return one row per item that consumes a symbol.
 
         Each row is ``(state_id, configuration, consume, next_state)``. Items
@@ -99,7 +99,7 @@ class LRState:
         """
         items = self.sorted_items()
         width = max((len(item.lhs) for item in items), default=0)
-        rows: List[Tuple[int, str, str, int | None]] = []
+        rows: list[tuple[int, str, str, int | None]] = []
         for item in items:
             symbol = item.next_symbol()
             if symbol is None:
@@ -124,7 +124,9 @@ class LRAutomaton:
         start_state: The starting state ID.
     """
 
-    def __init__(self, grammar: Grammar, augmented_grammar: Grammar | None = None) -> None:
+    def __init__(
+        self, grammar: Grammar, augmented_grammar: Grammar | None = None
+    ) -> None:
         """Initialize the automaton.
 
         Args:
@@ -133,8 +135,8 @@ class LRAutomaton:
         """
         self.grammar = grammar
         self.augmented_grammar = augmented_grammar or self._augment_grammar(grammar)
-        self.states: List[LRState] = []
-        self.transitions: Dict[Tuple[int, str], int] = {}
+        self.states: list[LRState] = []
+        self.transitions: dict[tuple[int, str], int] = {}
         self.start_state: int = 0
         self._build_automaton()
 
@@ -156,7 +158,11 @@ class LRAutomaton:
         # Create initial state
         start_item = LRItem(
             lhs=self.augmented_grammar.start_symbol,
-            rhs=tuple(self.augmented_grammar.get_productions_for(self.augmented_grammar.start_symbol)[0]),
+            rhs=tuple(
+                self.augmented_grammar.get_productions_for(
+                    self.augmented_grammar.start_symbol
+                )[0]
+            ),
             dot=0,
         )
         initial_items = closure({start_item}, self.augmented_grammar)
@@ -225,7 +231,7 @@ class LRAutomaton:
         """
         return self.states[state_id]
 
-    def get_transitions_from(self, state_id: int) -> Dict[str, int]:
+    def get_transitions_from(self, state_id: int) -> dict[str, int]:
         """Get all transitions from a state.
 
         Args:
@@ -236,7 +242,7 @@ class LRAutomaton:
         """
         return self.states[state_id].transitions
 
-    def get_all_symbols(self) -> Set[str]:
+    def get_all_symbols(self) -> set[str]:
         """Get all symbols that appear in transitions.
 
         Returns:
@@ -247,7 +253,7 @@ class LRAutomaton:
             symbols.add(symbol)
         return symbols
 
-    def kernel_items(self, state: LRState) -> Set[LRItem]:
+    def kernel_items(self, state: LRState) -> set[LRItem]:
         """Return the kernel (seed) items of a state.
 
         The kernel is the set of items whose dot is not at the beginning,
@@ -268,7 +274,7 @@ class LRAutomaton:
             if item.dot > 0 or (item.lhs == aug_start and item.dot == 0)
         }
 
-    def closure_trace(self, state_id: int) -> Dict[str, object]:
+    def closure_trace(self, state_id: int) -> dict[str, object]:
         """Recompute a state's closure and return a step-by-step trace.
 
         Args:
@@ -290,7 +296,7 @@ class LRAutomaton:
             "matches": result == state.items,
         }
 
-    def goto_trace(self, state_id: int, symbol: str) -> Dict[str, object]:
+    def goto_trace(self, state_id: int, symbol: str) -> dict[str, object]:
         """Recompute a GOTO transition and return a step-by-step trace.
 
         Args:
@@ -315,7 +321,7 @@ class LRAutomaton:
         """
         lines = ["digraph LRAutomaton {"]
         lines.append("  rankdir=LR;")
-        lines.append('  node [shape=box, style=filled, fillcolor=lightyellow];')
+        lines.append("  node [shape=box, style=filled, fillcolor=lightyellow];")
 
         for state in self.states:
             label = f"State {state.state_id}\\n"
@@ -330,7 +336,7 @@ class LRAutomaton:
         return "\n".join(lines)
 
 
-def transition_rows(automaton) -> List[Tuple[int, str, str, int | None]]:
+def transition_rows(automaton) -> list[tuple[int, str, str, int | None]]:
     """Return the state-transition table rows for any LR automaton.
 
     Args:
@@ -340,7 +346,7 @@ def transition_rows(automaton) -> List[Tuple[int, str, str, int | None]]:
         A list of ``(state, configuration, consume, next_state)`` tuples in
         state order, then item (production) order.
     """
-    rows: List[Tuple[int, str, str, int | None]] = []
+    rows: list[tuple[int, str, str, int | None]] = []
     for state in automaton.states:
         rows.extend(state.get_transition_rows())
     return rows
@@ -369,7 +375,7 @@ def format_transition_table(automaton) -> str:
         for index, cell in enumerate(row):
             widths[index] = max(widths[index], len(cell))
 
-    def render(cells: List[str]) -> str:
+    def render(cells: list[str]) -> str:
         return "  ".join(cell.ljust(widths[i]) for i, cell in enumerate(cells))
 
     lines = [render(list(headers))]
@@ -379,7 +385,7 @@ def format_transition_table(automaton) -> str:
     return "\n".join(lines)
 
 
-def validate_automaton(automaton) -> List[ValidationIssue]:
+def validate_automaton(automaton) -> list[ValidationIssue]:
     """Validate a constructed LR automaton against the textbook invariants.
 
     Checks performed for every state:
@@ -399,7 +405,7 @@ def validate_automaton(automaton) -> List[ValidationIssue]:
     Returns:
         A list of :class:`ValidationIssue`; empty means the automaton is valid.
     """
-    issues: List[ValidationIssue] = []
+    issues: list[ValidationIssue] = []
     states = automaton.states
     transitions = automaton.transitions
     aug = getattr(automaton, "augmented_grammar", None)
@@ -442,12 +448,10 @@ def validate_automaton(automaton) -> List[ValidationIssue]:
                 )
             )
         else:
-            issues.append(
-                ValidationIssue(state.state_id, "No duplicate items", True)
-            )
+            issues.append(ValidationIssue(state.state_id, "No duplicate items", True))
 
         if aug is not None:
-            missing: List[str] = []
+            missing: list[str] = []
             for item in state.items:
                 next_sym = item.next_symbol()
                 if next_sym is None or next_sym not in aug.non_terminals:
@@ -473,9 +477,7 @@ def validate_automaton(automaton) -> List[ValidationIssue]:
                     )
                 )
             else:
-                issues.append(
-                    ValidationIssue(state.state_id, "Closure complete", True)
-                )
+                issues.append(ValidationIssue(state.state_id, "Closure complete", True))
 
         missing_transitions = sorted(
             {
@@ -495,9 +497,7 @@ def validate_automaton(automaton) -> List[ValidationIssue]:
                 )
             )
         else:
-            issues.append(
-                ValidationIssue(state.state_id, "Transitions complete", True)
-            )
+            issues.append(ValidationIssue(state.state_id, "Transitions complete", True))
 
         bad_targets = sorted(
             {
