@@ -238,5 +238,16 @@
       "- Supports LR(0), SLR(1), CLR(1), and LALR(1) parsing.",
       "- Includes grammar analysis, parsing simulation, parse-tree and AST views, and export."
     ]
+  },
+  {
+    "timestamp": "2026-11-22T15:35:19.912321+00:00",
+    "event": "check",
+    "version": "1.0.11",
+    "detail": "Newer version available",
+    "changes": [
+      "- Initial release of ParseCraft.",
+      "- Supports LR(0), SLR(1), CLR(1), and LALR(1) parsing.",
+      "- Includes grammar analysis, parsing simulation, parse-tree and AST views, and export."
+    ]
   }
 ]
