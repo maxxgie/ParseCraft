@@ -95,9 +95,9 @@ def compute_follow(grammar: Grammar, first: Dict[str, Set[str]] | None = None) -
                             if s not in follow[sym]:
                                 follow[sym].add(s)
                                 changed = True
-                                    
+
     logger.info("FOLLOW sets computed for %d none-terminals", len(follow))
-    
+    return follow
 def compute_first_of_string(
     symbols: List[str], first: Dict[str, Set[str]]
 ) -> Set[str]:
